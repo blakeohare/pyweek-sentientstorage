@@ -1,10 +1,9 @@
-class PlayScene:
-	def __init__(self, level):
+class LoadGameScene:
+	def __init__(self):
 		self.next = self
-		self.level = level
 	
 	def update(self, events):
 		pass
 	
 	def render(self, screen, images, rc):
-		$screen_fill(screen, 0, 255, 0)
+		pass
