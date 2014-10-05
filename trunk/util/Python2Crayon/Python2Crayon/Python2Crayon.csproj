@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D318544E-89E9-4B5D-B113-067AF9C255DF}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Python2Crayon</RootNamespace>
+    <AssemblyName>Python2Crayon</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FileCrawler.cs" />
+    <Compile Include="ParserException.cs" />
+    <Compile Include="ParseTree\Assignment.cs" />
+    <Compile Include="ParseTree\BinaryOpChain.cs" />
+    <Compile Include="ParseTree\BooleanCombinator.cs" />
+    <Compile Include="ParseTree\BooleanConstant.cs" />
+    <Compile Include="ParseTree\BreakStatement.cs" />
+    <Compile Include="ParseTree\ClassDefinition.cs" />
+    <Compile Include="ParseTree\ComparisonChain.cs" />
+    <Compile Include="ParseTree\ContinueStatement.cs" />
+    <Compile Include="ParseTree\DotField.cs" />
+    <Compile Include="ParseTree\Executable.cs" />
+    <Compile Include="ParseTree\ExecutableParser.cs" />
+    <Compile Include="ParseTree\Expression.cs" />
+    <Compile Include="ParseTree\ExpressionAsExecutable.cs" />
+    <Compile Include="ParseTree\ExpressionParser.cs" />
+    <Compile Include="ParseTree\FloatConstant.cs" />
+    <Compile Include="ParseTree\ForEachLoop.cs" />
+    <Compile Include="ParseTree\ForLoop.cs" />
+    <Compile Include="ParseTree\FunctionDefinition.cs" />
+    <Compile Include="ParseTree\FunctionInvocation.cs" />
+    <Compile Include="ParseTree\IfRawComponent.cs" />
+    <Compile Include="ParseTree\IfStatement.cs" />
+    <Compile Include="ParseTree\ImportStatement.cs" />
+    <Compile Include="ParseTree\IndexExpression.cs" />
+    <Compile Include="ParseTree\InlineDictionary.cs" />
+    <Compile Include="ParseTree\InlineList.cs" />
+    <Compile Include="ParseTree\InlineTuple.cs" />
+    <Compile Include="ParseTree\IntegerConstant.cs" />
+    <Compile Include="ParseTree\Negation.cs" />
+    <Compile Include="ParseTree\NullConstant.cs" />
+    <Compile Include="ParseTree\ParenthesisGroup.cs" />
+    <Compile Include="ParseTree\PassStatement.cs" />
+    <Compile Include="ParseTree\ReturnStatement.cs" />
+    <Compile Include="ParseTree\SliceExpression.cs" />
+    <Compile Include="ParseTree\StringConstant.cs" />
+    <Compile Include="ParseTree\SystemFunctionInvocation.cs" />
+    <Compile Include="ParseTree\Ternary.cs" />
+    <Compile Include="ParseTree\Variable.cs" />
+    <Compile Include="ParseTree\WhileLoop.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\AbstractPrimitiveMethodSerializer.cs" />
+    <Compile Include="Serialization\CrayonPrimitiveMethods.cs" />
+    <Compile Include="Serialization\CrayonSerializer.cs" />
+    <Compile Include="Serialization\PythonSerializer.cs" />
+    <Compile Include="Serialization\PythonPrimitiveMethods.cs" />
+    <Compile Include="Token.cs" />
+    <Compile Include="Tokenizer.cs" />
+    <Compile Include="TokenStream.cs" />
+    <Compile Include="Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Serialization\Templates\header.cry" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Serialization\Templates\header.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Serialization\Templates\footer.cry" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Serialization\Templates\footer.py" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
