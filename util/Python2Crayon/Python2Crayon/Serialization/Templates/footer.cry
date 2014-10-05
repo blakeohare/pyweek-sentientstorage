@@ -1,0 +1,25 @@
+﻿images = '%%%IMAGE_FILES%%%'.split('|');
+keysToFiles = {};
+for (i = 0; i < images.length; ++i) {
+	fullpath = images[i];
+	key = fullpath;
+	if (%%%IMAGES_ROOT%%%.length != 0) {
+		fullpath = %%%IMAGES_ROOT%%% + '/' + fullpath;
+	}
+	keyparts = key.split('.');
+	key = [];
+	for (j = 0; j < keyparts.length - 1; ++j) {
+		key.add(keyparts[j]);
+	}
+	key = key.join('.');
+	keysToFiles[key] = fullpath;
+}
+
+_pseudo_file_system = %%%TEXT_FILES%%%;
+
+function read_file(file) {
+	return _pseudo_file_system[file];
+}
+
+game = new Game(%%%FPS%%%, %%%GAME_WIDTH%%%, %%%GAME_HEIGHT%%%, %%%SCREEN_WIDTH%%%, %%%SCREEN_HEIGHT%%%);
+game.run(new SceneProxy(), keysToFiles);

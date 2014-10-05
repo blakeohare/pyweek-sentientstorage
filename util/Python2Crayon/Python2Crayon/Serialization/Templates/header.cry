@@ -1,0 +1,63 @@
+﻿import Game;
+
+class Event {
+	constructor(type, key, x, y) {
+		this.type = type;
+		this.key = key;
+		this.x = x;
+		this.y = y;
+	}
+}
+
+class SceneProxy : SceneBase {
+	constructor() : base() {
+		this.active_scene = new %%%START_SCENE%%%();
+		this.rc = 0;
+		this.image_library = null;
+	}
+
+	function set_image_library(lib) {
+		this.image_library = lib;
+	}
+
+	function update(events) {
+		if (this.active_scene == null) {
+			this.switch_scene(null);
+		} else {
+			modified_events = [];
+			for (i = 0; i < events.length; ++i) {
+				ev = events[i];
+				if (ev[0] == 'mousemove') {
+					modified_events.add(new Event('mousemove', null, ev[1], ev[2]));
+				} else if (ev[0] == 'key') {
+					key = ev[2];
+					if (ev[1]) {
+						modified_events.add(new Event('keydown', key, 0, 0));
+					} else {
+						modified_events.add(new Event('keyup', key, 0, 0));
+					}
+				} else if (ev[0] == 'mouseleftdown' || 
+					ev[0] == 'mouseleftup' || 
+					ev[0] == 'mouserightdown' ||
+					ev[0] == 'mouserightup') {
+					modified_events.add(new Event(ev[0], null, ev[1], ev[2]));
+				} else if (ev[0] == 'exit') {
+					modified_events.add(new Event('quit', 'js', 0, 0));
+				}
+			}
+			this.active_scene.update(modified_events);
+		}
+	}
+
+	function load_images(image_library) {
+		this.image_library = image_library.get_raw_image_lookup();
+	}
+
+	function render() {
+		if (this.active_scene != null) {
+			this.active_scene.render(null, this.image_library, this.rc);
+			this.rc += 1;
+			this.active_scene = this.active_scene.next;
+		}
+	}
+}
