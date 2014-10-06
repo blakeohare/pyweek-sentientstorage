@@ -56,7 +56,7 @@ namespace Python2Crayon.Serialization
 			{
 				if (this.argCount[sysFunction.Name] != args.Length)
 				{
-					throw new ParserException(sysFunction.FirstToken, "Invalid number of args. Expected " + args.Length + " but found " + sysFunction.Args.Length + ".");
+					throw new ParserException(sysFunction.FirstToken, "Invalid number of args for $" + sysFunction.Name + ". Expected " + this.argCount[sysFunction.Name] + " but found " + sysFunction.Args.Length + ".");
 				}
 				List<object> methodArgs = new List<object>() { output };
 				methodArgs.AddRange(args);
@@ -68,7 +68,8 @@ namespace Python2Crayon.Serialization
 			}
 		}
 
-		protected abstract void X_DictionaryGetWithDefault(List<string> output, Expression key, Expression defaultValue);
+		protected abstract void X_DictionaryGetWithDefault(List<string> output, Expression dict, Expression key, Expression defaultValue);
+		protected abstract void X_DictionaryKeys(List<string> output, Expression dict);
 		protected abstract void X_DictionarySize(List<string> output, Expression dict);
 
 		protected abstract void X_DrawEllipse(List<string> output, ParseTree.Expression screen, ParseTree.Expression left, ParseTree.Expression top, ParseTree.Expression width, ParseTree.Expression height, ParseTree.Expression red, ParseTree.Expression green, ParseTree.Expression blue);
@@ -88,9 +89,13 @@ namespace Python2Crayon.Serialization
 		protected abstract void X_MathAbs(List<string> output, Expression num);
 		protected abstract void X_MathSin(List<string> output, Expression theta);
 
+		protected abstract void X_ParseInt(List<string> output, Expression value);
+
 		protected abstract void X_Print(List<string> output, Expression value);
 
 		protected abstract void X_ScreenFill(List<string> output, Expression screen, Expression red, Expression green, Expression blue);
+
+		protected abstract void X_Str(List<string> output, Expression value);
 
 		protected abstract void X_StringLength(List<string> output, Expression str);
 		protected abstract void X_StringLower(List<string> output, Expression str);
