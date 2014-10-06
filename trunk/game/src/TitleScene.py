@@ -22,7 +22,8 @@ class TitleScene:
 					action = 'exit'
 		
 		if action == 'new':
-			self.next = PixelTransitionScene(self, PlayScene('attic'))
+			log = GameLog()
+			self.next = PixelTransitionScene(self, PlayScene('attic', log))
 		elif action == 'load':
 			self.next = LoadGameScene(self)
 		elif action == 'exit':
