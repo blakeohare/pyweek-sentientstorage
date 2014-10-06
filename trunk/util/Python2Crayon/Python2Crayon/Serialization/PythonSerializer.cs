@@ -275,7 +275,7 @@ namespace Python2Crayon.Serialization
 			}
 			else if (negation.Type == Negation.PrefixType.BOOLEAN_NOT)
 			{
-				output.Add("!");
+				output.Add("not ");
 			}
 			else if (negation.Type == Negation.PrefixType.NEGATIVE)
 			{

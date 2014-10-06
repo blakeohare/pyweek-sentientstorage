@@ -121,6 +121,14 @@ namespace Python2Crayon.Serialization
 			output.Add(")");
 		}
 
+		protected override void X_ListRemove(List<string> output, Expression list, Expression index)
+		{
+			SerializeExpression(output, list);
+			output.Add(".pop(");
+			SerializeExpression(output, index);
+			output.Add(")");
+		}
+
 		protected override void X_ListLength(List<string> output, Expression list)
 		{
 			output.Add("len(");
