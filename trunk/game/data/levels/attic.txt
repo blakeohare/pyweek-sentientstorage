@@ -1,6 +1,6 @@
 LAYERS: bg1, bg2
 LAYER_DATA: bg1: backgrounds/attic-1, -999999
-LAYER_DATA: bg2: backgrounds/attic-2, 200
+LAYER_DATA: bg2: backgrounds/attic-2, 9999
 
 START: 315, 199
 

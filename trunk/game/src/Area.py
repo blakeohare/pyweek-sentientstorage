@@ -1,6 +1,8 @@
 class Area:
 	def __init__(self, name):
+		self.id = name
 		self.sprites = []
+		self.sorted_sprites = None
 		self.sprites_by_layers = None
 		self.parse_level_file(name)
 	
@@ -9,6 +11,10 @@ class Area:
 			coords = self.start_point
 		else:
 			pass # TODO: this
+		
+		player = Sprite('player', coords[0], coords[1])
+		$list_add(self.sprites, player)
+		return player
 	
 	def parse_level_file(self, name):
 		level = read_file('levels/' + name + '.txt')
@@ -54,17 +60,48 @@ class Area:
 		self.start_point = start
 		self.blocks = blocks
 	
+	def update(self, counter):
+		new_sprites = []
+		for sprite in self.sprites:
+			sprite.update(self)
+			if not sprite.dead:
+				$list_add(new_sprites, sprite)
+		self.sprites = new_sprites
+	
 	def render(self, screen, images, rc):
-		self.sort_sprites()
-		for i in range($list_length(self.layer_images)):
-			image = self.layer_images[i]
-			$image_blit(screen, images[image], 0, 0)
+		sprites = self.sort_sprites()
+		layer_index = 0
+		sprite_index = 0
+		layer_count = $list_length(self.layer_y)
+		sprite_count = $list_length(sprites)
+		while layer_index < layer_count or sprite_index < sprite_count:
+			
+			if layer_index == layer_count:
+				is_sprite = True
+			elif sprite_index == sprite_count:
+				is_sprite = False
+			elif sprites[sprite_index].y < self.layer_y[layer_index]:
+				is_sprite = True
+			else:
+				is_sprite = False
+			
+			if is_sprite:
+				sprites[sprite_index].render(screen, images, rc)
+				sprite_index += 1
+			else:
+				$image_blit(screen, images[self.layer_images[layer_index]], 0, 0)
+				layer_index += 1
 	
 	def sort_sprites(self):
+		new_list = []
+		for sprite in self.sprites:
+			$list_add(new_list, sprite)
 		
-		$list_shuffle(self.sprites)
-		sorted = self.qsort(self.sprites)
-		# TODO: bucketing
+		$list_shuffle(new_list)
+		return self.qsort(new_list)
+	
+	def is_passable(self, x, y):
+		return True
 	
 	def qsort(self, items):
 		if $list_length(items) < 2: return items
@@ -78,7 +115,7 @@ class Area:
 				$list_add(left, sprite)
 			else:
 				$list_add(right, sprite)
-		output = left + [pivot] + right
+		output = self.qsort(left) + [pivot] + self.qsort(right)
 		return output
 	
 	
