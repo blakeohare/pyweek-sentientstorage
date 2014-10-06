@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Python2Crayon.ParseTree;
 
 namespace Python2Crayon.Serialization
 {
@@ -9,9 +10,20 @@ namespace Python2Crayon.Serialization
 	{
 		public CrayonPrimitiveMethods(CrayonSerializer serializer) : base(serializer) { }
 
-		protected override void X_DictionaryGetWithDefault(List<string> output, ParseTree.Expression key, ParseTree.Expression defaultValue)
+		protected override void X_DictionaryGetWithDefault(List<string> output, Expression dictionary, Expression key, Expression defaultValue)
 		{
-			throw new NotImplementedException();
+			SerializeExpression(output, dictionary);
+			output.Add(".get(");
+			SerializeExpression(output, key);
+			output.Add(", ");
+			SerializeExpression(output, defaultValue);
+			output.Add(")");
+		}
+
+		protected override void X_DictionaryKeys(List<string> output, Expression dict)
+		{
+			SerializeExpression(output, dict);
+			output.Add(".keys()");
 		}
 
 		protected override void X_DictionarySize(List<string> output, ParseTree.Expression dict)
@@ -101,7 +113,10 @@ namespace Python2Crayon.Serialization
 
 		protected override void X_ListJoin(List<string> output, ParseTree.Expression list, ParseTree.Expression sep)
 		{
-			throw new NotImplementedException();
+			SerializeExpression(output, list);
+			output.Add(".join(");
+			SerializeExpression(output, sep);
+			output.Add(")");
 		}
 
 		protected override void X_ListLength(List<string> output, ParseTree.Expression list)
@@ -130,6 +145,13 @@ namespace Python2Crayon.Serialization
 			output.Add(")");
 		}
 
+		protected override void X_ParseInt(List<string> output, ParseTree.Expression value)
+		{
+			output.Add("$parse_int(");
+			SerializeExpression(output, value);
+			output.Add(")");
+		}
+
 		protected override void X_Print(List<string> output, ParseTree.Expression value)
 		{
 			output.Add("$print(");
@@ -148,9 +170,17 @@ namespace Python2Crayon.Serialization
 			output.Add(")");
 		}
 
+		protected override void X_Str(List<string> output, Expression value)
+		{
+			output.Add("('' + ");
+			SerializeExpression(output, value);
+			output.Add(")");
+		}
+
 		protected override void X_StringLength(List<string> output, ParseTree.Expression str)
 		{
-			throw new NotImplementedException();
+			SerializeExpression(output, str);
+			output.Add(".length");
 		}
 
 		protected override void X_StringLower(List<string> output, ParseTree.Expression str)
@@ -160,17 +190,22 @@ namespace Python2Crayon.Serialization
 
 		protected override void X_StringSplit(List<string> output, ParseTree.Expression str, ParseTree.Expression sep)
 		{
-			throw new NotImplementedException();
+			SerializeExpression(output, str);
+			output.Add(".split(");
+			SerializeExpression(output, sep);
+			output.Add(")");
 		}
 
 		protected override void X_StringTrim(List<string> output, ParseTree.Expression str)
 		{
-			throw new NotImplementedException();
+			SerializeExpression(output, str);
+			output.Add(".trim()");
 		}
 
 		protected override void X_StringUpper(List<string> output, ParseTree.Expression str)
 		{
-			throw new NotImplementedException();
+			SerializeExpression(output, str);
+			output.Add(".upper()");
 		}
 	}
 }

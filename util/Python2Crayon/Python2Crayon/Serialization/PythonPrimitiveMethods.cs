@@ -10,9 +10,20 @@ namespace Python2Crayon.Serialization
 	{
 		public PythonPrimitiveMethods(PythonSerializer serializer) : base(serializer) { }
 
-		protected override void X_DictionaryGetWithDefault(List<string> output, Expression key, Expression defaultValue)
+		protected override void X_DictionaryGetWithDefault(List<string> output, Expression dictionary, Expression key, Expression defaultValue)
 		{
-			throw new NotImplementedException();
+			SerializeExpression(output, dictionary);
+			output.Add(".get(");
+			SerializeExpression(output, key);
+			output.Add(", ");
+			SerializeExpression(output, defaultValue);
+			output.Add(")");
+		}
+
+		protected override void X_DictionaryKeys(List<string> output, Expression dict)
+		{
+			SerializeExpression(output, dict);
+			output.Add(".keys()");
 		}
 
 		protected override void X_DictionarySize(List<string> output, Expression dict)
@@ -104,7 +115,10 @@ namespace Python2Crayon.Serialization
 
 		protected override void X_ListJoin(List<string> output, Expression list, Expression sep)
 		{
-			throw new NotImplementedException();
+			SerializeExpression(output, sep);
+			output.Add(".join(");
+			SerializeExpression(output, list);
+			output.Add(")");
 		}
 
 		protected override void X_ListLength(List<string> output, Expression list)
@@ -135,6 +149,13 @@ namespace Python2Crayon.Serialization
 			output.Add(")");
 		}
 
+		protected override void X_ParseInt(List<string> output, Expression value)
+		{
+			output.Add("int(");
+			SerializeExpression(output, value);
+			output.Add(")");
+		}
+
 		protected override void X_Print(List<string> output, Expression value)
 		{
 			output.Add("print(");
@@ -154,9 +175,18 @@ namespace Python2Crayon.Serialization
 			output.Add("))");
 		}
 
+		protected override void X_Str(List<string> output, Expression value)
+		{
+			output.Add("str(");
+			SerializeExpression(output, value);
+			output.Add(")");
+		}
+
 		protected override void X_StringLength(List<string> output, Expression str)
 		{
-			throw new NotImplementedException();
+			output.Add("len(");
+			SerializeExpression(output, str);
+			output.Add(")");
 		}
 
 		protected override void X_StringLower(List<string> output, Expression str)
@@ -166,17 +196,22 @@ namespace Python2Crayon.Serialization
 
 		protected override void X_StringSplit(List<string> output, Expression str, Expression sep)
 		{
-			throw new NotImplementedException();
+			SerializeExpression(output, str);
+			output.Add(".split(");
+			SerializeExpression(output, sep);
+			output.Add(")"); 
 		}
 
 		protected override void X_StringTrim(List<string> output, Expression str)
 		{
-			throw new NotImplementedException();
+			SerializeExpression(output, str);
+			output.Add(".strip()");
 		}
 
 		protected override void X_StringUpper(List<string> output, Expression str)
 		{
-			throw new NotImplementedException();
+			SerializeExpression(output, str);
+			output.Add(".upper()");
 		}
 	}
 }
