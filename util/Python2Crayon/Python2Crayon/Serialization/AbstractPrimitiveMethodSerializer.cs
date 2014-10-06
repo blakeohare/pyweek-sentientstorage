@@ -84,6 +84,7 @@ namespace Python2Crayon.Serialization
 		protected abstract void X_ListAdd(List<string> output, Expression list, Expression value);
 		protected abstract void X_ListJoin(List<string> output, Expression list, Expression sep);
 		protected abstract void X_ListLength(List<string> output, Expression list);
+		protected abstract void X_ListRemove(List<string> output, Expression list, Expression index);
 		protected abstract void X_ListShuffle(List<string> output, Expression list);
 
 		protected abstract void X_MathAbs(List<string> output, Expression num);

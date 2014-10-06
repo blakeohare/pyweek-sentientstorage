@@ -125,6 +125,14 @@ namespace Python2Crayon.Serialization
 			output.Add(".length");
 		}
 
+		protected override void X_ListRemove(List<string> output, Expression list, Expression index)
+		{
+			SerializeExpression(output, list);
+			output.Add(".remove(");
+			SerializeExpression(output, index);
+			output.Add(")");
+		}
+
 		protected override void X_ListShuffle(List<string> output, ParseTree.Expression list)
 		{
 			SerializeExpression(output, list);
