@@ -8,7 +8,21 @@ BLOCK: 0, 0, 250, 112
 BLOCK: 0, 0, 83, 250
 Block: 0, 100, 150, 100
 
-REGION_ID: train_box: 50, 152, 74, 52
-REGION_ID: train_box: 82, 135, 33, 22
+REGION_ID: kozy_koupe: 254, 71, 52, 55
+REGION_ID: saturnalia_box: 0, 58, 38, 36
+REGION_ID: sports_box: 0, 110, 34, 39
+REGION_ID: misc_box: 129, 141, 67, 57
+REGION_ID: lego_box: 196, 131, 52, 69
+REGION_ID: games_box: 34, 96, 41, 25
+REGION_ID: train_box: 20, 148, 100, 53
+REGION_ID: train_box: 47, 132, 72, 18
+REGION_ID: basketball: 54, 47, 17, 26
 LOOKY: train_box: A box labelled "trains" is slightly|open in the corner of|the attic.
+LOOKY: kozy_koupe: Vroom vroom
+LOOKY: saturnalia_box: mom was kind of weird
+LOOKY: sports_box: sportsball!
+LOOKY: misc_box: misc box
+LOOKY: lego_box: legooooo!!!1
+LOOKY: games_box: gyaaaaames!
+LOOKY: basketball: It's happy!|It's fun!|It's Happy Fun Ball(TM)!
 
