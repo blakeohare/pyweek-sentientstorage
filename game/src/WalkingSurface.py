@@ -1,10 +1,12 @@
 class WalkingSurface:
 	def __init__(self, area_id, game_log):
+		self.type = 'WalkingSurface'
 		self.area = Area(area_id)
 		from_area = game_log.get_string('current_area', None)
 		game_log.set_string('current_area', area_id)
 		self.player = self.area.initialize_player(from_area)
 		self.counter = 0
+		self.block_show = False
 	
 	def click_walk(self, x, y):
 		self.player.set_waypoint(x, y)
@@ -25,5 +27,8 @@ class WalkingSurface:
 		self.area.update(self.counter)
 		self.counter += 1
 	
+	def toggle_block_show(self):
+		self.block_show = not self.block_show
+	
 	def render(self, screen, images, rc):
-		self.area.render(screen, images, rc)
+		self.area.render(screen, images, rc, self.block_show)

@@ -68,7 +68,7 @@ class Area:
 				$list_add(new_sprites, sprite)
 		self.sprites = new_sprites
 	
-	def render(self, screen, images, rc):
+	def render(self, screen, images, rc, show_blocks):
 		sprites = self.sort_sprites()
 		layer_index = 0
 		sprite_index = 0
@@ -91,6 +91,9 @@ class Area:
 			else:
 				$image_blit(screen, images[self.layer_images[layer_index]], 0, 0)
 				layer_index += 1
+		if show_blocks and rc % 2 == 0:
+			for block in self.blocks:
+				$draw_rectangle(screen, block[0], block[1], block[2] - block[0], block[3] - block[1], 0, 0, 255)
 	
 	def sort_sprites(self):
 		new_list = []
@@ -101,6 +104,9 @@ class Area:
 		return self.qsort(new_list)
 	
 	def is_passable(self, x, y):
+		for block in self.blocks:
+			if y <= block[3] and y >= block[1] and x >= block[0] and x <= block[2]:
+				return False
 		return True
 	
 	def qsort(self, items):
