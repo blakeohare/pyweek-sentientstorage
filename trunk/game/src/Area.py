@@ -62,7 +62,7 @@ class Area:
 					height = $parse_int($string_trim(coords[3]))
 					$list_add(look_block_to_id, (x, y, width + x, height + y, look_id))
 				elif key == 'LOOK_DEF':
-					look_id = parts[1]
+					look_id = $string_trim(parts[1])
 					sentence = parts[2]
 					for i in range(3, $list_length(parts)):
 						sentence += ':' + parts[i]
@@ -132,8 +132,10 @@ class Area:
 			if x < look[2] and x > look[0] and y > look[1] and y < look[3]:
 				id = look[4]
 				break
+		
 		if id != None:
-			return $dictionary_get_with_default(self.look_data, id, None)
+			output = $dictionary_get_with_default(self.look_data, id, None)
+			return output
 		return None
 	
 	def is_passable(self, x, y):

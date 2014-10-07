@@ -14,7 +14,7 @@ class PlayScene:
 	
 	def update(self, events):
 		actions = []
-		next_scene = None
+		
 		for ev in events:
 			if ev.type == 'keydown':
 				if self.canvas.type == 'WalkingSurface':
@@ -29,7 +29,7 @@ class PlayScene:
 					if self.cursor == CURSOR_WALK or ev.type == 'mouserightdown':
 						self.canvas.click_walk(x, y)
 					elif self.cursor == CURSOR_LOOK:
-						self.canvas.click_look(x, y, self)
+						self.canvas.click_look(x, y)
 					elif self.cursor == CURSOR_HAND:
 						self.canvas.click_hand(x, y)
 					elif self.cursor == CURSOR_TALK:
@@ -62,10 +62,6 @@ class PlayScene:
 						self.invoke_options()
 							
 		self.canvas.update()
-		next_scene = self.canvas.next_scene
-		if next_scene != None:
-			self.canvas.next_scene = None
-			self.next = next_scene
 	
 	def invoke_inventory(self):
 		# TODO: set self.active_item to a string
@@ -81,3 +77,5 @@ class PlayScene:
 		$image_blit(screen, images['menus/item'], 32, 208)
 		$image_blit(screen, images['menus/inventory'], 64, 208)
 		$image_blit(screen, images['menus/options'], 288, 208)
+		
+		self.canvas = self.canvas.next
