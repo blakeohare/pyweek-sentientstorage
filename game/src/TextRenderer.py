@@ -48,7 +48,7 @@ _CHARS_TO_KEYS = {
 	't': 'lt',
 	'u': 'lu',
 	'v': 'lv',
-	'y': 'lw',
+	'w': 'lw',
 	'x': 'lx',
 	'y': 'ly',
 	'z': 'lz',
