@@ -7,6 +7,8 @@ class WalkingSurface:
 		self.player = self.area.initialize_player(from_area)
 		self.counter = 0
 		self.block_show = False
+		self.look_show = False
+		self.next_scene = None
 	
 	def click_walk(self, x, y):
 		self.player.set_waypoint(x, y)
@@ -14,8 +16,10 @@ class WalkingSurface:
 	def click_hand(self, x, y):
 		$print('touch ' + $str(x) + ', ' + $str(y))
 	
-	def click_look(self, x, y):
-		$print('look at ' + $str(x) + ', ' + $str(y))
+	def click_look(self, x, y, playscene):
+		look_data = self.area.get_look_data(x, y)
+		if look_data != None:
+			self.next_scene = DialogBoxScene(look_data[0], playscene)
 	
 	def click_talk(self, x, y):
 		$print('talk to ' + $str(x) + ', ' + $str(y))
@@ -30,5 +34,8 @@ class WalkingSurface:
 	def toggle_block_show(self):
 		self.block_show = not self.block_show
 	
+	def toggle_look_show(self):
+		self.look_show = not self.look_show
+	
 	def render(self, screen, images, rc):
-		self.area.render(screen, images, rc, self.block_show)
+		self.area.render(screen, images, rc, self.block_show, self.look_show)
