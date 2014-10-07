@@ -26,6 +26,11 @@ _pseudo_file_system = %%%TEXT_FILES%%%
 def read_file(file):
 	return _pseudo_file_system[file]
 
+_current_mouse_position = [0, 0]
+
+def get_mouse_position():
+	return _current_mouse_position
+
 def main():
 	pygame.init()
 	image_files = "%%%IMAGE_FILES%%%".split('|')
@@ -43,6 +48,8 @@ def main():
 	rwidth, rheight = rscreen.get_size()
 	vwidth, vheight = vscreen.get_size()
 
+	pygame.mouse.set_visible(False)
+
 	active_scene = %%%START_SCENE%%%()
 
 	clock = pygame.time.Clock()
@@ -52,7 +59,14 @@ def main():
 		events = []
 		keys = pygame.key.get_pressed()
 		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
+			if event.type == pygame.MOUSEMOTION:
+				p = event.pos
+				x = p[0] * vwidth // rwidth
+				y = p[1] * vheight // rheight
+				_current_mouse_position[0] = x
+				_current_mouse_position[1] = y
+				events.append(Event('mousemove', None, x, y))
+			elif event.type == pygame.QUIT:
 				events.append(Event('quit', 'button', 0, 0))
 			elif event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
 				key = _key_conversion.get(event.key)
@@ -61,9 +75,6 @@ def main():
 						events.append(Event('quit', 'alt-f4', 0, 0))
 					else:
 						events.append(Event('keydown' if event.type == pygame.KEYDOWN else 'keyup', key, 0, 0))
-			elif event.type == pygame.MOUSEMOTION:
-				p = event.pos
-				events.append(Event('mousemove', None, p[0] * vwidth // rwidth, p[1] * vheight // rheight))
 			elif event.type == pygame.MOUSEBUTTONUP or event.type == pygame.MOUSEBUTTONDOWN:
 				p = event.pos
 				key = 'mouse' + ('left' if event.button == 1 else 'right') + ('down' if event.type == pygame.MOUSEBUTTONDOWN else 'up')
@@ -72,7 +83,7 @@ def main():
 				events.append(Event(key, None, x, y))
 
 		active_scene.update(events)
-		active_scene.render(vscreen, image_library, render_counter)
+		active_scene.render(vscreen, image_library, render_counter, True)
 		active_scene = active_scene.next
 
 		pygame.transform.scale(vscreen, rscreen.get_size(), rscreen)

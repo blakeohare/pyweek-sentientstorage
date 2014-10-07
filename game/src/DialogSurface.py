@@ -35,6 +35,9 @@ class DialogSurface:
 		self.bg.render(screen, images, rc)
 		self.render_real(screen, images)
 	
+	def render_cursor(self, type, item, screen, images):
+		render_cursor('pointy', None, screen, images)
+	
 	def render_real(self, screen, images):
 		text = self.data
 		height = $list_length(text) * 15 + 35

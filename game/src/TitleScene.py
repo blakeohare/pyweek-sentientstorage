@@ -30,7 +30,9 @@ class TitleScene:
 			self.next = PixelTransitionScene(self, None)
 		
 	
-	def render(self, screen, images, rc):
+	def render(self, screen, images, rc, is_primary):
 		#$screen_fill(screen, 0, 50, 100)
 		$image_blit(screen, images['menus/title'], 0, 0)
+		if is_primary:
+			render_cursor('pointy', None, screen, images)
 		

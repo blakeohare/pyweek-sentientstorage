@@ -45,6 +45,22 @@ class WalkingSurface:
 	def render(self, screen, images, rc):
 		self.area.render(screen, images, rc, self.block_show, self.look_show)
 	
+	def render_cursor(self, cursor_mode, active_item, screen, images):
+		if cursor_mode == CURSOR_WALK:
+			render_cursor('walky', None, screen, images)
+		elif cursor_mode == CURSOR_LOOK:
+			render_cursor('looky', None, screen, images)
+		elif cursor_mode == CURSOR_HAND:
+			render_cursor('touchy', None, screen, images)
+		elif cursor_mode == CURSOR_TALK:
+			render_cursor('talky', None, screen, images)
+		elif cursor_mode == CURSOR_ITEM:
+			# TODO: show the item
+			render_cursor('pointy', None, screen, images)
+		else:
+			render_cursor('pointy', active_item, screen, images)
+			
+	
 	def switch_area(self, target_area):
 		new_area = Area(target_area)
 		self.log.set_string('current_area', target_area)

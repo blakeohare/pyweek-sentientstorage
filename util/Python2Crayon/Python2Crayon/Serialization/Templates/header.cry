@@ -9,6 +9,12 @@ class Event {
 	}
 }
 
+_current_mouse_position = [0, 0]
+
+function get_mouse_position() {
+	return _current_mouse_position;
+}
+
 class SceneProxy : SceneBase {
 	constructor() : base() {
 		this.active_scene = new %%%START_SCENE%%%();
@@ -28,7 +34,11 @@ class SceneProxy : SceneBase {
 			for (i = 0; i < events.length; ++i) {
 				ev = events[i];
 				if (ev[0] == 'mousemove') {
-					modified_events.add(new Event('mousemove', null, ev[1], ev[2]));
+					x = ev[1];
+					y = ev[2];
+					_current_mouse_position[0] = x;
+					_current_mouse_position[1] = y;
+					modified_events.add(new Event('mousemove', null, x, y));
 				} else if (ev[0] == 'key') {
 					key = ev[2];
 					if (ev[1]) {
@@ -55,7 +65,7 @@ class SceneProxy : SceneBase {
 
 	function render() {
 		if (this.active_scene != null) {
-			this.active_scene.render(null, this.image_library, this.rc);
+			this.active_scene.render(null, this.image_library, this.rc, true);
 			this.rc += 1;
 			this.active_scene = this.active_scene.next;
 		}

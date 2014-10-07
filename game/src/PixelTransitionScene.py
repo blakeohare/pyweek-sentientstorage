@@ -26,15 +26,15 @@ class PixelTransitionScene:
 			self.next = None
 			
 	
-	def render(self, screen, images, rc):
+	def render(self, screen, images, rc, is_primary):
 		$screen_fill(screen, 0, 0, 0)
 		mid = $int(TRANSITION_DURATION / 2)
 		if self.counter < mid:
 			progress = 1.0 * self.counter / mid
-			self.from_scene.render(screen, images, rc)
+			self.from_scene.render(screen, images, rc, False)
 		elif self.to_scene != None:
 			progress = 1.0 - 1.0 * (self.counter - mid) / mid
-			self.to_scene.render(screen, images, rc)
+			self.to_scene.render(screen, images, rc, False)
 		else:
 			return
 			
@@ -45,6 +45,8 @@ class PixelTransitionScene:
 		for i in range(num):
 			pos = pixels[i]
 			$draw_rectangle(screen, pos[0], pos[1], 4, 4, 0, 0, 0)
+		
+		render_cursor('waity', None, screen, images)
 		
 	
 		
