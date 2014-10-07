@@ -15,8 +15,11 @@ class PlayScene:
 	def update(self, events):
 		actions = []
 		for ev in events:
-			
-			if ev.type == 'mouseleftdown' or ev.type == 'mouserightdown':
+			if ev.type == 'keydown':
+				if ev.key == 'c':
+					if self.canvas.type == 'WalkingSurface':
+						self.canvas.toggle_block_show()
+			elif ev.type == 'mouseleftdown' or ev.type == 'mouserightdown':
 				x = ev.x
 				y = ev.y
 				if y < 208:
