@@ -1,18 +1,21 @@
 TEXT_BG = (200, 200, 230)
 
 class DialogSurface:
-	def __init__(self, data, previous_surface):
+	def __init__(self, data, previous_surface, post_dialog_handler):
 		self.type = 'DialogSurface'
 		self.bg = previous_surface
 		self.data = data
 		self.next = self
 		self.ok = None
+		self.pdh = post_dialog_handler
 	
 	def click(self, x, y):
 		if self.ok != None:
 			if x > self.ok[0] and x < self.ok[2] and y > self.ok[1] and y < self.ok[3]:
 				self.next = self.bg
 				self.bg.next = self.bg
+				if self.pdh != None:
+					self.pdh(self.bg)
 	
 	def click_walk(self, x, y):
 		self.click(x, y)

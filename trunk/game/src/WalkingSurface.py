@@ -1,6 +1,7 @@
 class WalkingSurface:
 	def __init__(self, area_id, game_log):
 		self.type = 'WalkingSurface'
+		self.log = game_log
 		self.area = Area(area_id)
 		from_area = game_log.get_string('current_area', None)
 		game_log.set_string('current_area', area_id)
@@ -14,12 +15,16 @@ class WalkingSurface:
 		self.player.set_waypoint(x, y)
 	
 	def click_hand(self, x, y):
-		$print('touch ' + $str(x) + ', ' + $str(y))
+		region = self.area.get_region_id(x, y)
+		if region != None:
+			perform_touchy(self, self.area, region, self.log)
 	
 	def click_look(self, x, y):
-		look_data = self.area.get_look_data(x, y)
-		if look_data != None:
-			self.next = DialogSurface(look_data[0], self)
+		region = self.area.get_region_id(x, y)
+		if region != None:
+			look_data = self.area.get_look_data(region)
+			if look_data != None:
+				self.invoke_dialog(look_data[0], None)
 	
 	def click_talk(self, x, y):
 		$print('talk to ' + $str(x) + ', ' + $str(y))
@@ -39,3 +44,15 @@ class WalkingSurface:
 	
 	def render(self, screen, images, rc):
 		self.area.render(screen, images, rc, self.block_show, self.look_show)
+	
+	def switch_area(self, target_area):
+		new_area = Area(target_area)
+		self.log.set_string('current_area', target_area)
+		self.player = new_area.initialize_player(self.area.id)
+		self.counter = 0
+		self.area = new_area
+	
+	def invoke_dialog(self, text, post_dialog_handler):
+		self.next = DialogSurface(text, self, post_dialog_handler)
+		
+	
