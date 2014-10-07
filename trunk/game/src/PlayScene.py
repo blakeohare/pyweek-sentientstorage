@@ -14,11 +14,14 @@ class PlayScene:
 	
 	def update(self, events):
 		actions = []
+		next_scene = None
 		for ev in events:
 			if ev.type == 'keydown':
-				if ev.key == 'c':
-					if self.canvas.type == 'WalkingSurface':
+				if self.canvas.type == 'WalkingSurface':
+					if ev.key == 'c':
 						self.canvas.toggle_block_show()
+					elif ev.key == 'l':
+						self.canvas.toggle_look_show()
 			elif ev.type == 'mouseleftdown' or ev.type == 'mouserightdown':
 				x = ev.x
 				y = ev.y
@@ -26,7 +29,7 @@ class PlayScene:
 					if self.cursor == CURSOR_WALK or ev.type == 'mouserightdown':
 						self.canvas.click_walk(x, y)
 					elif self.cursor == CURSOR_LOOK:
-						self.canvas.click_look(x, y)
+						self.canvas.click_look(x, y, self)
 					elif self.cursor == CURSOR_HAND:
 						self.canvas.click_hand(x, y)
 					elif self.cursor == CURSOR_TALK:
@@ -59,6 +62,10 @@ class PlayScene:
 						self.invoke_options()
 							
 		self.canvas.update()
+		next_scene = self.canvas.next_scene
+		if next_scene != None:
+			self.canvas.next_scene = None
+			self.next = next_scene
 	
 	def invoke_inventory(self):
 		# TODO: set self.active_item to a string

@@ -10,3 +10,7 @@ BLOCK: 157, 176, 96, 999
 BLOCK: 74, 185, 180, 999
 BLOCK: 72, 0, 999, 127
 BLOCK: 212, 146, 36, 999
+
+LOOK_ID: trains: 50, 152, 74, 52
+LOOK_ID: trains: 82, 135, 33, 22
+LOOK_DEF: trains: A box labelled "trains" is slightly|open in the corner of|the attic.
