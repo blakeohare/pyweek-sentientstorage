@@ -4,12 +4,9 @@ LAYER_DATA: bg2: backgrounds/attic-2, 9999
 
 START: 315, 199
 
-BLOCK: 0, 0, 80, 208
-BLOCK: 69, 175, 54, 999
-BLOCK: 157, 176, 96, 999
-BLOCK: 74, 185, 180, 999
-BLOCK: 72, 0, 999, 127
-BLOCK: 212, 146, 36, 999
+BLOCK: 0, 0, 250, 112
+BLOCK: 0, 0, 83, 250
+Block: 0, 100, 150, 100
 
 REGION_ID: train_box: 50, 152, 74, 52
 REGION_ID: train_box: 82, 135, 33, 22
