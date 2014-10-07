@@ -1,3 +1,0 @@
-This is a test
-with multiple lines
-And funny charactesrs \ ' " x
