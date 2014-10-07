@@ -118,13 +118,19 @@ class Area:
 			else:
 				$image_blit(screen, images[self.layer_images[layer_index]], 0, 0)
 				layer_index += 1
+		
 		if rc % 2 == 0:
 			if show_blocks:
 				for block in self.blocks:
 					$draw_rectangle(screen, block[0], block[1], block[2] - block[0], block[3] - block[1], 0, 0, 255)
 			elif show_look:
-				for look in self.look_blocks:
-					$draw_rectangle(screen, look[0], look[1], look[2] - look[0], look[3] - look[1], 0, 255, 0)
+				for region in self.region_ids:
+					left = region[0]
+					width = region[2] - region[0]
+					top = region[1]
+					height = region[3] - region[1]
+					$draw_rectangle(screen, left, top, width, height, 0, 128, 0)
+					$draw_rectangle(screen, left + 1, top + 1, width - 2, height - 2, 0, 255, 0)
 	
 	def sort_sprites(self):
 		new_list = []
