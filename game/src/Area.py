@@ -6,11 +6,11 @@ class Area:
 		self.sprites_by_layers = None
 		self.parse_level_file(name)
 	
-	def initialize_player(self, fromArea):
-		if fromArea == None:
+	def initialize_player(self, from_area):
+		if from_area == None:
 			coords = self.start_point
 		else:
-			pass # TODO: this
+			coords = self.start_froms[from_area]
 		
 		player = Sprite('player', coords[0], coords[1])
 		$list_add(self.sprites, player)
@@ -22,10 +22,11 @@ class Area:
 		backgrounds_by_id = {}
 		background_ids = []
 		blocks = []
-		look_block_to_id = []
+		region_ids = []
 		look_data = {}
 		self.layer_images = []
 		self.layer_y = []
+		start_froms = {}
 		start = (0, 0)
 		for row in rows:
 			trow = $string_trim(row)
@@ -46,6 +47,12 @@ class Area:
 					x = $parse_int($string_trim(data[0]))
 					y = $parse_int($string_trim(data[1]))
 					start = (x, y)
+				elif key == 'STARTFROM':
+					from_area = $string_trim(parts[1])
+					coords = $string_split(parts[2], ',')
+					x = $parse_int($string_trim(coords[0]))
+					y = $parse_int($string_trim(coords[1]))
+					start_froms[from_area] = (x, y)
 				elif key == 'BLOCK':
 					data = $string_split(parts[1], ',')
 					x = $parse_int($string_trim(data[0]))
@@ -53,21 +60,21 @@ class Area:
 					width = $parse_int($string_trim(data[2]))
 					height = $parse_int($string_trim(data[3]))
 					$list_add(blocks, (x, y, x + width, y + height))
-				elif key == 'LOOK_ID':
-					look_id = $string_trim(parts[1])
+				elif key == 'REGION_ID':
+					region_id = $string_trim(parts[1])
 					coords = $string_split(parts[2], ',')
 					x = $parse_int($string_trim(coords[0]))
 					y = $parse_int($string_trim(coords[1]))
 					width = $parse_int($string_trim(coords[2]))
 					height = $parse_int($string_trim(coords[3]))
-					$list_add(look_block_to_id, (x, y, width + x, height + y, look_id))
-				elif key == 'LOOK_DEF':
-					look_id = $string_trim(parts[1])
+					$list_add(region_ids, (x, y, width + x, height + y, region_id))
+				elif key == 'LOOKY':
+					region_id = $string_trim(parts[1])
 					sentence = parts[2]
 					for i in range(3, $list_length(parts)):
 						sentence += ':' + parts[i]
 					sentence = $string_split($string_trim(sentence), '|')
-					look_data[look_id] = (sentence, None)
+					look_data[region_id] = (sentence, None)
 		
 		for bgid in background_ids:
 			bg_data = backgrounds_by_id[bgid]
@@ -75,8 +82,9 @@ class Area:
 			$list_add(self.layer_y, bg_data[1])
 		
 		self.start_point = start
+		self.start_froms = start_froms
 		self.blocks = blocks
-		self.look_blocks = look_block_to_id
+		self.region_ids = region_ids
 		self.look_data = look_data
 	
 	def update(self, counter):
@@ -126,17 +134,14 @@ class Area:
 		$list_shuffle(new_list)
 		return self.qsort(new_list)
 	
-	def get_look_data(self, x, y):
-		id = None
-		for look in self.look_blocks:
-			if x < look[2] and x > look[0] and y > look[1] and y < look[3]:
-				id = look[4]
-				break
-		
-		if id != None:
-			output = $dictionary_get_with_default(self.look_data, id, None)
-			return output
+	def get_region_id(self, x, y):
+		for region in self.region_ids:
+			if x < region[2] and x > region[0] and y > region[1] and y < region[3]:
+				return region[4]
 		return None
+		
+	def get_look_data(self, region_id):
+		return $dictionary_get_with_default(self.look_data, region_id, None)
 	
 	def is_passable(self, x, y):
 		for block in self.blocks:
