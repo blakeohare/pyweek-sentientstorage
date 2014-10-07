@@ -9,7 +9,7 @@ class Event {
 	}
 }
 
-_current_mouse_position = [0, 0]
+_current_mouse_position = [0, 0];
 
 function get_mouse_position() {
 	return _current_mouse_position;
