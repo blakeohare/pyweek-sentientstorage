@@ -5,9 +5,4 @@ STARTFROM: legos1: 250, 180
 
 BLOCK: 0, 0, 80, 208
 
-DOOR: legos2: 0, 155, 27, 48
-
-#REGION_ID: train_box: 50, 152, 74, 52
-#REGION_ID: train_box: 82, 135, 33, 22
-#LOOKY: train_box: A box labelled "trains" is slightly|open in the corner of|the attic.
-
+DOOR: legos1: 310, 86, 999, 999

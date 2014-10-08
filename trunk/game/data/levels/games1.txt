@@ -1,5 +1,5 @@
 LAYERS: bg1
-LAYER_DATA: bg1: backgrounds/draft_games1-1, -999999
+LAYER_DATA: bg1: backgrounds/games1-1, -999999
 
 STARTFROM: attic: 100, 180
 
