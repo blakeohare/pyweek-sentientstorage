@@ -13,6 +13,8 @@ class Area:
 			coords = self.start_froms[from_area]
 		
 		player = Sprite('player', coords[0], coords[1])
+		if self.scale == 'half':
+			player.half = True
 		$list_add(self.sprites, player)
 		self.player = player
 		return player
@@ -30,6 +32,7 @@ class Area:
 		start_froms = {}
 		start = (0, 0)
 		doors = []
+		scale = 'full'
 		teleporter = None
 		for row in rows:
 			trow = $string_trim(row)
@@ -91,6 +94,10 @@ class Area:
 					x = $parse_int($string_trim(coords[0]))
 					y = $parse_int($string_trim(coords[1]))
 					teleporter = (x, y)
+				elif key == 'SCALE':
+					value = $string_trim($string_lower(parts[1]))
+					if value == 'full' or value == 'half':
+						scale = value
 		
 		for bgid in background_ids:
 			bg_data = backgrounds_by_id[bgid]
@@ -104,6 +111,7 @@ class Area:
 		self.look_data = look_data
 		self.doors = doors
 		self.teleporter = teleporter
+		self.scale = scale
 		if teleporter != None:
 			$list_add(self.sprites, Sprite('teleporter', teleporter[0], teleporter[1]))
 	

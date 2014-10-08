@@ -9,6 +9,7 @@ class Sprite:
 		self.v = 2.0
 		self.last_direction = 's'
 		self.dead = False
+		self.half = False
 		self.renderer = None
 	
 	def update(self, area):
@@ -49,15 +50,25 @@ class Sprite:
 	def render(self, screen, images, rc):
 		if self.renderer == None:
 			if self.type == 'player':
-				self.renderer = sr_player_big
+				if self.half:
+					self.renderer = sr_player_half
+				else:
+					self.renderer = sr_player_full
 			elif self.type == 'teleporter':
 				self.renderer = sr_teleporter
 		
 		self.renderer(self, screen, images, rc)
 		
 
-def sr_player_big(sprite, screen, images, rc):
-	$draw_rectangle(screen, sprite.x - 16, sprite.y - 64, 32, 64, 0, 255, 0)
+def sr_player_full(sprite, screen, images, rc):
+	x = sprite.x - 16
+	y = sprite.y - 64
+	$image_blit(screen, images['sprites/mc/s0_alt'], x, y)
+
+def sr_player_half(sprite, screen, images, rc):
+	x = sprite.x - 8
+	y = sprite.y - 32
+	$image_blit(screen, images['sprites/mc_half/s0_alt'], x, y)
 
 def sr_teleporter(sprite, screen, images, rc):
 	key = 'teleporter/frame' + $str($int(rc / 5) % 3 + 1)
