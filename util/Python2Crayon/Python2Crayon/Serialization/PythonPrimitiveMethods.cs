@@ -74,6 +74,32 @@ namespace Python2Crayon.Serialization
 			output.Add("))");
 		}
 
+		protected override void X_DrawTriangle(List<string> output, Expression screen, Expression x1, Expression y1, Expression x2, Expression y2, Expression x3, Expression y3, Expression red, Expression green, Expression blue)
+		{
+			output.Add("pygame.draw.polygon(");
+			SerializeExpression(output, screen);
+			output.Add(", (");
+			SerializeExpression(output, red);
+			output.Add(", ");
+			SerializeExpression(output, green);
+			output.Add(", ");
+			SerializeExpression(output, blue);
+			output.Add("), ((");
+			SerializeExpression(output, x1);
+			output.Add(", ");
+			SerializeExpression(output, y1);
+			output.Add("), (");
+			SerializeExpression(output, x2);
+			output.Add(", ");
+			SerializeExpression(output, y2);
+			output.Add("), (");
+			SerializeExpression(output, x3);
+			output.Add(", ");
+			SerializeExpression(output, y3);
+			output.Add(")))");
+
+		}
+
 		protected override void X_ImageBlit(List<string> output, Expression screen, Expression image, Expression x, Expression y)
 		{
 			SerializeExpression(output, screen);
