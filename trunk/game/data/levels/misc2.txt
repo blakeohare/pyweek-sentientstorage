@@ -1,0 +1,36 @@
+LAYERS: bg1
+LAYER_DATA: bg1: backgrounds/draft_misc2-1, -999999
+
+REGION_ID: dude: 113, 51, 42, 52
+REGION_ID: shoe: 0, 12, 47, 106
+REGION_ID: shoe :43, 65, 47, 64
+REGION_ID: shack: 42, 9, 62, 80
+REGION_ID: fence: 98, 12, 65, 75
+REGION_ID: fence: 225, 71, 95, 80
+REGION_ID: eggs: 275, 0, 45, 113
+REGION_ID: volcano: 172, 4, 48, 22
+REGION_ID: dinos: 134, 0, 26, 11
+
+STARTFROM: misc1: 85, 181
+STARTFROM: misc3: 183, 122
+# shoe
+BLOCK: 0, 0, 87, 127
+
+# left fence
+BLOCK: 70, 0, 92, 79
+
+# right fence
+BLOCK: 221, 0, 99999, 146
+
+DOOR: misc1: 40, 195, 80, 13
+DOOR: misc3: 154, 60, 83, 29
+
+LOOKY: dude: Dude with a gun
+LOOKY: shoe: oh, that's where that shoe|went.
+LOOKY: shack: guard's shack
+LOOKY: fence: fence with barbed wire
+LOOKY: eggs: it's nice to see all these dinos|all grown up.
+LOOKY: volcano: volcano in the distance
+LOOKY: dinos: flying dinos
+
+
