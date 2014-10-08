@@ -30,6 +30,7 @@ class Area:
 		start_froms = {}
 		start = (0, 0)
 		doors = []
+		teleporter = None
 		for row in rows:
 			trow = $string_trim(row)
 			if $string_length(trow) > 0 and trow[0] != '#':
@@ -85,6 +86,11 @@ class Area:
 					width = $parse_int($string_trim(coords[2]))
 					height = $parse_int($string_trim(coords[3]))
 					$list_add(doors, (x, y, width + x, height + y, goes_to))
+				elif key == 'TELEPORTER':
+					coords = $string_split(parts[1], ',')
+					x = $parse_int($string_trim(coords[0]))
+					y = $parse_int($string_trim(coords[1]))
+					teleporter = (x, y)
 		
 		for bgid in background_ids:
 			bg_data = backgrounds_by_id[bgid]
@@ -97,6 +103,9 @@ class Area:
 		self.region_ids = region_ids
 		self.look_data = look_data
 		self.doors = doors
+		self.teleporter = teleporter
+		if teleporter != None:
+			$list_add(self.sprites, Sprite('teleporter', teleporter[0], teleporter[1]))
 	
 	def update(self, counter, walk_scene):
 		new_sprites = []
@@ -109,6 +118,12 @@ class Area:
 		door_value = self.get_door(self.player.x, self.player.y)
 		if door_value != None:
 			walk_scene.switch_area(door_value)
+			
+		if self.teleporter != None:
+			tele_dx = self.player.x - self.teleporter[0]
+			tele_dy = self.player.y - self.teleporter[1]
+			if tele_dx ** 2 + tele_dy ** 2 < 16 ** 2:
+				walk_scene.switch_area('attic')
 	
 	def get_door(self, x, y):
 		for door in self.doors:

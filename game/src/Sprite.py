@@ -9,6 +9,7 @@ class Sprite:
 		self.v = 2.0
 		self.last_direction = 's'
 		self.dead = False
+		self.renderer = None
 	
 	def update(self, area):
 		if $list_length(self.waypoints) > 0:
@@ -46,4 +47,18 @@ class Sprite:
 		return 's'
 			
 	def render(self, screen, images, rc):
-		$draw_rectangle(screen, self.x - 16, self.y - 64, 32, 64, 0, 255, 0)
+		if self.renderer == None:
+			if self.type == 'player':
+				self.renderer = sr_player_big
+			elif self.type == 'teleporter':
+				self.renderer = sr_teleporter
+		
+		self.renderer(self, screen, images, rc)
+		
+
+def sr_player_big(sprite, screen, images, rc):
+	$draw_rectangle(screen, sprite.x - 16, sprite.y - 64, 32, 64, 0, 255, 0)
+
+def sr_teleporter(sprite, screen, images, rc):
+	img = images['teleporter/frame' + $str($int(rc / 5) % 3 + 1)]
+	$image_blit(screen, img, sprite.x - 16, sprite.y - 64)

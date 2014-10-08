@@ -3,6 +3,11 @@ LAYER_DATA: bg1: backgrounds/attic-1, -999999
 LAYER_DATA: bg2: backgrounds/attic-2, 9999
 
 START: 276, 184
+STARTFROM: games1:  157, 126
+STARTFROM: legos1:  157, 126
+STARTFROM: misc1:   157, 126
+STARTFROM: sports1: 157, 126
+STARTFROM: trains1: 157, 126
 
 BLOCK: 0, 0, 250, 112
 BLOCK: 0, 0, 90, 115
