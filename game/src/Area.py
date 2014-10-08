@@ -14,6 +14,7 @@ class Area:
 		
 		player = Sprite('player', coords[0], coords[1])
 		$list_add(self.sprites, player)
+		self.player = player
 		return player
 	
 	def parse_level_file(self, name):
@@ -28,6 +29,7 @@ class Area:
 		self.layer_y = []
 		start_froms = {}
 		start = (0, 0)
+		doors = []
 		for row in rows:
 			trow = $string_trim(row)
 			if $string_length(trow) > 0 and trow[0] != '#':
@@ -75,6 +77,14 @@ class Area:
 						sentence += ':' + parts[i]
 					sentence = $string_split($string_trim(sentence), '|')
 					look_data[region_id] = (sentence, None)
+				elif key == 'DOOR':
+					goes_to = $string_trim(parts[1])
+					coords = $string_split(parts[2], ',')
+					x = $parse_int($string_trim(coords[0]))
+					y = $parse_int($string_trim(coords[1]))
+					width = $parse_int($string_trim(coords[2]))
+					height = $parse_int($string_trim(coords[3]))
+					$list_add(doors, (x, y, width + x, height + y, goes_to))
 		
 		for bgid in background_ids:
 			bg_data = backgrounds_by_id[bgid]
@@ -86,14 +96,25 @@ class Area:
 		self.blocks = blocks
 		self.region_ids = region_ids
 		self.look_data = look_data
+		self.doors = doors
 	
-	def update(self, counter):
+	def update(self, counter, walk_scene):
 		new_sprites = []
 		for sprite in self.sprites:
 			sprite.update(self)
 			if not sprite.dead:
 				$list_add(new_sprites, sprite)
 		self.sprites = new_sprites
+		
+		door_value = self.get_door(self.player.x, self.player.y)
+		if door_value != None:
+			walk_scene.switch_area(door_value)
+	
+	def get_door(self, x, y):
+		for door in self.doors:
+			if x >= door[0] and x <= door[2] and y >= door[1] and y <= door[3]:
+				return door[4]
+		return None
 	
 	def render(self, screen, images, rc, show_blocks, show_look):
 		sprites = self.sort_sprites()

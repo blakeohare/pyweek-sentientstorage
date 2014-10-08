@@ -33,7 +33,7 @@ class WalkingSurface:
 		$print(item + ' at ' + $str(x) + ', ' + $str(y))
 	
 	def update(self):
-		self.area.update(self.counter)
+		self.area.update(self.counter, self)
 		self.counter += 1
 	
 	def toggle_block_show(self):
