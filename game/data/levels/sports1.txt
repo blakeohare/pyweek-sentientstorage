@@ -1,6 +1,8 @@
 LAYERS: bg1
 LAYER_DATA: bg1: backgrounds/sports1-1, -999999
 
+SCALE: half
+
 STARTFROM: attic: 250, 180
 
 BLOCK: 0, 0, 80, 208

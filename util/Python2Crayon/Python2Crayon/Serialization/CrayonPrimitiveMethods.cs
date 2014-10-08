@@ -193,7 +193,8 @@ namespace Python2Crayon.Serialization
 
 		protected override void X_StringLower(List<string> output, ParseTree.Expression str)
 		{
-			throw new NotImplementedException();
+			SerializeExpression(output, str);
+			output.Add(".lower()");
 		}
 
 		protected override void X_StringSplit(List<string> output, ParseTree.Expression str, ParseTree.Expression sep)
