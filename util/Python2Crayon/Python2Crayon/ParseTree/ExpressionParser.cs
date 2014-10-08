@@ -492,9 +492,6 @@ namespace Python2Crayon.ParseTree
 				next[0] == '_')
 			{
 				Token token = tokens.Pop();
-				if (token.Value == "squeedly_spooch")
-				{
-				}
 				return new Variable(token, token.Value);
 			}
 			else
