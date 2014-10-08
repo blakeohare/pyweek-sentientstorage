@@ -2,8 +2,12 @@ LAYERS: bg1
 LAYER_DATA: bg1: backgrounds/legos1-1, -999999
 
 STARTFROM: attic: 250, 180
+STARTFROM: legos2: 41, 197
+#BLOCK: 0, 0, 80, 208
 
-BLOCK: 0, 0, 80, 208
+DOOR: legos2: 0, 155, 27, 48
+
+TELEPORTER: 281, 199
 
 #REGION_ID: train_box: 50, 152, 74, 52
 #REGION_ID: train_box: 82, 135, 33, 22
