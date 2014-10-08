@@ -2,12 +2,8 @@ LAYERS: bg1
 LAYER_DATA: bg1: backgrounds/trains1-1, -999999
 
 STARTFROM: attic: 100, 180
+STARTFROM: trains2: 10, 10
 
-BLOCK: 0, 0, 80, 208
+DOOR: trains2: 0, 203, 5, 5
 
 TELEPORTER: 285, 147
-
-#REGION_ID: train_box: 50, 152, 74, 52
-#REGION_ID: train_box: 82, 135, 33, 22
-#LOOKY: train_box: A box labelled "trains" is slightly|open in the corner of|the attic.
-

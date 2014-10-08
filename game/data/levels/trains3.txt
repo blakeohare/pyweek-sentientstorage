@@ -1,0 +1,6 @@
+LAYERS: bg1
+LAYER_DATA: bg1: backgrounds/trains3-1, -999999
+
+STARTFROM: trains2: 209, 116
+
+DOOR: trains2: 217, 82, 15, 42
