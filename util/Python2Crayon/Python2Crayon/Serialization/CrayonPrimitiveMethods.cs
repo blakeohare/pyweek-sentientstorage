@@ -180,9 +180,9 @@ namespace Python2Crayon.Serialization
 
 		protected override void X_Str(List<string> output, Expression value)
 		{
-			output.Add("('' + ");
+			output.Add("('' + (");
 			SerializeExpression(output, value);
-			output.Add(")");
+			output.Add("))");
 		}
 
 		protected override void X_StringLength(List<string> output, ParseTree.Expression str)
