@@ -44,12 +44,11 @@ REGION_ID: games_box: 34, 96, 41, 25
 REGION_ID: train_box: 20, 148, 100, 53
 REGION_ID: train_box: 47, 132, 72, 18
 REGION_ID: basketball: 54, 47, 17, 26
-LOOKY: train_box: A box labelled "trains" is slightly|open in the corner of|the attic.
+LOOKY: train_box: You like trains.
 LOOKY: kozy_koupe: Vroom vroom
 LOOKY: saturnalia_box: mom was kind of weird
-LOOKY: sports_box: sportsball!
-LOOKY: misc_box: misc box
-LOOKY: lego_box: legooooo!!!1
+LOOKY: sports_box: Lots of memories playing games with your parents here, though in some cases you had to get creative, like for three person football.
+LOOKY: misc_box: All the odds and ends that don’t really have a place, but you couldn’t bear to get rid of either. 
+LOOKY: lego_box: These got banished to the attic after the extremely unfortunate Stairwell Caper of ‘97; Aunt Edna’s Pomeranian, what was left of it, is buried somewhere in your backyard, and she still walks with a limp and refuses to speak to you.
 LOOKY: games_box: gyaaaaames!
-LOOKY: basketball: It's happy!|It's fun!|It's Happy Fun Ball(TM)!
-
+LOOKY: basketball: You’re not even sure why this is up here; you always hated basketball, ever since Susie Halford beat the snot out of you on the court in the 7th grade. Girl was 5’2” but had a mean right elbow she knew just when to use, and you ended up puking in front of the cheerleaders.
