@@ -7,3 +7,5 @@ STARTFROM: trains2: 10, 10
 DOOR: trains2: 0, 203, 5, 5
 
 TELEPORTER: 285, 147
+
+BLOCK: 0, 0, 50, 80, TL

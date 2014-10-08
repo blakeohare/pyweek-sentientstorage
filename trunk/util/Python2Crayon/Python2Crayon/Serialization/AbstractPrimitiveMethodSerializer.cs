@@ -74,6 +74,7 @@ namespace Python2Crayon.Serialization
 
 		protected abstract void X_DrawEllipse(List<string> output, ParseTree.Expression screen, ParseTree.Expression left, ParseTree.Expression top, ParseTree.Expression width, ParseTree.Expression height, ParseTree.Expression red, ParseTree.Expression green, ParseTree.Expression blue);
 		protected abstract void X_DrawRectangle(List<string> output, Expression screen, Expression left, Expression top, Expression width, Expression height, Expression red, Expression green, Expression blue);
+		protected abstract void X_DrawTriangle(List<string> output, Expression screen, Expression x1, Expression y1, Expression x2, Expression y2, Expression x3, Expression y3, Expression red, Expression green, Expression blue);
 		
 		protected abstract void X_ImageBlit(List<string> output, Expression screen, Expression image, Expression x, Expression y);
 		protected abstract void X_ImageHeight(List<string> output, Expression image);

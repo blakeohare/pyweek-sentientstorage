@@ -65,7 +65,10 @@ class Area:
 					y = $parse_int($string_trim(data[1]))
 					width = $parse_int($string_trim(data[2]))
 					height = $parse_int($string_trim(data[3]))
-					$list_add(blocks, (x, y, x + width, y + height))
+					triangle_direction = None
+					if $list_length(data) > 4:
+						triangle_direction = $string_trim($string_upper(data[4]))
+					$list_add(blocks, (x, y, x + width, y + height, triangle_direction))
 				elif key == 'REGION_ID':
 					region_id = $string_trim(parts[1])
 					coords = $string_split(parts[2], ',')
@@ -166,7 +169,27 @@ class Area:
 		if rc % 2 == 0:
 			if show_blocks:
 				for block in self.blocks:
-					$draw_rectangle(screen, block[0], block[1], block[2] - block[0], block[3] - block[1], 0, 0, 255)
+					tri = block[4]
+					x = block[0]
+					y = block[1]
+					top = y
+					left = x
+					width = block[2] - block[0]
+					height = block[3] - block[1]
+					right = x + width
+					bottom = y + height
+					
+					if tri == None:
+						$draw_rectangle(screen, x, y, width, height, 0, 0, 255)
+					elif tri == 'TL':
+						$draw_triangle(screen, x, y, x, bottom, right, y, 0, 0, 255)
+					elif tri == 'TR':
+						$draw_triangle(screen, left, top, right, top, right, bottom, 0, 0, 255)
+					elif tri == 'BL':
+						$draw_triangle(screen, left, top, left, bottom, right, bottom, 0, 0, 255)
+					elif tri == 'BR':
+						$draw_triangle(screen, left, bottom, right, bottom, right, top, 0, 0, 255)
+						
 			elif show_look:
 				for region in self.region_ids:
 					left = region[0]
@@ -196,7 +219,26 @@ class Area:
 	def is_passable(self, x, y):
 		for block in self.blocks:
 			if y <= block[3] and y >= block[1] and x >= block[0] and x <= block[2]:
-				return False
+				tri = block[4]
+				if tri == None: return False
+				# check triangles
+				w = block[2] - block[0]
+				h = block[3] - block[1]
+				px = 1.0 * (x - block[0]) / w
+				py = 1.0 * (y - block[1]) / h
+				
+				if tri == 'TL':
+					if px + py <= 1: return False
+				elif tri == 'TR':
+					px = 1.0 - px
+					if px + py <= 1: return False
+				elif tri == 'BR':
+					if px + py >= 1: return False
+				elif tri == 'BL':
+					px = 1.0 - px
+					if px + py >= 1: return False
+					
+				
 		return True
 	
 	def qsort(self, items):
