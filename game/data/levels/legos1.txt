@@ -1,5 +1,5 @@
 LAYERS: bg1
-LAYER_DATA: bg1: backgrounds/draft_legos1-1, -999999
+LAYER_DATA: bg1: backgrounds/legos1-1, -999999
 
 STARTFROM: attic: 250, 180
 
