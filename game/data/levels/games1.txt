@@ -2,6 +2,9 @@ LAYERS: bg1
 LAYER_DATA: bg1: backgrounds/games1-1, -999999
 
 STARTFROM: attic: 100, 180
+STARTFROM: games2: 112, 42
+
+DOOR: games2: 82, 0, 109, 23
 
 BLOCK: 0, 0, 80, 208
 
