@@ -60,5 +60,6 @@ def sr_player_big(sprite, screen, images, rc):
 	$draw_rectangle(screen, sprite.x - 16, sprite.y - 64, 32, 64, 0, 255, 0)
 
 def sr_teleporter(sprite, screen, images, rc):
-	img = images['teleporter/frame' + $str($int(rc / 5) % 3 + 1)]
+	key = 'teleporter/frame' + $str(($int(rc / 5) % 3 + 1))
+	img = images[key]
 	$image_blit(screen, img, sprite.x - 16, sprite.y - 64)
