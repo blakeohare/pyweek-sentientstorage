@@ -1,0 +1,10 @@
+LAYERS: bg1
+LAYER_DATA: bg1: backgrounds/misc3-1, -999999
+
+STARTFROM: misc2: 249, 183
+STARTFROM: misc4: 198, 93
+
+DOOR: misc2: 197, 193, 76, 9999
+DOOR: misc4: 199, 51, 40, 22
+
+
