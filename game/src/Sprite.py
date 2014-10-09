@@ -50,15 +50,21 @@ class Sprite:
 	def render(self, screen, images, rc):
 		if self.renderer == None:
 			if self.type == 'player':
-				if self.half:
+				if self.scale == 'half':
 					self.renderer = sr_player_half
+				elif self.scale == 'double':
+					self.renderer = sr_player_double
 				else:
 					self.renderer = sr_player_full
 			elif self.type == 'teleporter':
 				self.renderer = sr_teleporter
 		
 		self.renderer(self, screen, images, rc)
-		
+
+def sr_player_double(sprite, screen, images, rc):
+	x = sprite.x - 24
+	y = sprite.y - 96
+	$image_blit(screen, images['sprites/mc_double/s0_alt'], x, y)
 
 def sr_player_full(sprite, screen, images, rc):
 	x = sprite.x - 16
