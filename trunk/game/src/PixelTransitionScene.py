@@ -1,5 +1,5 @@
 _pixel_transition = []
-TRANSITION_DURATION = 80
+TRANSITION_DURATION = 40
 
 class PixelTransitionScene:
 	def __init__(self, from_scene, to_scene):

@@ -50,33 +50,39 @@ class Sprite:
 	def render(self, screen, images, rc):
 		if self.renderer == None:
 			if self.type == 'player':
-				if self.scale == 'half':
-					self.renderer = sr_player_half
-				elif self.scale == 'double':
-					self.renderer = sr_player_double
-				else:
-					self.renderer = sr_player_full
-			elif self.type == 'teleporter':
-				self.renderer = sr_teleporter
-		
+				if self.scale == 'half': self.renderer = sr_player_half
+				elif self.scale == 'double': self.renderer = sr_player_double
+				else: self.renderer = sr_player_full
+			elif self.type == 'teleporter': self.renderer = sr_teleporter
+			elif self.type == 'boot': self.renderer = sr_boot
+				
 		self.renderer(self, screen, images, rc)
 
+def draw_image_centered(screen, sprite, img):
+	w = $image_width(img)
+	h = $image_height(img)
+	x = sprite.x - $int(w / 2)
+	y = sprite.y - h
+	$image_blit(screen, img, x, y)
+	sprite.last_width = w
+	sprite.last_height = h
+
+
+
+
+
+def sr_boot(sprite, screen, images, rc):
+	draw_image_centered(screen, sprite, images['icons/boot'])
+
 def sr_player_double(sprite, screen, images, rc):
-	x = sprite.x - 24
-	y = sprite.y - 96
-	$image_blit(screen, images['sprites/mc_double/s0_alt'], x, y)
+	draw_image_centered(screen, sprite, images['sprites/mc_double/s0_alt'])
 
 def sr_player_full(sprite, screen, images, rc):
-	x = sprite.x - 16
-	y = sprite.y - 64
-	$image_blit(screen, images['sprites/mc/s0_alt'], x, y)
+	draw_image_centered(screen, sprite, images['sprites/mc/s0_alt'])
 
 def sr_player_half(sprite, screen, images, rc):
-	x = sprite.x - 8
-	y = sprite.y - 32
-	$image_blit(screen, images['sprites/mc_half/s0_alt'], x, y)
+	draw_image_centered(screen, sprite, images['sprites/mc_half/s0_alt'])
 
 def sr_teleporter(sprite, screen, images, rc):
 	key = 'teleporter/frame' + $str($int(rc / 5) % 3 + 1)
-	img = images[key]
-	$image_blit(screen, img, sprite.x - 16, sprite.y - 64)
+	draw_image_centered(screen, sprite, images[key])
