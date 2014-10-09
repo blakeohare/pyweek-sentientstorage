@@ -13,8 +13,7 @@ class Area:
 			coords = self.start_froms[from_area]
 		
 		player = Sprite('player', coords[0], coords[1])
-		if self.scale == 'half':
-			player.half = True
+		player.scale = self.scale
 		$list_add(self.sprites, player)
 		self.player = player
 		return player
@@ -99,7 +98,7 @@ class Area:
 					teleporter = (x, y)
 				elif key == 'SCALE':
 					value = $string_trim($string_lower(parts[1]))
-					if value == 'full' or value == 'half':
+					if value == 'full' or value == 'half' or value == 'double':
 						scale = value
 		
 		for bgid in background_ids:

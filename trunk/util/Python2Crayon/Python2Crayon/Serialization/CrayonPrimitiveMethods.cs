@@ -72,7 +72,7 @@ namespace Python2Crayon.Serialization
 
 		protected override void X_DrawTriangle(List<string> output, Expression screen, Expression x1, Expression y1, Expression x2, Expression y2, Expression x3, Expression y3, Expression red, Expression green, Expression blue)
 		{
-			// TODO: polygon drawing in Crayon
+			output.Add("CRAYON_BUG_WORKAROUND_BLARG = 12345");
 		}
 
 		protected override void X_ImageBlit(List<string> output, ParseTree.Expression screen, ParseTree.Expression image, ParseTree.Expression x, ParseTree.Expression y)

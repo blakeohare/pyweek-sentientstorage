@@ -8,4 +8,6 @@ for file in os.listdir('mc'):
 	img = pygame.image.load('mc' + os.sep + file)
 	width, height = img.get_size()
 	half_img = pygame.transform.scale(img, (width // 2, height // 2))
+	double_img = pygame.transform.scale(img, (3 * width // 2, 3 * height // 2))
 	pygame.image.save(half_img, 'mc_half' + os.sep + file)
+	pygame.image.save(double_img, 'mc_double' + os.sep + file)
