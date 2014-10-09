@@ -47,33 +47,33 @@ def pt_attic_train_box_swapper(walking_surface, args): walking_surface.switch_ar
 def pt_attic_train_box(walking_surface, area, region_id, game_log):
 	# TODO: only show this once
 	walking_surface.invoke_dialog(
-		["Simon is magically drawn", "into the trains box."],
+		["Alex is magically drawn", "into the trains box."],
 		pt_attic_train_box_swapper, None)
 
 def pt_attic_games_box_swapper(walking_surface, args): walking_surface.switch_area('games1')
 def pt_attic_games_box(walking_surface, area, region_id, game_log):
 	# TODO: only show this once
 	walking_surface.invoke_dialog(
-		["Simon is magically drawn", "into the games box."],
+		["Alex is magically drawn", "into the games box."],
 		pt_attic_games_box_swapper, None)
 
 def pt_attic_legos_box_swapper(walking_surface, args): walking_surface.switch_area('legos1')
 def pt_attic_legos_box(walking_surface, area, region_id, game_log):
 	# TODO: only show this once
 	walking_surface.invoke_dialog(
-		["Simon is magically drawn", "into the legos box."],
+		["Alex is magically drawn", "into the Legos box."],
 		pt_attic_legos_box_swapper, None)
 
 def pt_attic_sports_box_swapper(walking_surface, args): walking_surface.switch_area('sports1')
 def pt_attic_sports_box(walking_surface, area, region_id, game_log):
 	# TODO: only show this once
 	walking_surface.invoke_dialog(
-		["Simon is magically drawn", "into the sports box."],
+		["Alex is magically drawn", "into the sports box."],
 		pt_attic_sports_box_swapper, None)
 
 def pt_attic_misc_box_swapper(walking_surface, args): walking_surface.switch_area('misc1')
 def pt_attic_misc_box(walking_surface, area, region_id, game_log):
 	# TODO: only show this once
 	walking_surface.invoke_dialog(
-		["Simon is magically drawn", "into the misc box."],
+		["Alex is magically drawn", "into the misc box."],
 		pt_attic_misc_box_swapper, None)

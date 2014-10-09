@@ -42,8 +42,6 @@ class Area:
 					expr = expr_parts[0]
 					value = $parse_int(expr_parts[1])
 					current_value = log.get_int(expr, 0)
-					$print('VALUE')
-					$print(current_value)
 					if current_value == value:
 						new_trow = orig_parts[1]
 						for i in range(2, $list_length(orig_parts)):
