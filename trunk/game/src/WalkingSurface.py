@@ -67,9 +67,9 @@ class WalkingSurface:
 			render_cursor('talky', None, screen, images)
 		elif cursor_mode == CURSOR_ITEM:
 			# TODO: show the item
-			render_cursor('pointy', None, screen, images)
-		else:
 			render_cursor('pointy', active_item, screen, images)
+		else:
+			render_cursor('pointy', None, screen, images)
 			
 	
 	def switch_area(self, target_area):
