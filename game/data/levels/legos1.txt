@@ -6,6 +6,15 @@ SCALE: half
 STARTFROM: attic: 250, 180
 STARTFROM: legos2: 41, 197
 #BLOCK: 0, 0, 80, 208
+BLOCK: 111, 126, 132, 45, TL
+#Wall BR
+Block: 71, 169, 48, 22, TL
+#Column BR
+BLOCK: 0, 189, 72, 2
+#Column B
+BLOCK: 220, 131, 65, 43, TR
+#Trees BL
+
 
 DOOR: legos2: 0, 155, 27, 48
 
