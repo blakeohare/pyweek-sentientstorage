@@ -11,10 +11,24 @@ class PlayScene:
 		self.cursor = CURSOR_WALK
 		self.cursor_item = None
 		self.active_item = None
+		self.log = game_log
+		
+		initialize_hacks(self)
 	
 	def update(self, events):
 		actions = []
 		
+		# if it was removed from your inventory it should immediately disappear
+		if self.active_item != None:
+			if self.log.get_int('HAS_' + $string_upper(self.active_item), 0) != 1:
+				self.active_item = None
+		
+		if self.active_item != None and self.cursor == CURSOR_ITEM:
+			self.cursor_item = self.active_item
+		
+		if self.active_item == None:
+			self.cursor_item = None
+			
 		for ev in events:
 			if ev.type == 'keydown':
 				if self.canvas.type == 'WalkingSurface':
@@ -64,8 +78,7 @@ class PlayScene:
 		self.canvas.update()
 	
 	def invoke_inventory(self):
-		# TODO: set self.active_item to a string
-		pass
+		self.next = InventoryOverlay(self)
 	
 	def invoke_options(self):
 		pass
@@ -77,6 +90,8 @@ class PlayScene:
 		$image_blit(screen, images['menus/item'], 32, 208)
 		$image_blit(screen, images['menus/inventory'], 64, 208)
 		$image_blit(screen, images['menus/options'], 288, 208)
+		if self.active_item != None:
+			$image_blit(screen, images['icons/' + self.active_item], 33, 209)
 		
 		if is_primary:
 			self.canvas.render_cursor(self.cursor, self.cursor_item, screen, images)

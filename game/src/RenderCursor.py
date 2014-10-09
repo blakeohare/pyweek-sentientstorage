@@ -10,4 +10,4 @@ def render_cursor(type, item, screen, images):
 		$image_blit(screen, images['cursors/' + type], x, y)
 	
 	if item != None:
-		pass # TODO: render the item
+		$image_blit(screen, images['icons/' + item], x, y)
