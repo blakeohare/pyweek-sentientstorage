@@ -1,6 +1,8 @@
 LAYERS: bg1
 LAYER_DATA: bg1: backgrounds/trains1-1, -999999
 
+SCALE: half
+
 STARTFROM: attic: 100, 180
 STARTFROM: trains2: 10, 10
 

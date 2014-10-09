@@ -1,6 +1,8 @@
 LAYERS: bg1
 LAYER_DATA: bg1: backgrounds/draft_misc2-1, -999999
 
+SCALE: half
+
 REGION_ID: dude: 113, 51, 42, 52
 REGION_ID: shoe: 0, 12, 47, 106
 REGION_ID: shoe :43, 65, 47, 64

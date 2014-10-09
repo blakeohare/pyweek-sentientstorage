@@ -1,6 +1,8 @@
 LAYERS: bg1
 LAYER_DATA: bg1: backgrounds/games2-1, -999999
 
+SCALE: half
+
 STARTFROM: games1: 146, 181
 
 DOOR: games1: 0, 199, 9999, 9999
