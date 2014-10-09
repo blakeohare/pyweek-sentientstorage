@@ -23,6 +23,7 @@ def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 	d = (pdx ** 2 + pdy ** 2) ** .5
 	if area_id == 'misc1':
 		if type == 'boot': pt_misc_take_boot(walking_surface, area, game_log, sprite, d)
+		if type == 'thimble': pt_misc_take_thimble(walking_surface, area, game_log, sprite, d)
 
 def dist_check(walking_surface, sprite, area, required_distance):
 	dx = sprite.x - area.player.x
@@ -33,12 +34,22 @@ def dist_check(walking_surface, sprite, area, required_distance):
 		walking_surface.invoke_dialog(["You're not close enough."], None, None)
 		return False
 
+def pt_misc_take_thimble_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_THIMBLE', 1)
+def pt_misc_take_thimble(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 50):
+		walking_surface.invoke_dialog(
+			["Hmmm...this trashcan looks familiar."],
+			pt_misc_take_thimble_doer, [sprite])
+
 def pt_misc_take_boot_doer(walking_surface, args):
 	sprite = args[0]
 	sprite.dead = True
 	walking_surface.log.set_int('HAS_BOOT', 1)
 def pt_misc_take_boot(walking_surface, area, game_log, sprite, player_distance):
-	if dist_check(walking_surface, sprite, area, 30):
+	if dist_check(walking_surface, sprite, area, 50):
 		walking_surface.invoke_dialog(
 			["He won't miss this", "...probably"],
 			pt_misc_take_boot_doer, [sprite])
