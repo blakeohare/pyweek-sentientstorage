@@ -1,10 +1,10 @@
 class Area:
-	def __init__(self, name):
+	def __init__(self, name, log):
 		self.id = name
 		self.sprites = []
 		self.sorted_sprites = None
 		self.sprites_by_layers = None
-		self.parse_level_file(name)
+		self.parse_level_file(name, log)
 	
 	def initialize_player(self, from_area):
 		if from_area == None:
@@ -18,7 +18,7 @@ class Area:
 		self.player = player
 		return player
 	
-	def parse_level_file(self, name):
+	def parse_level_file(self, name, log):
 		level = read_file('levels/' + name + '.txt')
 		rows = $string_split(level, '\n')
 		backgrounds_by_id = {}
@@ -36,6 +36,21 @@ class Area:
 		for row in rows:
 			trow = $string_trim(row)
 			if $string_length(trow) > 0 and trow[0] != '#':
+				if trow[0] == '<':
+					orig_parts = $string_split(trow, '>')
+					expr_parts = $string_split($string_split(orig_parts[0], '<')[1], ':')
+					expr = expr_parts[0]
+					value = $parse_int(expr_parts[1])
+					current_value = log.get_int(expr, 0)
+					$print('VALUE')
+					$print(current_value)
+					if current_value == value:
+						new_trow = orig_parts[1]
+						for i in range(2, $list_length(orig_parts)):
+							new_trow += '>' + orig_parts[i]
+						trow = new_trow
+					else:
+						trow = 'IGNORE_ME'
 				parts = trow.split(':')
 				key = $string_upper($string_trim(parts[0]))
 				if key == 'LAYERS':
@@ -100,6 +115,12 @@ class Area:
 					value = $string_trim($string_lower(parts[1]))
 					if value == 'full' or value == 'half' or value == 'double':
 						scale = value
+				elif key == 'ADD_SPRITE':
+					data = $string_split(parts[1], ',')
+					type = $string_trim(data[0])
+					x = $parse_int($string_trim(data[1]))
+					y = $parse_int($string_trim(data[2]))
+					$list_add(self.sprites, Sprite(type, x, y))
 		
 		for bgid in background_ids:
 			bg_data = backgrounds_by_id[bgid]

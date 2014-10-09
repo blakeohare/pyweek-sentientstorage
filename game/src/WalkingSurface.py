@@ -2,7 +2,7 @@ class WalkingSurface:
 	def __init__(self, area_id, game_log):
 		self.type = 'WalkingSurface'
 		self.log = game_log
-		self.area = Area(area_id)
+		self.area = Area(area_id, game_log)
 		from_area = game_log.get_string('current_area', None)
 		game_log.set_string('current_area', area_id)
 		self.player = self.area.initialize_player(from_area)
@@ -18,6 +18,17 @@ class WalkingSurface:
 		region = self.area.get_region_id(x, y)
 		if region != None:
 			perform_touchy(self, self.area, region, self.log)
+		else:
+			for sprite in self.area.sprites:
+				if sprite.last_width != None:
+					width = sprite.last_width
+					left = sprite.x - width / 2
+					right = left + width
+					if left < x and right > x:
+						bottom = sprite.y
+						top = bottom - sprite.last_height
+						if y > top and y < bottom:
+							perform_touchy_sprite(self, self.area, sprite, self.log)
 	
 	def click_look(self, x, y):
 		region = self.area.get_region_id(x, y)
@@ -62,13 +73,13 @@ class WalkingSurface:
 			
 	
 	def switch_area(self, target_area):
-		new_area = Area(target_area)
+		new_area = Area(target_area, self.log)
 		self.log.set_string('current_area', target_area)
 		self.player = new_area.initialize_player(self.area.id)
 		self.counter = 0
 		self.area = new_area
 	
-	def invoke_dialog(self, text, post_dialog_handler):
-		self.next = DialogSurface(text, self, post_dialog_handler)
+	def invoke_dialog(self, text, post_dialog_handler, args):
+		self.next = DialogSurface(text, self, post_dialog_handler, args)
 		
 	
