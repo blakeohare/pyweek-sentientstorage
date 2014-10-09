@@ -1,6 +1,8 @@
 LAYERS: bg1
 LAYER_DATA: bg1: backgrounds/games1-1, -999999
 
+SCALE: half
+
 STARTFROM: attic: 100, 180
 STARTFROM: games2: 112, 42
 

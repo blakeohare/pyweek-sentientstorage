@@ -1,6 +1,8 @@
 LAYERS: bg1
 LAYER_DATA: bg1: backgrounds/misc4-1, -999999
 
+SCALE: half
+
 STARTFROM: misc3: 73, 177
 
 DOOR: misc3: 26, 196, 57, 999
