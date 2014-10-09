@@ -56,8 +56,10 @@ class Sprite:
 			else:
 				if self.type == 'bluepin': self.renderer = sr_bluepin
 				elif self.type == 'boot': self.renderer = sr_boot
+				elif self.type == 'bow': self.renderer = sr_bow
 				elif self.type == 'knight1': self.renderer = sr_knight1
 				elif self.type == 'knight2': self.renderer = sr_knight2
+				elif self.type == 'legopog': self.renderer = sr_legopog
 				elif self.type == 'rubberband': self.renderer = sr_rubberband
 				elif self.type == 'teleporter': self.renderer = sr_teleporter
 				elif self.type == 'thimble': self.renderer = sr_thimble
@@ -79,8 +81,10 @@ def draw_image_centered(screen, sprite, img):
 
 def sr_bluepin(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/bluepin'])
 def sr_boot(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/boot'])
+def sr_bow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/bow'])
 def sr_knight1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard0'])
 def sr_knight2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard1'])
+def sr_legopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/pog'])
 def sr_rubberband(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/rubberband_ground'])
 def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])
 

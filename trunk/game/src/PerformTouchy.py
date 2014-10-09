@@ -21,7 +21,10 @@ def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 	pdx = player.x - sprite.x
 	pdy = player.y - sprite.y
 	d = (pdx ** 2 + pdy ** 2) ** .5
-	if area_id == 'legos3':
+	if area_id == 'legos2':
+		if type == 'bow': pt_misc_take_bow(walking_surface, area, game_log, sprite, d)
+		elif type == 'legopog': pt_misc_take_legopog(walking_surface, area, game_log, sprite, d)
+	elif area_id == 'legos3':
 		if type == 'bluepin': pt_misc_take_bluepin(walking_surface, area, game_log, sprite, d)
 	elif area_id == 'misc1':
 		if type == 'boot': pt_misc_take_boot(walking_surface, area, game_log, sprite, d)
@@ -41,6 +44,27 @@ def dist_check(walking_surface, sprite, area, required_distance):
 
 
 
+def pt_misc_take_bow_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_BOW', 1)
+def pt_misc_take_bow(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["With dinosaurs on the loose, one",
+			 "can't be too careful."],
+			pt_misc_take_bow_doer, [sprite])
+
+def pt_misc_take_legopog_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_LEGOPOG', 1)
+def pt_misc_take_legopog(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["This doesn't belong here."],
+			pt_misc_take_legopog_doer, [sprite])
+
 def pt_misc_take_bluepin_doer(walking_surface, args):
 	sprite = args[0]
 	sprite.dead = True
@@ -49,7 +73,7 @@ def pt_misc_take_bluepin(walking_surface, area, game_log, sprite, player_distanc
 	if dist_check(walking_surface, sprite, area, 40):
 		walking_surface.invoke_dialog(
 			["This doesn't belong here."],
-			pt_misc_take_thimble_doer, [sprite])
+			pt_misc_take_bluepin_doer, [sprite])
 
 def pt_misc_take_rubberband_doer(walking_surface, args):
 	sprite = args[0]
@@ -59,7 +83,7 @@ def pt_misc_take_rubberband(walking_surface, area, game_log, sprite, player_dist
 	if dist_check(walking_surface, sprite, area, 50):
 		walking_surface.invoke_dialog(
 			["This could be useful."],
-			pt_misc_take_thimble_doer, [sprite])
+			pt_misc_take_rubberband_doer, [sprite])
 
 def pt_misc_take_thimble_doer(walking_surface, args):
 	sprite = args[0]
