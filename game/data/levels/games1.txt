@@ -9,5 +9,22 @@ STARTFROM: games2: 112, 42
 DOOR: games2: 82, 0, 109, 23
 
 BLOCK: 0, 0, 80, 208
+BLOCK: 171, 51, 89, 31, TR
+#Boxes BL
+BLOCK: 276, 57, 44, 25, TL
+#Boxes BR
+BLOCK: 260, 81, 16, 2
+#Boxes B
+BLOCK: 171, 0, 0, 51
+#Boxes L
+BLOCK: 215, 86, 105, 77, BR
+#Wall T
+BLOCK: 215, 163, 2, 45
+#Wall L
+BLOCK: 0, 198, 320, 2
+#Bottom
+BLOCK: 51, 56, 49, 17, TL
+#Cube BR
+BLOCK: 98, 0, 2, 56
 
 TELEPORTER: 154, 200
