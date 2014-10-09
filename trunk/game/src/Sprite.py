@@ -53,10 +53,13 @@ class Sprite:
 				if self.scale == 'half': self.renderer = sr_player_half
 				elif self.scale == 'double': self.renderer = sr_player_double
 				else: self.renderer = sr_player_full
-			elif self.type == 'teleporter': self.renderer = sr_teleporter
-			elif self.type == 'boot': self.renderer = sr_boot
-			elif self.type == 'thimble': self.renderer = sr_thimble
-			elif self.type == 'rubberband': self.renderer = sr_rubberband
+			else:
+				if self.type == 'boot': self.renderer = sr_boot
+				elif self.type == 'knight1': self.renderer = sr_knight1
+				elif self.type == 'knight2': self.renderer = sr_knight2
+				elif self.type == 'rubberband': self.renderer = sr_rubberband
+				elif self.type == 'teleporter': self.renderer = sr_teleporter
+				elif self.type == 'thimble': self.renderer = sr_thimble
 				
 		self.renderer(self, screen, images, rc)
 
@@ -73,11 +76,11 @@ def draw_image_centered(screen, sprite, img):
 
 
 
-def sr_rubberband(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/rubberband_ground'])
-
-def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])
-
 def sr_boot(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/boot'])
+def sr_knight1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard0'])
+def sr_knight2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard1'])
+def sr_rubberband(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/rubberband_ground'])
+def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])
 
 def sr_player_double(sprite, screen, images, rc):
 	draw_image_centered(screen, sprite, images['sprites/mc_double/s0_alt'])

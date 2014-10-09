@@ -4,7 +4,8 @@ LAYER_DATA: bg1: backgrounds/legos2-1, -999999
 SCALE: half
 
 STARTFROM: legos1: 250, 180
+STARTFROM: legos3: 41, 81
 
-BLOCK: 0, 0, 80, 208
 
 DOOR: legos1: 310, 86, 999, 999
+DOOR: legos3: 33, 23, 20, 50

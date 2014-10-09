@@ -20,7 +20,5 @@ DOOR: legos2: 0, 155, 27, 48
 
 TELEPORTER: 281, 199
 
-#REGION_ID: train_box: 50, 152, 74, 52
-#REGION_ID: train_box: 82, 135, 33, 22
-#LOOKY: train_box: A box labelled "trains" is slightly|open in the corner of|the attic.
-
+ADD_SPRITE: knight1, 137, 85
+ADD_SPRITE: knight2, 200, 83
