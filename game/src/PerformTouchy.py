@@ -21,7 +21,9 @@ def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 	pdx = player.x - sprite.x
 	pdy = player.y - sprite.y
 	d = (pdx ** 2 + pdy ** 2) ** .5
-	if area_id == 'misc1':
+	if area_id == 'legos3':
+		if type == 'bluepin': pt_misc_take_bluepin(walking_surface, area, game_log, sprite, d)
+	elif area_id == 'misc1':
 		if type == 'boot': pt_misc_take_boot(walking_surface, area, game_log, sprite, d)
 		elif type == 'thimble': pt_misc_take_thimble(walking_surface, area, game_log, sprite, d)
 	elif area_id == 'sports1':
@@ -38,6 +40,16 @@ def dist_check(walking_surface, sprite, area, required_distance):
 
 
 
+
+def pt_misc_take_bluepin_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_BLUEPIN', 1)
+def pt_misc_take_bluepin(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["This doesn't belong here."],
+			pt_misc_take_thimble_doer, [sprite])
 
 def pt_misc_take_rubberband_doer(walking_surface, args):
 	sprite = args[0]
