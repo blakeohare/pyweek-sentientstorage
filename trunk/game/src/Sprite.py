@@ -55,6 +55,7 @@ class Sprite:
 				else: self.renderer = sr_player_full
 			elif self.type == 'teleporter': self.renderer = sr_teleporter
 			elif self.type == 'boot': self.renderer = sr_boot
+			elif self.type == 'thimble': self.renderer = sr_thimble
 				
 		self.renderer(self, screen, images, rc)
 
@@ -71,8 +72,9 @@ def draw_image_centered(screen, sprite, img):
 
 
 
-def sr_boot(sprite, screen, images, rc):
-	draw_image_centered(screen, sprite, images['icons/boot'])
+def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])
+
+def sr_boot(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/boot'])
 
 def sr_player_double(sprite, screen, images, rc):
 	draw_image_centered(screen, sprite, images['sprites/mc_double/s0_alt'])
