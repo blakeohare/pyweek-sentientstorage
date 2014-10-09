@@ -35,7 +35,7 @@ class WalkingSurface:
 		if region != None:
 			look_data = self.area.get_look_data(region)
 			if look_data != None:
-				self.invoke_dialog(look_data[0], None)
+				self.invoke_dialog(look_data[0], None, None)
 	
 	def click_talk(self, x, y):
 		$print('talk to ' + $str(x) + ', ' + $str(y))
