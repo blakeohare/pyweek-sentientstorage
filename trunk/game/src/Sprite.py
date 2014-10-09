@@ -56,6 +56,7 @@ class Sprite:
 			elif self.type == 'teleporter': self.renderer = sr_teleporter
 			elif self.type == 'boot': self.renderer = sr_boot
 			elif self.type == 'thimble': self.renderer = sr_thimble
+			elif self.type == 'rubberband': self.renderer = sr_rubberband
 				
 		self.renderer(self, screen, images, rc)
 
@@ -71,6 +72,8 @@ def draw_image_centered(screen, sprite, img):
 
 
 
+
+def sr_rubberband(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/rubberband_ground'])
 
 def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])
 
