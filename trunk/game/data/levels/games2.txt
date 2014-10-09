@@ -6,3 +6,4 @@ SCALE: half
 STARTFROM: games1: 146, 181
 
 DOOR: games1: 0, 199, 9999, 9999
+
