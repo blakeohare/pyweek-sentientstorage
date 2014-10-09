@@ -9,7 +9,4 @@ BLOCK: 0, 0, 80, 208
 
 TELEPORTER: 284, 194
 
-#REGION_ID: train_box: 50, 152, 74, 52
-#REGION_ID: train_box: 82, 135, 33, 22
-#LOOKY: train_box: A box labelled "trains" is slightly|open in the corner of|the attic.
-
+<HAS_RUBBERBAND:0>ADD_SPRITE: rubberband, 275, 34
