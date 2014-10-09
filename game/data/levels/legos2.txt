@@ -6,6 +6,8 @@ SCALE: half
 STARTFROM: legos1: 250, 180
 STARTFROM: legos3: 41, 81
 
-
 DOOR: legos1: 310, 86, 999, 999
 DOOR: legos3: 33, 23, 20, 50
+
+<HAS_BOW:0>ADD_SPRITE: bow, 111, 88
+<HAS_LEGOPOG:0>ADD_SPRITE: legopog, 124, 41
