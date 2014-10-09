@@ -1,0 +1,15 @@
+LAYERS: bg1
+LAYER_DATA: bg1: backgrounds/legos3-1, -999999
+
+SCALE: half
+
+# main entrance
+STARTFROM: legos2: 41, 81
+DOOR: legos2: 99, 98, 18, 23
+
+#spectator box
+#TODO: hack for STARTFROM for yellow door
+DOOR: legos2: 68, 140, 24, 28
+
+
+<HAS_BLUEPIN:0>ADD_SPRITE: bluepin, 148, 70
