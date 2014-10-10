@@ -19,16 +19,10 @@ class WalkingSurface:
 		if region != None:
 			perform_touchy(self, self.area, region, self.log)
 		else:
-			for sprite in self.area.sprites:
-				if sprite.last_width != None:
-					width = sprite.last_width
-					left = sprite.x - width / 2
-					right = left + width
-					if left < x and right > x:
-						bottom = sprite.y
-						top = bottom - sprite.last_height
-						if y > top and y < bottom:
-							perform_touchy_sprite(self, self.area, sprite, self.log)
+			sprite = self.area.get_sprite_at(x, y)
+			if sprite != None:
+				perform_touchy_sprite(self, self.area, sprite, self.log)
+							
 	
 	def click_look(self, x, y):
 		region = self.area.get_region_id(x, y)
@@ -41,7 +35,10 @@ class WalkingSurface:
 		$print('talk to ' + $str(x) + ', ' + $str(y))
 	
 	def click_item(self, x, y, item):
-		$print(item + ' at ' + $str(x) + ', ' + $str(y))
+		if item == None: return
+		region = self.area.get_region_id(x, y)
+		sprite = self.area.get_sprite_at(x, y)
+		apply_item(self, self.area, self.area.id, item, sprite, region)
 	
 	def update(self):
 		self.area.update(self.counter, self)

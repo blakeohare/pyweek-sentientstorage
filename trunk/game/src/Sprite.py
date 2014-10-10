@@ -11,8 +11,16 @@ class Sprite:
 		self.dead = False
 		self.half = False
 		self.renderer = None
+		self.lifetime = 0
+	
+	def specific_update(self, type, area, counter):
+		if type == 'mothercar1' or type == 'mothercar2':
+			self.dx = $math_sin(self.lifetime * 2 * 3.14159 / 100)
+			
 	
 	def update(self, area):
+		self.specific_update(self.type, area, self.lifetime)
+		self.lifetime += 1
 		if $list_length(self.waypoints) > 0:
 			wp = self.waypoints[0]
 			dx = wp[0] - self.x
@@ -44,8 +52,17 @@ class Sprite:
 		$list_add(self.waypoints, (tx, ty))
 	
 	def convert_vector_to_direction(self, dx, dy):
-		# TODO: this
-		return 's'
+		if dx == 0:
+			if dy < 0:
+				return 'n'
+			else:
+				return 's'
+		elif dy == 0:
+			if dx < 0:
+				return 'w'
+			else:
+				return 'e'
+				
 			
 	def render(self, screen, images, rc):
 		if self.renderer == None:
@@ -57,9 +74,12 @@ class Sprite:
 				if self.type == 'bluepin': self.renderer = sr_bluepin
 				elif self.type == 'boot': self.renderer = sr_boot
 				elif self.type == 'bow': self.renderer = sr_bow
+				elif self.type == 'racecar': self.renderer = sr_racecar
 				elif self.type == 'knight1': self.renderer = sr_knight1
 				elif self.type == 'knight2': self.renderer = sr_knight2
 				elif self.type == 'legopog': self.renderer = sr_legopog
+				elif self.type == 'mothercar1': self.renderer = sr_mothercar1
+				elif self.type == 'mothercar2': self.renderer = sr_mothercar2
 				elif self.type == 'rubberband': self.renderer = sr_rubberband
 				elif self.type == 'teleporter': self.renderer = sr_teleporter
 				elif self.type == 'thimble': self.renderer = sr_thimble
@@ -82,11 +102,24 @@ def draw_image_centered(screen, sprite, img):
 def sr_bluepin(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/bluepin'])
 def sr_boot(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/boot'])
 def sr_bow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/bow'])
+def sr_racecar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/racecar'])
 def sr_knight1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard0'])
 def sr_knight2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard1'])
 def sr_legopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/pog'])
 def sr_rubberband(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/rubberband_ground'])
 def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])
+
+def sr_mothercar1(sprite, screen, images, rc):
+	key = 'sprites/mothercar/left1'
+	if sprite.last_direction == 'e':
+		key = 'sprites/mothercar/right1'
+	draw_image_centered(screen, sprite, images[key])
+
+def sr_mothercar2(sprite, screen, images, rc):
+	key = 'sprites/mothercar/left2'
+	if sprite.last_direction == 'e':
+		key = 'sprites/mothercar/right2'
+	draw_image_centered(screen, sprite, images[key])
 
 def sr_player_double(sprite, screen, images, rc):
 	draw_image_centered(screen, sprite, images['sprites/mc_double/s0_alt'])
