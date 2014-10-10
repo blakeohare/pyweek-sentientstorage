@@ -47,6 +47,9 @@ def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 		elif type == 'thimble': pt_misc_take_thimble(walking_surface, area, game_log, sprite, d)
 	elif area_id == 'sports1':
 		if type == 'rubberband': pt_misc_take_rubberband(walking_surface, area, game_log, sprite, d)
+	elif area_id == 'trains1':
+		if type == 'tophat': pt_trains_take_tophat(walking_surface, area, game_log, sprite, d)
+			
 
 def dist_check(walking_surface, sprite, area, required_distance):
 	dx = sprite.x - area.player.x
@@ -75,6 +78,19 @@ def pt_games_take_house(walking_surface, area, game_log, sprite, player_distance
 				 "more trouble than it's worth."],
 				None, None)
 			
+
+
+def pt_trains_take_tophat_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_TOPHAT', 1)
+def pt_trains_take_tophat(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["Alex was always curious whether or",
+			 "not he was capable of stealing a",
+			 "hat from a sleeping person."],
+			pt_trains_take_tophat_doer, [sprite])
 	
 def pt_games_take_battleship_doer(walking_surface, args):
 	sprite = args[0]
