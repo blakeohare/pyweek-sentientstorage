@@ -18,7 +18,7 @@ class WalkingSurface:
 	def click_hand(self, x, y):
 		region = self.area.get_region_id(x, y)
 		if region != None:
-			perform_touchy(self, self.area, region, self.log)
+			perform_touchy(self, self.area, region, self.log, x, y)
 		else:
 			sprite = self.area.get_sprite_at(x, y)
 			if sprite != None:
