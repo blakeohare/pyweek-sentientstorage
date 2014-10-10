@@ -26,14 +26,22 @@ class WalkingSurface:
 							
 	
 	def click_look(self, x, y):
-		region = self.area.get_region_id(x, y)
-		if region != None:
-			look_data = self.area.get_look_data(region)
-			if look_data != None:
-				self.invoke_dialog(look_data[0], None, None)
+		sprite = self.area.get_sprite_at(x, y)
+		hit = False
+		if sprite != None:
+			hit = sprite_looky_talky(self, sprite, True)
+		
+		if not hit:
+			region = self.area.get_region_id(x, y)
+			if region != None:
+				look_data = self.area.get_look_data(region)
+				if look_data != None:
+					self.invoke_dialog(look_data[0], None, None)
 	
 	def click_talk(self, x, y):
-		$print('talk to ' + $str(x) + ', ' + $str(y))
+		sprite = self.area.get_sprite_at(x, y)
+		if sprite != None:
+			sprite_looky_talky(self, sprite, False)
 	
 	def click_item(self, x, y, item):
 		if item == None: return
