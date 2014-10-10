@@ -7,23 +7,36 @@ STARTFROM: attic: 100, 180
 STARTFROM: games2: 112, 42
 
 DOOR: games2: 82, 0, 109, 23
-
-BLOCK: 171, 51, 89, 31, TR
+  
+BLOCK: 171, 51, 89, 36, TR
 #Boxes BL
-BLOCK: 276, 57, 44, 25, TL
+BLOCK: 276, 57, 44, 30, TL
 #Boxes BR
-BLOCK: 260, 81, 16, 2
+BLOCK: 260, 0, 16, 87
 #Boxes B
-BLOCK: 171, 0, 0, 51
+BLOCK: 171, 0, 149, 51
 #Boxes L
+BLOCK: 260, 0, 60, 57
+#Boxes Fill
 BLOCK: 215, 86, 105, 77, BR
 #Wall T
-BLOCK: 215, 163, 2, 45
-
+BLOCK: 215, 163, 105, 45
+#Wall L
+BLOCK: 0, 198, 320, 2
 #Bottom
-BLOCK: 51, 56, 49, 17, TL
+BLOCK: 0, 53, 43, 24, TR
+#Cube BL
+BLOCK: 43, 56, 59, 21, TL
 #Cube BR
-BLOCK: 98, 0, 2, 56
+BLOCK: 0, 0, 102, 56
+#Cube Fill
+BLOCK: 0, 0, 20, 208
+#Left
+BLOCK: 0, 198, 320, 10
+#Bottom
+BLOCK: 300, 0, 20, 208
+#Right
+
 
 <HAS_BLUEPIN:0>ADD_SPRITE:mothercar1, 49, 86
 <HAS_BLUEPIN:1>ADD_SPRITE:mothercar1, 49, 86
