@@ -8,5 +8,5 @@ def initialize_hacks(playscene):
 	#log.set_int('SAW_NIGHTCLUB', 1)
 	#log.set_int('TRAIN_ARRANGE_READY', 1)
 	#log.set_int('TRAIN_RUNNING', 1)
-	log.set_int('TRAIN_FIXED', 1)
-	log.set_int('HAS_TRAINWHEEL', 1)
+	#log.set_int('TRAIN_FIXED', 1)
+	#log.set_int('HAS_TRAINWHEEL', 1)
