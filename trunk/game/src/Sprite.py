@@ -100,6 +100,7 @@ class Sprite:
 					elif self.type == 'rubberband': self.renderer = sr_rubberband
 					elif self.type == 'teleporter': self.renderer = sr_teleporter
 					elif self.type == 'thimble': self.renderer = sr_thimble
+					elif self.type == 'tophat': self.renderer = sr_tophat
 					elif self.type == 'wizard': self.renderer = sr_wizard
 					
 				
@@ -136,6 +137,7 @@ def sr_legopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, 
 def sr_racecar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/racecar'])
 def sr_rubberband(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/rubberband_ground'])
 def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])
+def sr_tophat(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/tophat'])
 def sr_wizard(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/wizard')
 
 def sr_mothercar1(sprite, screen, images, rc):
