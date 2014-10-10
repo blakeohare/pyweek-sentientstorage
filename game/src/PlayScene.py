@@ -49,8 +49,7 @@ class PlayScene:
 					elif self.cursor == CURSOR_TALK:
 						self.canvas.click_talk(x, y)
 					elif self.cursor == CURSOR_ITEM:
-						if self.cursor_item != None:
-							self.canvas.click_item(x, y, self.cursor_item)
+						self.canvas.click_item(x, y, self.cursor_item)
 				elif ev.type == 'mouseleftdown': # and y >= 208
 					y -= 208
 					if x < 32:

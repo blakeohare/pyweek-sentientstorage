@@ -21,7 +21,10 @@ def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 	pdx = player.x - sprite.x
 	pdy = player.y - sprite.y
 	d = (pdx ** 2 + pdy ** 2) ** .5
-	if area_id == 'legos2':
+	if area_id == 'games1':
+		if type == 'racecar':
+			pt_games_take_racecar(walking_surface, area, game_log, sprite, d)
+	elif area_id == 'legos2':
 		if type == 'bow': pt_misc_take_bow(walking_surface, area, game_log, sprite, d)
 		elif type == 'legopog': pt_misc_take_legopog(walking_surface, area, game_log, sprite, d)
 	elif area_id == 'legos3':
@@ -44,6 +47,16 @@ def dist_check(walking_surface, sprite, area, required_distance):
 
 
 
+def pt_games_take_racecar_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_RACECAR', 1)
+def pt_games_take_racecar(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["Alex gracious takes the token."],
+			pt_games_take_racecar_doer, [sprite])
+			
 def pt_misc_take_bow_doer(walking_surface, args):
 	sprite = args[0]
 	sprite.dead = True

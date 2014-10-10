@@ -36,7 +36,7 @@ class Area:
 		for row in rows:
 			trow = $string_trim(row)
 			if $string_length(trow) > 0 and trow[0] != '#':
-				if trow[0] == '<':
+				while $string_length(trow) > 0 and trow[0] == '<':
 					orig_parts = $string_split(trow, '>')
 					expr_parts = $string_split($string_split(orig_parts[0], '<')[1], ':')
 					expr = expr_parts[0]
@@ -153,6 +153,19 @@ class Area:
 			tele_dy = self.player.y - self.teleporter[1]
 			if tele_dx ** 2 + tele_dy ** 2 < 16 ** 2:
 				walk_scene.switch_area('attic')
+	
+	def get_sprite_at(self, x, y):
+		for sprite in self.sprites:
+			if sprite.last_width != None:
+				width = sprite.last_width
+				left = sprite.x - width / 2
+				right = left + width
+				if left < x and right > x:
+					bottom = sprite.y
+					top = bottom - sprite.last_height
+					if y > top and y < bottom:
+						return sprite
+		return None
 	
 	def get_door(self, x, y):
 		for door in self.doors:
