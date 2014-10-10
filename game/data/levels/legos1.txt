@@ -10,10 +10,10 @@ STARTFROM: legos2: 41, 197
 BLOCK: 111, 126, 132, 45, TL
 
 #Column BR
-Block: 71, 169, 48, 22, TL
+Block: 71, 169, 48, 19, TL
 
 #Column B
-BLOCK: 0, 106, 72, 85
+BLOCK: 0, 106, 72, 82
 
 #Column middle right
 BLOCK: 71, 112, 40, 57
@@ -21,6 +21,20 @@ BLOCK: 71, 112, 40, 57
 #Trees BL
 BLOCK: 220, 131, 65, 43, TR
 
+#Trees B
+BLOCK: 285, 131, 35, 43
+
+#Fill
+BLOCK: 0, 0, 320, 126
+
+#FIll2
+BLOCK: 220, 0, 100, 131
+
+#Right
+BLOCK: 300, 0, 20, 208
+
+#Bottom
+BLOCK: 0, 203, 320, 5
 
 DOOR: legos2: 0, 155, 27, 48
 
