@@ -89,7 +89,8 @@ class Sprite:
 					elif self.type == 'boot': self.renderer = sr_boot
 					elif self.type == 'bow': self.renderer = sr_bow
 				else:
-					if self.type == 'hippochoke': self.renderer = sr_hippochoke
+					if self.type == 'conductor': self.renderer = sr_conductor
+					elif self.type == 'hippochoke': self.renderer = sr_hippochoke
 					elif self.type == 'hipposafe': self.renderer = sr_hipposafe
 					elif self.type == 'racecar': self.renderer = sr_racecar
 					elif self.type == 'knight1': self.renderer = sr_knight1
@@ -97,6 +98,9 @@ class Sprite:
 					elif self.type == 'legopog': self.renderer = sr_legopog
 					elif self.type == 'mothercar1': self.renderer = sr_mothercar1
 					elif self.type == 'mothercar2': self.renderer = sr_mothercar2
+					elif self.type == 'passenger1sleeping': self.renderer = sr_passenger1sleeping
+					elif self.type == 'passenger1awake': self.renderer = sr_passenger1awake
+					elif self.type == 'passenger2': self.renderer = sr_passenger2
 					elif self.type == 'rubberband': self.renderer = sr_rubberband
 					elif self.type == 'teleporter': self.renderer = sr_teleporter
 					elif self.type == 'thimble': self.renderer = sr_thimble
@@ -129,11 +133,15 @@ def sr_bballplayer3(sprite, screen, images, rc): draw_image_centered_directional
 def sr_bluepin(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/bluepin'])
 def sr_boot(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/boot'])
 def sr_bow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/bow'])
+def sr_conductor(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/conductor'])
 def sr_hippochoke(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/choking'])
 def sr_hipposafe(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/hippo'])
 def sr_knight1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard0'])
 def sr_knight2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard1'])
 def sr_legopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/pog'])
+def sr_passenger1sleeping(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger1sleeping'])
+def sr_passenger1awake(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger1awake'])
+def sr_passenger2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger2'])
 def sr_racecar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/racecar'])
 def sr_rubberband(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/rubberband_ground'])
 def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])

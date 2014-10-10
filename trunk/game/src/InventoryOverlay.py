@@ -14,6 +14,7 @@ ALL_ITEMS = [
 		'rubberband',
 		'scottie',
 		'thimble',
+		'tophat',
 		'trainpog',
 		'trainwheel',
 		'volcanopog',
