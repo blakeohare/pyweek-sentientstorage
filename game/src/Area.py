@@ -6,6 +6,9 @@ class Area:
 		self.sprites_by_layers = None
 		self.parse_level_file(name, log)
 		
+		self.train_go = False
+		self.train_counter = 0
+		
 		if name == 'trains2':
 			log.set_int('SAW_NIGHTCLUB', 1)
 	
@@ -156,6 +159,18 @@ class Area:
 			tele_dy = self.player.y - self.teleporter[1]
 			if tele_dx ** 2 + tele_dy ** 2 < 16 ** 2:
 				walk_scene.switch_area('attic')
+		
+		if self.train_go:
+			self.train_counter += 1
+			for sprite in self.sprites:
+				if sprite.type == 'enginewithwheel' or sprite.type == 'traincar':
+					sprite.x -= 4
+					sprite.y += 1
+			if self.train_counter >= 50:
+				if self.id == 'trains1':
+					walk_scene.switch_area('trains2')
+				else:
+					walk_scene.switch_area('trains1')
 	
 	def get_sprite_at(self, x, y):
 		for sprite in self.sprites:

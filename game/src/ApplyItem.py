@@ -7,13 +7,49 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 					ai_give_pin_to_mother(walky_surface, sprite, area, log)
 	elif area_id == 'sports1':
 		if sprite != None:
-			if sprite.type  == 'bballplayer1' or sprite.type == 'bballplayer2' or sprite.type == 'bballplayer3':
+			if sprite.type == 'bballplayer1' or sprite.type == 'bballplayer2' or sprite.type == 'bballplayer3':
 				if item == 'ball' or item == 'bat':
 					has_both = log.get_int('HAS_BAT',0) == 2
 					ai_give_ball_to_player(walky_surface, sprite, area, log, item, has_both)
 				elif log.get_int('HAS_WRAPPEDGUM', 0) != 0:
 					if item == 'house' or item == 'volcanopog' or item == 'legopog' or item == 'trainpog':
 						ai_give_base_to_player(walky_surface, sprite, area, log, item)
+	elif area_id == 'trains1':
+		if sprite != None:
+			if sprite.type == 'conductor' or sprite.type == 'enginenowheel':
+				if item == 'trainwheel':
+					ai_give_wheel_to_conductor(walky_surface, area, log)
+
+def ai_train_launch2(scene, args):
+	scene.area.train_go = True
+def ai_train_launch1(scene, args):
+	scene.invoke_dialog([
+		"Please put up all tray tables",
+		"and keep all hands and feet in",
+		"the bus at all times.",
+		"And remember, the closest exit",
+		"may be behind you.",
+		"3...2...1...launch!"
+		], None, None)
+	$list_add(scene.timeouts, [20, ai_train_launch2, []])
+	scene.player.x = 9999
+	for sprite in scene.area.sprites:
+		if sprite.type == 'enginewithwheel' or sprite.type == 'traincar':
+			pass
+		else:
+			sprite.x = 9999
+def ai_give_wheel_to_conductor(walky_surface, area, log):
+	walky_surface.invoke_dialog([
+			"Goodness, the missing wheel!",
+			"Now we can set sail!"
+			], None, None)
+	$list_add(walky_surface.timeouts, [20, ai_train_launch1, []])
+	for sprite in area.sprites:
+		if sprite.type == 'enginenowheel':
+			sprite.dead = True
+			$list_add(area.sprites, Sprite('enginewithwheel', sprite.x, sprite.y))
+			return
+	
 
 def ai_give_ball_to_player(walky_surface, sprite, area, log, item, has_both):
 	log.set_int('HAS_' + $string_upper(item), 2)
