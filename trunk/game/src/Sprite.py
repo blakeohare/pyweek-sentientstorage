@@ -81,6 +81,7 @@ class Sprite:
 			else:
 				if self.type[0] == 'b':
 					if self.type == 'ball': self.renderer = sr_ball
+					elif self.type == 'battleship': self.renderer = sr_battleship
 					elif self.type == 'bballplayer1': self.renderer = sr_bballplayer1
 					elif self.type == 'bballplayer2': self.renderer = sr_bballplayer2
 					elif self.type == 'bballplayer3': self.renderer = sr_bballplayer3
@@ -120,6 +121,7 @@ def draw_image_centered_directional(screen, sprite, images, key):
 
 
 def sr_ball(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/ball'])
+def sr_battleship(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/battleship'])
 def sr_bballplayer1(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red')
 def sr_bballplayer2(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red')
 def sr_bballplayer3(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red')
