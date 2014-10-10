@@ -10,3 +10,8 @@ BLOCK: 0, 0, 80, 208
 TELEPORTER: 284, 194
 
 <HAS_RUBBERBAND:0>ADD_SPRITE: rubberband, 275, 34
+
+ADD_SPRITE: bballplayer1, 144, 84
+ADD_SPRITE: bballplayer2, 192, 115
+ADD_SPRITE: bballplayer3, 144, 154
+ADD_SPRITE: wizard, 260, 130

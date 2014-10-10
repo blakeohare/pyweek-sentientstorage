@@ -79,21 +79,28 @@ class Sprite:
 				elif self.scale == 'double': self.renderer = sr_player_double
 				else: self.renderer = sr_player_full
 			else:
-				if self.type == 'ball': self.renderer = sr_ball
-				elif self.type == 'bluepin': self.renderer = sr_bluepin
-				elif self.type == 'boot': self.renderer = sr_boot
-				elif self.type == 'bow': self.renderer = sr_bow
-				elif self.type == 'hippochoke': self.renderer = sr_hippochoke
-				elif self.type == 'hipposafe': self.renderer = sr_hipposafe
-				elif self.type == 'racecar': self.renderer = sr_racecar
-				elif self.type == 'knight1': self.renderer = sr_knight1
-				elif self.type == 'knight2': self.renderer = sr_knight2
-				elif self.type == 'legopog': self.renderer = sr_legopog
-				elif self.type == 'mothercar1': self.renderer = sr_mothercar1
-				elif self.type == 'mothercar2': self.renderer = sr_mothercar2
-				elif self.type == 'rubberband': self.renderer = sr_rubberband
-				elif self.type == 'teleporter': self.renderer = sr_teleporter
-				elif self.type == 'thimble': self.renderer = sr_thimble
+				if self.type[0] == 'b':
+					if self.type == 'ball': self.renderer = sr_ball
+					elif self.type == 'bballplayer1': self.renderer = sr_bballplayer1
+					elif self.type == 'bballplayer2': self.renderer = sr_bballplayer2
+					elif self.type == 'bballplayer3': self.renderer = sr_bballplayer3
+					elif self.type == 'bluepin': self.renderer = sr_bluepin
+					elif self.type == 'boot': self.renderer = sr_boot
+					elif self.type == 'bow': self.renderer = sr_bow
+				else:
+					if self.type == 'hippochoke': self.renderer = sr_hippochoke
+					elif self.type == 'hipposafe': self.renderer = sr_hipposafe
+					elif self.type == 'racecar': self.renderer = sr_racecar
+					elif self.type == 'knight1': self.renderer = sr_knight1
+					elif self.type == 'knight2': self.renderer = sr_knight2
+					elif self.type == 'legopog': self.renderer = sr_legopog
+					elif self.type == 'mothercar1': self.renderer = sr_mothercar1
+					elif self.type == 'mothercar2': self.renderer = sr_mothercar2
+					elif self.type == 'rubberband': self.renderer = sr_rubberband
+					elif self.type == 'teleporter': self.renderer = sr_teleporter
+					elif self.type == 'thimble': self.renderer = sr_thimble
+					elif self.type == 'wizard': self.renderer = sr_wizard
+					
 				
 		self.renderer(self, screen, images, rc)
 
@@ -106,11 +113,16 @@ def draw_image_centered(screen, sprite, img):
 	sprite.last_width = w
 	sprite.last_height = h
 
-
+def draw_image_centered_directional(screen, sprite, images, key):
+	img = images[key + '_' + sprite.last_direction]
+	draw_image_centered(screen, sprite, img)
 
 
 
 def sr_ball(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/ball'])
+def sr_bballplayer1(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red')
+def sr_bballplayer2(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red')
+def sr_bballplayer3(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red')
 def sr_bluepin(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/bluepin'])
 def sr_boot(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/boot'])
 def sr_bow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/bow'])
@@ -122,6 +134,7 @@ def sr_legopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, 
 def sr_racecar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/racecar'])
 def sr_rubberband(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/rubberband_ground'])
 def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])
+def sr_wizard(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/wizard')
 
 def sr_mothercar1(sprite, screen, images, rc):
 	key = 'sprites/mothercar/left1'
