@@ -1,7 +1,27 @@
 def sprite_looky_talky(scene, sprite, is_looky):
 	id = sprite.type
 	is_talky = not is_looky
+	log = scene.log
 	
+	if id == 'conductor':
+		train_running = log.get_int('TRAIN_RUNNING', 0) == 1
+		if is_looky:
+			if train_running:
+				return slt_invoke_basic(scene, ["A happy conductor drives the train."])
+			else:
+				return slt_invoke_basic(scene, ["The conductor looks really bored."])
+		else:
+			if not train_running:
+				if log.get_int('TRAIN_FIXED', 0) == 1:
+					return slt_invoke_basic(scene, [
+						"Great! We have tracks!", 
+						"But now we seem to be missing", 
+						"a wheel."])
+				else:
+					log.set_int('TRAIN_ARRANGE_READY', 1)
+					return slt_invoke_basic(scene, ["The tracks are a mess.", "If only I could transform into", "a giant and rearrange them", "myself"])
+			else:
+				return slt_invoke_basic(scene, ["All aboard!"])
 	if id == 'hippochoke':
 		if is_looky:
 			return slt_invoke_basic(scene, ["It looks like he's choking."])

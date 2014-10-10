@@ -1,5 +1,6 @@
 LAYERS: bg1
-LAYER_DATA: bg1: backgrounds/trains1-1, -999999
+<TRAIN_FIXED:0>LAYER_DATA: bg1: backgrounds/trains1-1, -999999
+<TRAIN_FIXED:1>LAYER_DATA: bg1: backgrounds/trains1-alternate, -999999
 
 SCALE: half
 
@@ -10,4 +11,7 @@ DOOR: trains2: 0, 203, 5, 5
 
 TELEPORTER: 285, 190
 
-<HAS_TOPHAT:0>ADD_SPRITE: tophat, 153, 88
+<TRAIN_RUNNING:0>ADD_SPRITE: passenger1sleeping, 153, 115
+<TRAIN_RUNNING:0>ADD_SPRITE: passenger2, 177, 122
+<TRAIN_RUNNING:0>ADD_SPRITE: conductor, 58, 141
+<TRAIN_RUNNING:0><HAS_TOPHAT:0>ADD_SPRITE: tophat, 153, 88
