@@ -43,6 +43,7 @@ def ai_give_wheel_to_conductor(walky_surface, area, log):
 			"Goodness, the missing wheel!",
 			"Now we can set sail!"
 			], None, None)
+	log.set_int('HAS_TRAINWHEEL', 2)
 	$list_add(walky_surface.timeouts, [20, ai_train_launch1, []])
 	for sprite in area.sprites:
 		if sprite.type == 'enginenowheel':
