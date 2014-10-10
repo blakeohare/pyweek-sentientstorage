@@ -32,7 +32,17 @@ class WalkingSurface:
 			hit = sprite_looky_talky(self, sprite, True)
 		
 		if not hit:
+			# hack
 			region = self.area.get_region_id(x, y)
+			if self.area.id == 'attic' and region == 'train_box':
+				if self.log.get_int('TRAIN_ARRANGE_READY', 0) == 1:
+					if self.log.get_int('TRAIN_FIXED', 0) == 0:
+						self.invoke_dialog([
+							"Alex attempts to fix the train",
+							"tracks while carefully avoiding",
+							"the sides of the box so he doesn't",
+							"get sucked in."], track_arrange_init, [])
+						return
 			if region != None:
 				look_data = self.area.get_look_data(region)
 				if look_data != None:

@@ -36,6 +36,14 @@ class PlayScene:
 						self.canvas.toggle_block_show()
 					elif ev.key == 'l':
 						self.canvas.toggle_look_show()
+					elif ev.key == 'w':
+						self.cursor = CURSOR_WALK
+					elif ev.key == 'h':
+						self.cursor = CURSOR_HAND
+					elif ev.key == 't':
+						self.cursor = CURSOR_TALK
+					elif ev.key == 'e':
+						self.cursor = CURSOR_LOOK
 			elif ev.type == 'mouseleftdown' or ev.type == 'mouserightdown':
 				x = ev.x
 				y = ev.y
