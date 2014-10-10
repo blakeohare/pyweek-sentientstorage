@@ -90,6 +90,8 @@ class Sprite:
 					elif self.type == 'bow': self.renderer = sr_bow
 				else:
 					if self.type == 'conductor': self.renderer = sr_conductor
+					elif self.type == 'enginenowheel': self.renderer = sr_enginenowheel
+					elif self.type == 'enginewithwheel': self.renderer = sr_enginewithwheel
 					elif self.type == 'hippochoke': self.renderer = sr_hippochoke
 					elif self.type == 'hipposafe': self.renderer = sr_hipposafe
 					elif self.type == 'racecar': self.renderer = sr_racecar
@@ -105,6 +107,9 @@ class Sprite:
 					elif self.type == 'teleporter': self.renderer = sr_teleporter
 					elif self.type == 'thimble': self.renderer = sr_thimble
 					elif self.type == 'tophat': self.renderer = sr_tophat
+					elif self.type == 'traincar': self.renderer = sr_traincar
+					elif self.type == 'trainwheel': self.renderer = sr_trainwheel
+					elif self.type == 'wheelbarrow': self.renderer = sr_wheelbarrow
 					elif self.type == 'wizard': self.renderer = sr_wizard
 					
 				
@@ -134,6 +139,8 @@ def sr_bluepin(sprite, screen, images, rc): draw_image_centered(screen, sprite, 
 def sr_boot(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/boot'])
 def sr_bow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/bow'])
 def sr_conductor(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/conductor'])
+def sr_enginenowheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginenowheel'])
+def sr_enginewithwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginewithwheel'])
 def sr_hippochoke(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/choking'])
 def sr_hipposafe(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/hippo'])
 def sr_knight1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard0'])
@@ -146,6 +153,9 @@ def sr_racecar(sprite, screen, images, rc): draw_image_centered(screen, sprite, 
 def sr_rubberband(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/rubberband_ground'])
 def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])
 def sr_tophat(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/tophat'])
+def sr_traincar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/traincar'])
+def sr_trainwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/trainwheel'])
+def sr_wheelbarrow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/wheelbarrow'])
 def sr_wizard(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/wizard')
 
 def sr_mothercar1(sprite, screen, images, rc):

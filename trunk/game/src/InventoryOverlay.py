@@ -83,6 +83,8 @@ class InventoryOverlay:
 		left = $int((320 - width) / 2)
 		height = rowcount * 32
 		top = $int((240 - height) / 2)
+		$draw_rectangle(screen, left - 2, top - 2, width + 4, height + 4, 200, 200, 230)
+		$draw_rectangle(screen, left - 1, top - 1, width + 2, height + 2, 0, 0, 120)
 		$draw_rectangle(screen, left, top, width, height, 200, 200, 230)
 		for y in range(rowcount):
 			for x in range($list_length(self.item_grid[y])):
