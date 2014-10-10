@@ -5,6 +5,9 @@ class Area:
 		self.sorted_sprites = None
 		self.sprites_by_layers = None
 		self.parse_level_file(name, log)
+		
+		if name == 'trains2':
+			log.set_int('SAW_NIGHTCLUB', 1)
 	
 	def initialize_player(self, from_area):
 		if from_area == None:
