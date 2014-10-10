@@ -1,5 +1,5 @@
 LAYERS: bg1
-LAYER_DATA: bg1: backgrounds/draft_misc2-1, -999999
+LAYER_DATA: bg1: backgrounds/misc2-1, -999999
 
 SCALE: half
 
@@ -16,13 +16,22 @@ REGION_ID: dinos: 134, 0, 26, 11
 STARTFROM: misc1: 85, 181
 STARTFROM: misc3: 183, 122
 # shoe
-BLOCK: 0, 0, 87, 127
+BLOCK: 0, 0, 80, 155
 
 # left fence
-BLOCK: 70, 0, 92, 79
+BLOCK: 70, 0, 116, 100
+
+#left fence bottom
+BLOCK: 130, 90, 55, 20, TR
+
+#shack bottom right
+BLOCK: 80, 85, 95, 65, TL
 
 # right fence
-BLOCK: 221, 0, 99999, 146
+BLOCK: 228, 0, 100, 133
+
+#right fence bottom
+BLOCK: 228, 133, 100, 50, TR
 
 DOOR: misc1: 40, 195, 80, 13
 DOOR: misc3: 154, 60, 83, 29
