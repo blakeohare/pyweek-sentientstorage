@@ -10,6 +10,7 @@ class WalkingSurface:
 		self.block_show = False
 		self.look_show = False
 		self.next = self
+		self.timeouts = []
 	
 	def click_walk(self, x, y):
 		self.player.set_waypoint(x, y)
@@ -42,6 +43,19 @@ class WalkingSurface:
 	
 	def update(self):
 		self.area.update(self.counter, self)
+		
+		new_timeouts = []
+		for timeout in self.timeouts:
+			t = timeout[0] - 1
+			if t <= 0:
+				fun = timeout[1]
+				args = timeout[2]
+				fun(self, args)
+			else:
+				timeout[0] = t
+				$list_add(new_timeouts, timeout)
+		self.timeouts = new_timeouts
+		
 		self.counter += 1
 	
 	def toggle_block_show(self):

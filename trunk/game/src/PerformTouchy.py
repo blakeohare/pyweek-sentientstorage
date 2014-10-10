@@ -22,7 +22,11 @@ def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 	pdy = player.y - sprite.y
 	d = (pdx ** 2 + pdy ** 2) ** .5
 	if area_id == 'games1':
-		if type == 'racecar':
+		if type == 'ball':
+			pt_games_take_ball(walking_surface, area, game_log, sprite, d)
+		elif type == 'hippochoke':
+			pt_games_hippo_heimlich(walking_surface, area, game_log, sprite, d)
+		elif type == 'racecar':
 			pt_games_take_racecar(walking_surface, area, game_log, sprite, d)
 	elif area_id == 'legos2':
 		if type == 'bow': pt_misc_take_bow(walking_surface, area, game_log, sprite, d)
@@ -44,8 +48,35 @@ def dist_check(walking_surface, sprite, area, required_distance):
 		walking_surface.invoke_dialog(["You're not close enough."], None, None)
 		return False
 
-
-
+def pt_games_take_ball_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_BALL', 1)
+def pt_games_take_ball(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["Alex picks up the ball",
+			 "covered in hippo spit and",
+			 "puts it in his pocket."],
+			pt_games_take_ball_doer, [sprite])
+			
+def pt_games_hippo_heimlich_post(walking_surface, args):
+	walking_surface.invoke_dialog(
+		["Wow, thanks for the Heimlich.",
+		 "I don't know what I would",
+		 "have done if you weren't around!",
+		 "Guess I should chew my food",
+		 "before trying to swallow it."], None, None)
+def pt_games_hippo_heimlich(walking_surface, area, game_log, sprite, d):
+	game_log.set_int('IS_HIPPO_SAFE', 1)
+	ball = Sprite('ball', sprite.x, sprite.y - 12)
+	$list_add(ball.waypoints, (138, 74))
+	ball.v = 7
+	$list_add(walking_surface.timeouts, [20, pt_games_hippo_heimlich_post, []])
+	$list_add(area.sprites, ball)
+	ns = Sprite('hipposafe', sprite.x, sprite.y)
+	$list_add(area.sprites, ns)
+	sprite.dead = True
 
 def pt_games_take_racecar_doer(walking_surface, args):
 	sprite = args[0]
