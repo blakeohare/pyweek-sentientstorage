@@ -1,5 +1,11 @@
-def perform_touchy(walking_surface, area, region_id, game_log):
+def perform_touchy(walking_surface, area, region_id, game_log, x, y):
 	area_id = area.id
+	player = area.player
+	pdx = player.x - x
+	pdy = player.y - y
+	d = (pdx ** 2 + pdy ** 2) ** .5
+	fake_sprite = Sprite('ignore', x, y)
+	# TODO: apply distance constraints to boxes
 	if area_id == 'attic':
 		if region_id == 'train_box':
 			pt_attic_train_box(walking_surface, area, region_id, game_log)
@@ -11,8 +17,9 @@ def perform_touchy(walking_surface, area, region_id, game_log):
 			pt_attic_sports_box(walking_surface, area, region_id, game_log)
 		elif region_id == 'misc_box':
 			pt_attic_misc_box(walking_surface, area, region_id, game_log)
-	else:
-		pass
+	elif area_id == 'games2':
+		if region_id == 'housepile':
+			pt_games_take_house(walking_surface, area, game_log, fake_sprite, d)
 
 def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 	type = sprite.type
@@ -49,9 +56,26 @@ def dist_check(walking_surface, sprite, area, required_distance):
 	else:
 		walking_surface.invoke_dialog(["You're not close enough."], None, None)
 		return False
-		
-		
-
+	
+def pt_games_take_house(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		if game_log.get_int('HAS_HOUSE', 0) == 0:
+			walking_surface.invoke_dialog(
+				["It's not every day you can find a",
+				 "free house in this market. Alex",
+				 "seizes the opportunity by grabbing",
+				 "a house and puts it in his pocket."],
+				None, None)
+			game_log.set_int('HAS_HOUSE', 1)
+		else:
+			walking_surface.invoke_dialog(
+				["You already have a house. If you",
+				 "get any more houses you may have",
+				 "to run for Congress which seems",
+				 "more trouble than it's worth."],
+				None, None)
+			
+	
 def pt_games_take_battleship_doer(walking_surface, args):
 	sprite = args[0]
 	sprite.dead = True
