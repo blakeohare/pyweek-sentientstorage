@@ -24,6 +24,8 @@ def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 	if area_id == 'games1':
 		if type == 'ball':
 			pt_games_take_ball(walking_surface, area, game_log, sprite, d)
+		elif type == 'battleship':
+			pt_games_take_battleship(walking_surface, area, game_log, sprite, d)
 		elif type == 'hippochoke':
 			pt_games_hippo_heimlich(walking_surface, area, game_log, sprite, d)
 		elif type == 'racecar':
@@ -47,7 +49,20 @@ def dist_check(walking_surface, sprite, area, required_distance):
 	else:
 		walking_surface.invoke_dialog(["You're not close enough."], None, None)
 		return False
+		
+		
 
+def pt_games_take_battleship_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_BATTLESHIP', 1)
+def pt_games_take_battleship(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["This doesn't belong with these.",
+			 "It probably got confused."],
+			pt_games_take_battleship_doer, [sprite])
+	
 def pt_games_take_ball_doer(walking_surface, args):
 	sprite = args[0]
 	sprite.dead = True
@@ -59,7 +74,7 @@ def pt_games_take_ball(walking_surface, area, game_log, sprite, player_distance)
 			 "covered in hippo spit and",
 			 "puts it in his pocket."],
 			pt_games_take_ball_doer, [sprite])
-			
+
 def pt_games_hippo_heimlich_post(walking_surface, args):
 	walking_surface.invoke_dialog(
 		["Wow, thanks for the Heimlich.",
