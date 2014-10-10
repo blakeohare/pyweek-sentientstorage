@@ -3,10 +3,20 @@ LAYER_DATA: bg1: backgrounds/misc3-1, -999999
 
 SCALE: half
 
+#Left
+BLOCK: 0, 0, 177, 208
+
+#Right
+BLOCK: 287, 0, 33, 208
+
+#Rock BR
+BLOCK: 177, 157, 57, 51, TL
+
+#Rock TR
+BLOCK: 172, 118, 62, 39, BL
+
 STARTFROM: misc2: 249, 183
 STARTFROM: misc4: 198, 93
 
 DOOR: misc2: 197, 193, 76, 9999
 DOOR: misc4: 199, 51, 40, 22
-
-
