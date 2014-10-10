@@ -42,6 +42,8 @@ def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 		elif type == 'legopog': pt_misc_take_legopog(walking_surface, area, game_log, sprite, d)
 	elif area_id == 'legos3':
 		if type == 'bluepin': pt_misc_take_bluepin(walking_surface, area, game_log, sprite, d)
+		elif type == 'trainwheel': pt_misc_take_trainwheel(walking_surface, area, game_log, sprite, d)
+		elif type == 'wheelbarrow': pt_misc_take_wheelbarrow(walking_surface, area, game_log, sprite, d)
 	elif area_id == 'misc1':
 		if type == 'boot': pt_misc_take_boot(walking_surface, area, game_log, sprite, d)
 		elif type == 'thimble': pt_misc_take_thimble(walking_surface, area, game_log, sprite, d)
@@ -59,6 +61,29 @@ def dist_check(walking_surface, sprite, area, required_distance):
 	else:
 		walking_surface.invoke_dialog(["You're not close enough."], None, None)
 		return False
+
+def pt_misc_take_wheelbarrow_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_WHEELBARROW', 1)
+def pt_misc_take_wheelbarrow(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["A wheelbarrow != wheel.", "Alex removes it from the pile."],
+			pt_misc_take_wheelbarrow_doer, [sprite])
+	
+def pt_misc_take_trainwheel_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_TRAINWHEEL', 1)
+def pt_misc_take_trainwheel(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		if game_log.get_int('TRAIN_FIXED', 0) == 0:
+			walking_surface.invoke_dialog(["Why would you take the red wheel", "away from the rest of his friends?"], None, None)
+		else:
+			walking_surface.invoke_dialog(
+				["Upon closer inspection, Alex", "realizes that the red wheel", "is actually for the train engine."],
+				pt_misc_take_trainwheel_doer, [sprite])
 	
 def pt_games_take_house(walking_surface, area, game_log, sprite, player_distance):
 	if dist_check(walking_surface, sprite, area, 40):
