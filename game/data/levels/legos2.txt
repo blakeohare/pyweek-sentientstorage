@@ -31,6 +31,21 @@ DOOR: legos1: 310, 86, 999, 999
 DOOR: legos3: 33, 23, 20, 50
 DOOR: legos3: 183, 32, 21, 26
 
+REGION_ID: legs: 239, 170, 51, 38
+REGION_ID: red_door: 40, 26, 18, 34
+REGION_ID: tree: 230, 43, 20, 21
+REGION_ID: tree: 220, 63, 38, 31
+REGION_ID: tree: 231, 91, 17, 18
+REGION_ID: car: 251, 50, 67, 38
+REGION_ID: yellow_door: 185, 24, 17, 25
+
+LOOKY: car: Perhaps you should be on|your best behavior.
+LOOKY: legs: Someone seems to have lost their|head!
+LOOKY: red_door: A door to what appears to be a|tavern.
+LOOKY: tree: Doesn't seem very sturdy.
+LOOKY: yellow_door: You don't see any way to get to|this door from the outside.
+
+
 <LEGO_STATE:0>ADD_SPRITE: legohack, 160, 208
 
 <LEGO_STATE:0>ADD_SPRITE: king, 158, 65
