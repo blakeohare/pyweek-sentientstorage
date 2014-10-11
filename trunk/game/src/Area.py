@@ -188,10 +188,28 @@ class Area:
 			if walk_scene.log.get_int('KNIGHTS_SHPIEL', 0) == 0:
 				$list_add(walk_scene.timeouts, [3, knights_shpiel_1, []])
 		
-		if counter == 1 and self.id == 'misc3':
-			if walk_scene.log.get_int('DINO_STATE', 0) == 1:
-				dinos_shpiel_1(walk_scene)
-	
+		if self.id == 'misc3':
+			dino_state = walk_scene.log.get_int('DINO_STATE', 0)
+			if dino_state == 0:
+				# T-Rex chases you
+				x = self.player.x
+				y = self.player.y
+				if x > 129 and x < 260 and y > 69 and y <= 115:
+					self.player.waypoints = [[253, 177]]
+					dino = self.get_sprite_by_type('dino')
+					dino.waypoints = [[162, 87]]
+					self.player.enforce_waypoint = True
+					$list_add(walk_scene.timeouts, [30, dino_retreats, []])
+					if walk_scene.log.get_int('DINO_SCARE', 0) == 0:
+						walk_scene.log.set_int('DINO_SCARE', 1)
+						walk_scene.invoke_dialog([
+							"Out of seemingly nowhere, a plastic",
+							"T-Rex jumps out of hiding and",
+							"chases you away from the cave."], None, None)
+			elif dino_state == 1:
+				if counter == 1:
+					dinos_shpiel_1(walk_scene)
+			
 	def get_sprite_by_type(self, type):
 		for sprite in self.sprites:
 			if sprite.type == type:
@@ -340,4 +358,6 @@ class Area:
 		output = self.qsort(left) + [pivot] + self.qsort(right)
 		return output
 	
-	
+def dino_retreats(scene, args):
+	dino = scene.area.get_sprite_by_type('dino')
+	dino.waypoints = [[71, 88]]
