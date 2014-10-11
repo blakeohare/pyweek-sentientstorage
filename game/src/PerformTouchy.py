@@ -83,6 +83,24 @@ def pt_trains_board_train(walking_surface, area, game_log):
 			sprite.x = 9999
 	area.train_go = True
 
+def pt_misc_give_glue(scene, area, log):
+	log.set_int('HAS_GLUE', 2)
+	arm = area.get_sprite_by_type('arm')
+	joe = area.get_sprite_by_type('joenoarm')
+	joearm = Sprite('joearm', joe.x, joe.y)
+	$list_add(area.sprites, joearm)
+	arm.dead = True
+	joe.dead = True
+	log.set_int('HAS_PHOTO1', 1)
+	scene.invoke_dialog([
+		"Wow, it's as good as new.",
+		"Did you say you go this from",
+		"the dinosaurs? Maybe it's time",
+		"to end this silly war.",
+		"Your country thanks you with",
+		"this photo scrap."], None, None)
+	
+
 def pt_misc_hurl_self(scene, area, game_log, sprite, player_distance):
 	if dist_check(scene, sprite, area, 60):
 		scene.invoke_dialog([

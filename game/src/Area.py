@@ -254,7 +254,7 @@ class Area:
 				is_sprite = True
 			elif sprite_index == sprite_count:
 				is_sprite = False
-			elif sprites[sprite_index].y < self.layer_y[layer_index]:
+			elif sprites[sprite_index].sorty < self.layer_y[layer_index]:
 				is_sprite = True
 			else:
 				is_sprite = False
@@ -311,6 +311,7 @@ class Area:
 	def sort_sprites(self):
 		new_list = []
 		for sprite in self.sprites:
+			sprite.sorty = sprite.y
 			$list_add(new_list, sprite)
 		
 		$list_shuffle(new_list)
@@ -355,10 +356,10 @@ class Area:
 		left = []
 		right = []
 		pivot = items[0]
-		pivot_value = pivot.y * 10000 + pivot.x
+		pivot_value = pivot.sorty * 10000 + pivot.x
 		for i in range(1, $list_length(items)):
 			sprite = items[i]
-			if sprite.y * 10000 + sprite.x < pivot_value:
+			if sprite.sorty * 10000 + sprite.x < pivot_value:
 				$list_add(left, sprite)
 			else:
 				$list_add(right, sprite)

@@ -132,7 +132,8 @@ class Sprite:
 					elif self.type == 'boot': self.renderer = sr_boot
 					elif self.type == 'bow': self.renderer = sr_bow
 				else:
-					if self.type == 'conductor': self.renderer = sr_conductor
+					if self.type == 'arm': self.renderer = sr_arm
+					elif self.type == 'conductor': self.renderer = sr_conductor
 					elif self.type == 'chewedgum': self.renderer = sr_chewedgum
 					elif self.type == 'dino': self.renderer = sr_dino
 					elif self.type == 'dj': self.renderer = sr_dj
@@ -190,6 +191,7 @@ def draw_image_centered_directional(screen, sprite, images, key):
 
 
 
+def sr_arm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/arm'])
 def sr_ball(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/ball'])
 def sr_battleship(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/battleship'])
 def sr_bballplayer1(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red')
