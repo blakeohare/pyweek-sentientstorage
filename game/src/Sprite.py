@@ -24,6 +24,7 @@ class Sprite:
 		self.teething = False
 		if type == 'dino':
 			self.v = 6.0
+		self.enforce_waypoint = False
 	
 	def specific_update(self, type, area, counter):
 		if type == 'mothercar1' or type == 'mothercar2':
@@ -73,6 +74,10 @@ class Sprite:
 			self.dy = 0
 	
 	def set_waypoint(self, tx, ty):
+		if $list_length(self.waypoints) > 0:
+			if self.enforce_waypoints:
+				return
+		self.enforce_waypoints = False
 		self.waypoints = [(tx, ty)]
 	
 	def queue_waypoint(self, tx, ty):
