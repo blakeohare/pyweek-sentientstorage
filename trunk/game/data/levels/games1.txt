@@ -1,3 +1,5 @@
+MUSIC: attic: .8
+
 LAYERS: bg1
 LAYER_DATA: bg1: backgrounds/games1-1, -999999
 

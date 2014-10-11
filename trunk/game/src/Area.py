@@ -18,7 +18,9 @@ class Area:
 		self.sprites = []
 		self.sorted_sprites = None
 		self.sprites_by_layers = None
+		self.music = None
 		self.parse_level_file(name, log)
+		self.volume = 1
 		
 		tokens = []
 		if name == 'games2':
@@ -151,6 +153,9 @@ class Area:
 					x = $parse_int($string_trim(data[1]))
 					y = $parse_int($string_trim(data[2]))
 					$list_add(self.sprites, Sprite(type, x, y))
+				elif key == 'MUSIC':
+					self.music = $string_trim(parts[1])
+					
 		
 		for bgid in background_ids:
 			bg_data = backgrounds_by_id[bgid]
@@ -187,6 +192,9 @@ class Area:
 			if not sprite.dead:
 				$list_add(new_sprites, sprite)
 		self.sprites = new_sprites
+		
+		if counter == 1:
+			$music_play(self.music)
 		
 		door_value = self.get_door(self.player.x, self.player.y)
 		if door_value != None:

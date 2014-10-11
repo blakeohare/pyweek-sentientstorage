@@ -1,3 +1,5 @@
+MUSIC: plasticheroes : .8
+
 LAYERS: bg1, walls, desk
 LAYER_DATA: bg1: backgrounds/misc1-1, -999999
 LAYER_DATA: walls: backgrounds/misc1-2, 73

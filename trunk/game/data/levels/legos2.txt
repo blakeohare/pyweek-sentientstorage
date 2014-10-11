@@ -1,3 +1,5 @@
+MUSIC: bricklute: .8
+
 LAYERS: bg1, fg
 LAYER_DATA: bg1: backgrounds/legos2-1, -999999
 LAYER_DATA: viewbox: backgrounds/legos2-2, 83

@@ -158,6 +158,11 @@ namespace Python2Crayon.Serialization
 			output.Add(")");
 		}
 
+		protected override void X_MusicPlay(List<string> output, Expression song)
+		{
+			output.Add("$abs(0)"); // TODO: music in Crayon
+		}
+
 		protected override void X_ParseInt(List<string> output, ParseTree.Expression value)
 		{
 			output.Add("$parse_int(");

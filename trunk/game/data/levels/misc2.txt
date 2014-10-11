@@ -1,3 +1,5 @@
+MUSIC: plasticheroes : .8
+
 LAYERS: bg1, backfence, frontfence
 LAYER_DATA: bg1: backgrounds/misc2-1, -999999
 LAYER_DATA: backfence: backgrounds/misc2-2, 89

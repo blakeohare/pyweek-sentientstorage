@@ -26,6 +26,19 @@ _pseudo_file_system = %%%TEXT_FILES%%%
 def read_file(file):
 	return _pseudo_file_system[file]
 
+_current_song = [None]
+def play_music(song):
+	if song == _current_song[0]:
+		return
+
+	if song == None:
+		pygame.mixer.music.stop()
+	else:
+		_current_song[0] = song
+		path = 'audio' + os.sep + 'music' + os.sep + song + '.mp3'
+		pygame.mixer.music.load(path)
+		pygame.mixer.music.play(-1)
+
 _current_mouse_position = [0, 0]
 
 def get_mouse_position():

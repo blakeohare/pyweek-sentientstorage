@@ -1,3 +1,5 @@
+MUSIC: plasticheroes : .8
+
 LAYERS: bg1, tree
 LAYER_DATA: bg1: backgrounds/misc3-1, -999999
 LAYER_DATA: tree: backgrounds/misc3-2, 100

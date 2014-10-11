@@ -183,6 +183,13 @@ namespace Python2Crayon.Serialization
 			output.Add(")");
 		}
 
+		protected override void X_MusicPlay(List<string> output, Expression song)
+		{
+			output.Add("play_music(");
+			SerializeExpression(output, song);
+			output.Add(")");
+		}
+
 		protected override void X_ParseInt(List<string> output, Expression value)
 		{
 			output.Add("int(");
