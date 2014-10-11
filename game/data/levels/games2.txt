@@ -3,6 +3,51 @@ LAYER_DATA: bg1: backgrounds/games2-1, -999999
 
 SCALE: half
 
+#Top
+BLOCK: 0, 0, 320, 32
+
+#Top L
+BLOCK: 0, 0, 150, 61, TL
+
+#Top R
+BLOCK: 168, 0, 152, 61, TR
+
+#Left
+BLOCK: 0, 0, 10, 208
+
+#Right
+BLOCK: 310, 0, 10, 208
+
+#Community Chest TR
+BLOCK: 30, 81, 30, 18, BL
+
+#Community Chest T
+BLOCK: 0, 81, 30, 18
+
+#Community Chest R
+BLOCK: 0, 99, 60, 109
+
+#Houses TR
+BLOCK: 55, 125, 46, 45, BL
+
+#Houses R
+BLOCK: 0, 170, 101, 39
+
+#Chance L
+BLOCK: 260, 99, 60, 109
+
+#Chance TL
+BLOCK: 260, 81, 30, 18, BR 
+
+#Chance T
+BLOCK: 290, 81, 30, 18
+
+#Hotels TL
+BLOCK: 219, 125, 46, 45, BR
+
+#Hotels L
+BLOCK: 219, 170, 101, 39
+
 REGION_ID: housepile: 5, 142, 38, 29
 
 STARTFROM: games1: 146, 181
