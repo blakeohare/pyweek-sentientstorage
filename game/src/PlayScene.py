@@ -47,6 +47,8 @@ class PlayScene:
 						self.cursor = CURSOR_TALK
 					elif ev.key == 'e':
 						self.cursor = CURSOR_LOOK
+			elif ev.type == 'quit':
+				self.next = None
 			elif ev.type == 'mouseleftdown' or ev.type == 'mouserightdown':
 				x = ev.x
 				y = ev.y
