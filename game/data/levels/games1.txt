@@ -22,8 +22,6 @@ BLOCK: 215, 86, 105, 77, BR
 #Wall T
 BLOCK: 215, 163, 105, 45
 #Wall L
-BLOCK: 0, 198, 320, 2
-#Bottom
 BLOCK: 0, 53, 43, 24, TR
 #Cube BL
 BLOCK: 43, 56, 59, 21, TL
