@@ -2,7 +2,7 @@ MUSIC: wubwub: .8
 
 LAYERS: bg1, bg2
 LAYER_DATA: bg1: backgrounds/trains3-1, -999999
-LAYER_DATA: bg2, backgrounds/trains3-2, 83
+LAYER_DATA: bg2: backgrounds/trains3-2, 83
 SCALE: half
 
 # Walls-n-stuff

@@ -128,6 +128,8 @@ def pt_hurl_self3(scene, args):
 	v = args[0]
 	scene.area.player.ghost = False
 	scene.area.player.v = v
+	scene.area.player.x = 207
+	scene.area.player.y = 58
 
 def pt_take_joust_doer(walking_surface, args):
 	sprite = args[0]

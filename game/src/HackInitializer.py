@@ -14,6 +14,8 @@ def initialize_hacks(playscene):
 	#log.set_int('HAS_LEGOPOG', 2)
 	#log.set_int('HAS_TRAINPOG', 2)
 	#log.set_int('HAS_HOUSE', 1)
+	#log.set_int('HAS_BALL', 1)
+	#log.set_int('HAS_BAT', 1)
 	#log.set_int('HAS_WRAPPEDGUM', 2)
 	#log.set_int('HAS_WIZARD', 1)
 	#log.set_int('HAS_TRAINWHEEL', 2)
