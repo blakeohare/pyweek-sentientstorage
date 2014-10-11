@@ -5,7 +5,31 @@ SCALE: half
 
 STARTFROM: attic: 250, 180
 
-BLOCK: 0, 0, 80, 208
+#TOP
+BLOCK: 155, 0, 165, 53
+
+#Left
+BLOCK: 0, 0, 28, 208
+
+#Right
+BLOCK: 300, 0, 20, 208
+
+#Bottom
+BLOCK: 0, 187, 320, 21
+
+#Binder BR
+BLOCK: 28, 59, 127, 75, TL
+
+#Binder R
+BLOCK: 0, 0, 155, 59
+
+#Blue Binder TR
+BLOCK: 8, 134, 256, 53, BL
+
+#Binder Tab
+BLOCK: 64, 136, 9, 11, BL
+BLOCK: 51, 136, 13, 11, BR
+
 
 TELEPORTER: 284, 194
 
