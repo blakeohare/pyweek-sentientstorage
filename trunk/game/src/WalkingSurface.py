@@ -76,6 +76,24 @@ class WalkingSurface:
 	def update(self):
 		self.area.update(self.counter, self)
 		
+		if self.area.id == 'legos2' and self.log.get_int('LEGO_STATE', 0) == 0:
+			if self.counter == 0:
+				self.invoke_dialog([
+					"WHAT? How did you get past our",
+					"wall!?",
+					"This is a breach in our security.",
+					"And of course we can't blame ",
+					"ourselves. So we blame you. You",
+					"are hereby sentenced to death."], joust1b, None)
+			elif self.counter == 4:
+				self.area.get_sprite_by_type('legohack').dead = True
+				self.area.player.y = -500
+			elif self.counter == 5:
+				self.invoke_dialog([
+					"King: Death by joust!",
+					"Should you survive, then I shall",
+					"let you live."], joust2b, None)
+			
 		new_timeouts = []
 		for timeout in self.timeouts:
 			t = timeout[0] - 1

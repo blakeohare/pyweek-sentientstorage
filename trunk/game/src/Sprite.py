@@ -148,6 +148,8 @@ class Sprite:
 					elif self.type == 'horse': self.renderer = sr_horse
 					elif self.type == 'joearm': self.renderer = sr_joearm
 					elif self.type == 'joenoarm': self.renderer = sr_joenoarm
+					elif self.type == 'joust': self.renderer = sr_joust
+					elif self.type == 'king': self.renderer = sr_king
 					elif self.type == 'knight1': self.renderer = sr_knight1
 					elif self.type == 'knight2': self.renderer = sr_knight2
 					elif self.type == 'legopog': self.renderer = sr_legopog
@@ -157,6 +159,7 @@ class Sprite:
 					elif self.type == 'passenger1awake': self.renderer = sr_passenger1awake
 					elif self.type == 'passenger2': self.renderer = sr_passenger2
 					elif self.type == 'photo4': self.renderer = sr_photo4
+					elif self.type == 'queen': self.renderer = sr_queen
 					elif self.type == 'racecar': self.renderer = sr_racecar
 					elif self.type == 'raver1': self.renderer = sr_raver1
 					elif self.type == 'raver2': self.renderer = sr_raver2
@@ -176,6 +179,14 @@ class Sprite:
 					elif self.type == 'wheelbarrow': self.renderer = sr_wheelbarrow
 					elif self.type == 'wizard': self.renderer = sr_wizard
 					
+					elif self.type == 'legohack': self.renderer = sr_legohack
+					elif self.type == 'horse1': self.renderer = sr_horse1
+					elif self.type == 'horse2': self.renderer = sr_horse2
+					elif self.type == 'horse2collapsed': self.renderer = sr_horse2collapsed
+					elif self.type == 'spectator1': self.renderer = sr_spectator1
+					elif self.type == 'spectator2': self.renderer = sr_spectator2
+					elif self.type == 'sadman': self.renderer = sr_sadman
+					elif self.type == 'trueking': self.renderer = sr_trueking
 				
 		self.renderer(self, screen, images, rc)
 
@@ -191,7 +202,6 @@ def draw_image_centered(screen, sprite, img):
 def draw_image_centered_directional(screen, sprite, images, key):
 	img = images[key + '_' + sprite.last_direction]
 	draw_image_centered(screen, sprite, img)
-
 
 
 def sr_arm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/arm'])
@@ -218,6 +228,7 @@ def sr_hipposafe(sprite, screen, images, rc): draw_image_centered(screen, sprite
 def sr_horse(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/horse'])
 def sr_joearm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/joe_arm'])
 def sr_joenoarm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/joe_noarm'])
+def sr_king(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/king'])
 def sr_knight1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard0'])
 def sr_knight2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard1'])
 def sr_legopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/pog'])
@@ -225,6 +236,7 @@ def sr_passenger1sleeping(sprite, screen, images, rc): draw_image_centered(scree
 def sr_passenger1awake(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger1awake'])
 def sr_passenger2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger2'])
 def sr_photo4(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/photo4'])
+def sr_queen(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/queen'])
 def sr_raver1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/raver1'])
 def sr_raver2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/raver2'])
 def sr_racecar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/racecar'])
@@ -239,6 +251,17 @@ def sr_volcanopog(sprite, screen, images, rc): draw_image_centered(screen, sprit
 def sr_ventalex(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/ventalex'])
 def sr_wheelbarrow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/wheelbarrow'])
 def sr_wizard(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/wizard')
+
+# too lazy to alphabetize
+def sr_legohack(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['backgrounds/legos1point5'])
+def sr_horse1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/horse0'])
+def sr_horse2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/horse1'])
+def sr_horse2collapsed(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/horsecollapse'])
+def sr_spectator1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/spectator0'])
+def sr_spectator2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/spectator1'])
+def sr_sadman(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/sadman'])
+def sr_trueking(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/trueking'])
+def sr_joust(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/joust'])
 
 def sr_steam(sprite, screen, images, rc): 
 	c = (sprite.x + rc) % 60
