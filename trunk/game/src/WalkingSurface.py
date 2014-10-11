@@ -17,6 +17,13 @@ class WalkingSurface:
 		self.player.set_waypoint(x, y)
 	
 	def click_hand(self, x, y):
+		if self.area.id == 'misc4':
+			if x > 31 and x < 120 and y > 77 and y < 194:
+				if self.area.player.y > 118:
+					if self.log.get_int('HAS_RUBBERBAND', 0) == 2:
+						# I don't know why this isn't working the normal way
+						pt_misc_hurl_self(self, self.area, self.log, self.area.get_sprite_by_type('rubberband2'), 0)
+						return
 		region = self.area.get_region_id(x, y)
 		if region != None:
 			perform_touchy(self, self.area, region, self.log, x, y)

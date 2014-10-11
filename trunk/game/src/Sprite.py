@@ -25,6 +25,7 @@ class Sprite:
 		if type == 'dino':
 			self.v = 6.0
 		self.enforce_waypoint = False
+		self.stretched = False
 	
 	def specific_update(self, type, area, counter):
 		if type == 'mothercar1' or type == 'mothercar2':
@@ -149,13 +150,17 @@ class Sprite:
 					elif self.type == 'passenger2': self.renderer = sr_passenger2
 					elif self.type == 'racecar': self.renderer = sr_racecar
 					elif self.type == 'rubberband': self.renderer = sr_rubberband
+					elif self.type == 'rubberband2': self.renderer = sr_rubberband2
 					elif self.type == 'scottie': self.renderer = sr_scottie
+					elif self.type == 'steam': self.renderer = sr_steam
 					elif self.type == 'teleporter': self.renderer = sr_teleporter
 					elif self.type == 'teeth': self.renderer = sr_teeth
 					elif self.type == 'thimble': self.renderer = sr_thimble
 					elif self.type == 'tophat': self.renderer = sr_tophat
 					elif self.type == 'traincar': self.renderer = sr_traincar
 					elif self.type == 'trainwheel': self.renderer = sr_trainwheel
+					elif self.type == 'ventalex': self.renderer = sr_ventalex
+					elif self.type == 'volcanopog': self.renderer = sr_volcanopog
 					elif self.type == 'wheelbarrow': self.renderer = sr_wheelbarrow
 					elif self.type == 'wizard': self.renderer = sr_wizard
 					
@@ -210,8 +215,21 @@ def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, 
 def sr_tophat(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/tophat'])
 def sr_traincar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/traincar'])
 def sr_trainwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/trainwheel'])
+def sr_volcanopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/volcanopog'])
+def sr_ventalex(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/ventalex'])
 def sr_wheelbarrow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/wheelbarrow'])
 def sr_wizard(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/wizard')
+
+def sr_steam(sprite, screen, images, rc): 
+	c = (sprite.x + rc) % 60
+	if c < 30 and (c > 20 or c < 10):
+		draw_image_centered(screen, sprite, images['simple/steam'])
+
+def sr_rubberband2(sprite, screen, images, rc):
+	if sprite.stretched:
+		draw_image_centered(screen, sprite, images['sprites/misc4/rubber_stretched'])
+	else:
+		draw_image_centered(screen, sprite, images['sprites/misc4/rubber_unstretched'])
 
 _sr_teeth_values = [0, 1, 2, 3, 2, 1, 0]
 def sr_teeth(sprite, screen, images, rc): 

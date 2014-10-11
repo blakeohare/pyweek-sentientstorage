@@ -47,6 +47,9 @@ def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 	elif area_id == 'misc1':
 		if type == 'boot': pt_misc_take_boot(walking_surface, area, game_log, sprite, d)
 		elif type == 'thimble': pt_misc_take_thimble(walking_surface, area, game_log, sprite, d)
+	elif area_id == 'misc4':
+		if type == 'rubberband2': pt_misc_hurl_self(walking_surface, area, game_log, sprite, d)
+		elif type == 'volcanopog': pt_take_volcanopog(walking_surface, area, game_log, sprite, d)
 	elif area_id == 'sports1':
 		if type == 'rubberband': pt_misc_take_rubberband(walking_surface, area, game_log, sprite, d)
 	elif area_id == 'trains1':
@@ -80,7 +83,39 @@ def pt_trains_board_train(walking_surface, area, game_log):
 			sprite.x = 9999
 	area.train_go = True
 
+def pt_misc_hurl_self(scene, area, game_log, sprite, player_distance):
+	if dist_check(scene, sprite, area, 60):
+		scene.invoke_dialog([
+			"Alex decides to hurl himself",
+			"across using the rubber band."], None, None)
+		$list_add(scene.timeouts, [3, pt_hurl_self1, [sprite]])
+		$list_add(scene.timeouts, [20, pt_hurl_self2, [sprite]])
+def pt_hurl_self1(scene, args):
+	band = args[0]
+	band.stretched = True
+def pt_hurl_self2(scene, args):
+	band = args[0]
+	band.stretched = False
+	old_v = scene.player.v
+	scene.area.player.ghost = True
+	scene.area.player.v = 8
+	scene.area.player.waypoints = [(207, 58)]
+	scene.area.player.enforce_waypoints = True
+	$list_add(scene.timeouts, [23, pt_hurl_self3, [old_v]])
+def pt_hurl_self3(scene, args):
+	v = args[0]
+	scene.area.player.ghost = False
+	scene.area.player.v = v
 
+def pt_take_volcanopog_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_VOLCANOPOG', 1)
+def pt_take_volcanopog(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["Alex takes the pog."],
+			pt_take_volcanopog_doer, [sprite])
 
 def pt_trains_take_scottie_doer(walking_surface, args):
 	sprite = args[0]
