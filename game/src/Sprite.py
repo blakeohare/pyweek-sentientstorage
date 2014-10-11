@@ -70,7 +70,7 @@ class Sprite:
 				self.dx = 1.0 * dx * self.v / dist
 				self.dy = 1.0 * dy * self.v / dist
 		if self.dx != 0 or self.dy != 0:
-			self.is_moving = True
+			#self.is_moving = True
 			dx = self.dx
 			dy = self.dy
 			self.last_direction = self.convert_vector_to_direction(dx, dy)
@@ -79,6 +79,9 @@ class Sprite:
 			if area.is_passable(newx, newy) or self.ghost:
 				self.x = newx
 				self.y = newy
+				self.is_moving = True
+			else:
+				self.is_moving = False
 			self.dx = 0
 			self.dy = 0
 		else:
