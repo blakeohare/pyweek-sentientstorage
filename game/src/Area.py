@@ -249,7 +249,12 @@ class Area:
 		return None
 	
 	def get_sprite_at(self, x, y):
-		for sprite in self.sprites:
+		sprites = self.sorted_sprites
+		if sprites == None:
+			sprites = self.sprites
+		i = $list_length(sprites) - 1
+		while i >= 0:
+			sprite = sprites[i]
 			if sprite.last_width != None:
 				width = sprite.last_width
 				left = sprite.x - width / 2
@@ -259,6 +264,7 @@ class Area:
 					top = bottom - sprite.last_height
 					if y > top and y < bottom:
 						return sprite
+			i += 1
 		return None
 	
 	def get_door(self, x, y):
@@ -337,10 +343,13 @@ class Area:
 		new_list = []
 		for sprite in self.sprites:
 			sprite.sorty = sprite.y
+			if sprite.type == 'tophat' and self.id == 'trains1':
+				sprite.sorty += 9999
 			$list_add(new_list, sprite)
 		
 		$list_shuffle(new_list)
-		return self.qsort(new_list)
+		self.sorted_sprites = self.qsort(new_list)
+		return self.sorted_sprites
 	
 	def get_region_id(self, x, y):
 		for region in self.region_ids:

@@ -226,7 +226,7 @@ def pt_trains_take_tophat_doer(walking_surface, args):
 	sprite.dead = True
 	walking_surface.log.set_int('HAS_TOPHAT', 1)
 def pt_trains_take_tophat(walking_surface, area, game_log, sprite, player_distance):
-	if dist_check(walking_surface, sprite, area, 40):
+	if dist_check(walking_surface, sprite, area, 80):
 		walking_surface.invoke_dialog(
 			["Alex was always curious whether or",
 			 "not he was capable of stealing a",
