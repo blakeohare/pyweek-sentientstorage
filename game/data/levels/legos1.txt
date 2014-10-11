@@ -36,6 +36,28 @@ BLOCK: 300, 0, 20, 208
 #Bottom
 BLOCK: 0, 203, 320, 5
 
+REGION_ID: teleporter: 265, 152, 161, 47
+REGION_ID: palm: 271, 106, 49, 66
+REGION_ID: pine: 236, 81, 38, 66
+REGION_ID: gate: 158, 100, 37, 50
+REGION_ID: colored_blocks: 207, 91, 36, 44
+REGION_ID: blue_knight: 127, 49, 21, 37
+REGION_ID: yellow_knight: 196, 43, 18, 39
+REGION_ID: wall: 111, 73, 132, 64
+REGION_ID: wall: 111, 73, 44, 92
+REGION_ID: flag: 247, 39, 25, 25
+REGION_ID: flag: 24, 12, 51, 50
+
+LOOKY: teleporter: This sparkly thing looks like it might|teleport you back to the attic!
+LOOKY: palm: You feel warmer just standing by it.
+LOOKY: pine: Reminds you to put a new air|freshener in your car.
+LOOKY: gate: Seems weirdly sturdy for plastic.
+LOOKY: wall: A solid wall of plastic bricks;|clearly a monument for the ages.
+LOOKY: colored_blocks: Apparently the builders ran out of|gray blocks.
+LOOKY: flag: The most dangerous part of the set,|at least according to Aunt Edna.
+LOOKY: blue_knight: A knight sitting on the wall of the|castle. Seems familiar. 
+LOOKY: yellow_knight: He seems to be holding a spear|of some sort. You're not sure how|sharp a plastic spear could be,|but you'd really rather not find|out. 
+ 
 DOOR: legos2: 0, 155, 27, 48
 
 TELEPORTER: 281, 199
