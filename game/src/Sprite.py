@@ -144,6 +144,7 @@ class Sprite:
 					elif self.type == 'guard': self.renderer = sr_guard
 					elif self.type == 'hippochoke': self.renderer = sr_hippochoke
 					elif self.type == 'hipposafe': self.renderer = sr_hipposafe
+					elif self.type == 'horse': self.renderer = sr_horse
 					elif self.type == 'joearm': self.renderer = sr_joearm
 					elif self.type == 'joenoarm': self.renderer = sr_joenoarm
 					elif self.type == 'knight1': self.renderer = sr_knight1
@@ -211,6 +212,7 @@ def sr_gateup(sprite, screen, images, rc): draw_image_centered(screen, sprite, i
 def sr_guard(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/guard'])
 def sr_hippochoke(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/choking'])
 def sr_hipposafe(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/hippo'])
+def sr_horse(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/horse'])
 def sr_joearm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/joe_arm'])
 def sr_joenoarm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/joe_noarm'])
 def sr_knight1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard0'])

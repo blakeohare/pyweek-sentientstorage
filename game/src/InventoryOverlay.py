@@ -8,6 +8,7 @@ ALL_ITEMS = [
 		'chewedgum',
 		'getoutofjail',
 		'glue',
+		'horse',
 		'house',
 		'legopog',
 		'racecar',

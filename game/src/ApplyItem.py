@@ -5,6 +5,23 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 			if sprite.type == 'mothercar1':
 				if item == 'bluepin':
 					ai_give_pin_to_mother(walky_surface, sprite, area, log)
+	elif area_id == 'games2':
+		if region_id != None and region_id != 'housepile':
+			found = False
+			for token in ALL_TOKEN_KEYS:
+				if token == item:
+					found = True
+					break
+			if found:
+				slot_key = $string_upper(region_id) + "_TAKEN"
+				if log.get_int(slot_key, 0) == 0:
+					log.set_int(slot_key, 1)
+					log.set_int('HAS_' + $string_upper(item), 2)
+					i = $parse_int(slot_key[4]) - 1
+					log.set_int($string_upper(item) + '_INDEX', i)
+					coord = MONOPOLY_INDEX[i]
+					sprite = Sprite(item, coord[0], coord[1])
+					$list_add(area.sprites, sprite)
 	elif area_id == 'misc2':
 		if sprite != None and sprite.type == 'guard':
 			if item == 'bow':

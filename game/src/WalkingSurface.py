@@ -30,6 +30,8 @@ class WalkingSurface:
 		else:
 			sprite = self.area.get_sprite_at(x, y)
 			if sprite != None:
+				if self.area.id == 'games2' and sprite != 'house' and sprite != 'getoutofjail' and sprite != 'photo4':
+					return
 				perform_touchy_sprite(self, self.area, sprite, self.log)
 							
 	

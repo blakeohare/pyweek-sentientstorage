@@ -1,3 +1,17 @@
+
+MONOPOLY_INDEX = [
+	(87, 141),
+	(87, 121),
+	(109, 106),
+	(142, 97),
+	(177, 97),
+	(210, 106),
+	(231, 121),
+	(231, 141)
+]
+
+ALL_TOKEN_KEYS = ['tophat', 'scottie', 'wheelbarrow', 'racecar', 'horse', 'battleship', 'boot', 'thimble']
+
 class Area:
 	def __init__(self, name, log):
 		self.id = name
@@ -6,6 +20,17 @@ class Area:
 		self.sprites_by_layers = None
 		self.parse_level_file(name, log)
 		
+		tokens = []
+		if name == 'games2':
+			for token in ALL_TOKEN_KEYS:
+				if log.get_int('HAS_' + $string_upper(token), 0) == 2:
+					index = log.get_int($string_upper(token) + '_INDEX', 0)
+					coords = MONOPOLY_INDEX[index]
+					x = coords[0]
+					y = coords[1]
+					$list_add(self.sprites, Sprite(token, x, y))
+					
+			
 		self.train_go = False
 		self.train_counter = 0
 		
