@@ -1,4 +1,4 @@
-MUSIC: attic: .8
+MUSIC: shrineoftheshoe: .8
 
 LAYERS: bg1
 LAYER_DATA: bg1: backgrounds/games2-1, -999999
