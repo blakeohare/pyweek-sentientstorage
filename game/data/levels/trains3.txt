@@ -1,8 +1,8 @@
 MUSIC: wubwub: .8
 
-LAYERS: bg1
+LAYERS: bg1, bg2
 LAYER_DATA: bg1: backgrounds/trains3-1, -999999
-
+LAYER_DATA: bg2, backgrounds/trains3-2, 83
 SCALE: half
 
 # Walls-n-stuff
@@ -26,7 +26,7 @@ STARTFROM: trains2: 209, 116
 DOOR: trains2: 222, 104, 23, 24
 
 ADD_SPRITE: dj, 160, 95
-ADD_SPRITE: trainpog, 198, 93
+<HAS_TRAINPOG:0>ADD_SPRITE: trainpog, 198, 93
 ADD_SPRITE: raver1, 92, 142
 ADD_SPRITE: raver2, 134, 148
 ADD_SPRITE: raver1, 159, 131

@@ -33,7 +33,10 @@ def joust2d(scene, args):
 
 def joust2e(scene, args):
 	scene.invoke_dialog([
-		"King: I declare Sir Alex the victor!"], joust2f, None)
+		"King: I declare Sir Alex the victor!",
+		"",
+		"[You receive a horse shaped trophy]"], joust2f, None)
+	scene.log.set_int('HAS_HORSE', 1)
 
 def joust2f(scene, args):
 	scene.invoke_dialog([

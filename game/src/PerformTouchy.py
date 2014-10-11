@@ -98,7 +98,7 @@ def pt_misc_give_glue(scene, area, log):
 	log.set_int('HAS_PHOTO1', 1)
 	scene.invoke_dialog([
 		"Wow, it's as good as new.",
-		"Did you say you go this from",
+		"Did you say you got this from",
 		"the dinosaurs? Maybe it's time",
 		"to end this silly war.",
 		"Your country thanks you with",
