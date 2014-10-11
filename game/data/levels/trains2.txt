@@ -6,5 +6,10 @@ SCALE: half
 STARTFROM: trains1: 100, 140
 STARTFROM: trains3: 188, 103
 
-DOOR: trains1: 315, 203, 99, 99
 DOOR: trains3: 179, 66, 21, 29
+
+<HAS_SCOTTIE:0>ADD_SPRITE:scottie, 41, 146
+
+ADD_SPRITE:traincar, 282, 165
+ADD_SPRITE:traincar, 231, 178
+ADD_SPRITE:enginewithwheel, 180, 183

@@ -24,6 +24,14 @@ class Sprite:
 				self.dx = -2
 			elif c == $int(rate / 2):
 				self.dx = 2
+		elif type == 'scottie':
+			if area.id == 'trains2':
+				c = counter % 50
+				if c < 25:
+					self.dx = -1
+				else:
+					self.dx = 1
+				
 			
 	
 	def update(self, area):
@@ -104,6 +112,7 @@ class Sprite:
 					elif self.type == 'passenger1awake': self.renderer = sr_passenger1awake
 					elif self.type == 'passenger2': self.renderer = sr_passenger2
 					elif self.type == 'rubberband': self.renderer = sr_rubberband
+					elif self.type == 'scottie': self.renderer = sr_scottie
 					elif self.type == 'teleporter': self.renderer = sr_teleporter
 					elif self.type == 'thimble': self.renderer = sr_thimble
 					elif self.type == 'tophat': self.renderer = sr_tophat
@@ -151,6 +160,7 @@ def sr_passenger1awake(sprite, screen, images, rc): draw_image_centered(screen, 
 def sr_passenger2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger2'])
 def sr_racecar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/racecar'])
 def sr_rubberband(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/rubberband_ground'])
+def sr_scottie(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/scottie'])
 def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])
 def sr_tophat(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/tophat'])
 def sr_traincar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/traincar'])
