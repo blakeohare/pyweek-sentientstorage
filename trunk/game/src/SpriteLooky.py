@@ -22,6 +22,12 @@ def sprite_looky_talky(scene, sprite, is_looky):
 					return slt_invoke_basic(scene, ["The tracks are a mess.", "If only I could transform into", "a giant and rearrange them", "myself"])
 			else:
 				return slt_invoke_basic(scene, ["All aboard!"])
+	if id == 'guard':
+		if is_talky:
+			if log.get_int('GATE_OPEN', 0) == 1:
+				return slt_invoke_basic(scene, ["Be careful."])
+			else:
+				return slt_invoke_basic(scene, ["Only armed soldiers are allowed", "beyond this point."])
 	if id == 'hippochoke':
 		if is_looky:
 			return slt_invoke_basic(scene, ["It looks like he's choking."])

@@ -142,6 +142,18 @@ class Area:
 		if teleporter != None:
 			$list_add(self.sprites, Sprite('teleporter', teleporter[0], teleporter[1]))
 	
+	def remove_block_at(self, x, y):
+		found = None
+		for i in range($list_length(self.blocks)):
+			block = self.blocks[i]
+			if block[0] < x and block[1] < y and block[2] > x and block[3] > y:
+				found = i
+				break
+		
+		if found != None:
+			$list_remove(self.blocks, i)
+		
+	
 	def update(self, counter, walk_scene):
 		new_sprites = []
 		for sprite in self.sprites:

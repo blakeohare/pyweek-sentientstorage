@@ -5,6 +5,11 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 			if sprite.type == 'mothercar1':
 				if item == 'bluepin':
 					ai_give_pin_to_mother(walky_surface, sprite, area, log)
+	elif area_id == 'misc2':
+		if sprite != None and sprite.type == 'guard':
+			if item == 'bow':
+				if log.get_int('GATE_OPEN', 0) == 0:
+					ai_shooting_game(walky_surface, area, log)
 	elif area_id == 'sports1':
 		if sprite != None:
 			if sprite.type == 'bballplayer1' or sprite.type == 'bballplayer2' or sprite.type == 'bballplayer3':
@@ -22,6 +27,18 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 	elif area_id == 'trains3':
 		if item == 'wizard':
 			ai_release_wizard(walky_surface, area, log)
+
+
+def ai_shooting_game2(scene, args):
+	scene.next = ShootingGame(scene)
+	
+def ai_shooting_game(walky_surface, area, log):
+	walky_surface.invoke_dialog([
+		"I see you have a bow and arrow.",
+		"A bit unconventional, but I'll",
+		"let it pass. As long as you can",
+		"use it. Show me on that target",
+		"over there."], ai_shooting_game2, [])
 
 def ai_release_wizard(walky_surface, area, log):
 	log.set_int('HAS_WIZARD', 2)
