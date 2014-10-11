@@ -21,6 +21,7 @@ class Area:
 		self.music = None
 		self.parse_level_file(name, log)
 		self.volume = 1
+		self.log = log
 		
 		tokens = []
 		if name == 'games2':
@@ -186,6 +187,7 @@ class Area:
 		
 	
 	def update(self, counter, walk_scene):
+		
 		new_sprites = []
 		for sprite in self.sprites:
 			sprite.update(self)
@@ -346,7 +348,13 @@ class Area:
 					height = region[3] - region[1]
 					$draw_rectangle(screen, left, top, width, height, 0, 128, 0)
 					$draw_rectangle(screen, left + 1, top + 1, width - 2, height - 2, 0, 255, 0)
-	
+		if self.id == 'trains3' and self.log.get_int('HAS_WIZARD', 0) == 2:
+			c = rc % 6
+			if c < 3:
+				img = images['backgrounds/strobe1']
+			else:
+				img = images['backgrounds/strobe2']
+			$image_blit(screen, img, 0, 0)
 	def sort_sprites(self):
 		new_list = []
 		for sprite in self.sprites:
