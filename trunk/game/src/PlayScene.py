@@ -18,6 +18,9 @@ class PlayScene:
 	def update(self, events):
 		actions = []
 		
+		if self.log.get_int('RESET', 0) == 1:
+			self.next = TitleScene()
+		
 		# if it was removed from your inventory it should immediately disappear
 		if self.active_item != None:
 			if self.log.get_int('HAS_' + $string_upper(self.active_item), 0) != 1:

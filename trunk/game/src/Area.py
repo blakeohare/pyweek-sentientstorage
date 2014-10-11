@@ -230,7 +230,20 @@ class Area:
 			if walk_scene.log.get_int('KNIGHTS_SHPIEL', 0) == 0:
 				$list_add(walk_scene.timeouts, [3, knights_shpiel_1, []])
 		
-		if self.id == 'misc3':
+		if self.id == 'attic':
+			if self.log.get_int('INTRO_SHOWN', 0) == 0:
+				self.log.set_int('INTRO_SHOWN', 1)
+				cs_attic_intro1(walk_scene)
+			elif self.log.get_int('ENDING_SHOWN', 0) == 0:
+				total = 0
+				for i in range(1, 6):
+					total += self.log.get_int('HAS_PHOTO' + $str(i), 0)
+				
+				if total == 5:
+					self.log.set_int('ENDING_SHOWN', 1)
+					cs_attic_ending1(walk_scene)
+					
+		elif self.id == 'misc3':
 			dino_state = walk_scene.log.get_int('DINO_STATE', 0)
 			if dino_state == 0:
 				# T-Rex chases you
