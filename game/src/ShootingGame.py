@@ -118,10 +118,10 @@ class ShootingGame:
 					self.next.next = self.next
 					tries = $str(self.tries)
 					suffix = 'th'
-					digits = self.tries % 100
+					digits = $int(self.tries % 100)
 					if digits == 11 or digits == 12 or digits == 13: suffix = 'th'
 					else:
-						digit = self.tries % 10
+						digit = $int(self.tries % 10)
 						if digit == 1: suffix = 'st'
 						elif digit == 2: suffix = 'nd'
 						elif digit == 3: suffix = 'rd'

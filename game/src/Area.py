@@ -321,7 +321,7 @@ class Area:
 				layer_index += 1
 		
 		if self.id == 'trains2':
-			c = $int(rc / 6) % 4
+			c = $int($int(rc / 6) % 4)
 			if c == 0:
 				$image_blit(screen, images['backgrounds/trains2-2'], 0, 0)
 			elif c == 1 or c == 3:
