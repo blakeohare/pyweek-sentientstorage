@@ -37,6 +37,9 @@ def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 			pt_games_hippo_heimlich(walking_surface, area, game_log, sprite, d)
 		elif type == 'racecar':
 			pt_games_take_racecar(walking_surface, area, game_log, sprite, d)
+	elif area_id == 'games2':
+		if type == 'getoutofjail': pt_games_take_getoutofjail(walking_surface, area, game_log, sprite, d)
+		elif type == 'photo4': pt_games_take_photo4(walking_surface, area, game_log, sprite, d)
 	elif area_id == 'legos2':
 		if type == 'bow': pt_misc_take_bow(walking_surface, area, game_log, sprite, d)
 		elif type == 'legopog': pt_misc_take_legopog(walking_surface, area, game_log, sprite, d)
@@ -134,6 +137,26 @@ def pt_take_trainpog(walking_surface, area, game_log, sprite, player_distance):
 		walking_surface.invoke_dialog(
 			["Alex takes the pog."],
 			pt_take_trainpog_doer, [sprite])
+	
+def pt_take_photo4_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_PHOTO4', 1)
+def pt_games_take_photo4(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["You found a photo piece!."],
+			pt_take_photo4_doer, [sprite])
+
+def pt_take_getoutofjail_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_GETOUTOFJAIL', 1)
+def pt_games_take_getoutofjail(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["This seems rather useful."],
+			pt_take_getoutofjail_doer, [sprite])
 
 def pt_take_volcanopog_doer(walking_surface, args):
 	sprite = args[0]

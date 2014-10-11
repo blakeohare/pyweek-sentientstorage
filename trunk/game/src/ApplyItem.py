@@ -22,6 +22,29 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 					coord = MONOPOLY_INDEX[i]
 					sprite = Sprite(item, coord[0], coord[1])
 					$list_add(area.sprites, sprite)
+		
+		if log.get_int('HAS_PHOTO4', 0) == 0:
+			total = 0
+			for i in range(1, 9):
+				if log.get_int("SLOT" + $str(i) + "_TAKEN", 0) == 1:
+					total += 1
+			if total == 8:
+				log.set_int("SHOW_PHOTO4", 1)
+				log.set_int("SHOW_GETOUTOFJAIL", 1)
+				s1 = Sprite('photo4', 160, 0)
+				s2 = Sprite('getoutofjail', 160, 0)
+				s1.ghost = True
+				s2.ghost = True
+				w1 = [(160, 0)]
+				w2 = [(160, 0)]
+				for i in range(40):
+					x = $math_sin(i * 3.14159 * 2 / 20) * 80 * i / 40
+					$list_add(w1, (-x + 160, i * 2))
+					$list_add(w2, (x + 160, i * 2))
+				s1.waypoints = w1
+				s2.waypoints = w2
+				$list_add(area.sprites, s1)
+				$list_add(area.sprites, s2)
 	elif area_id == 'misc2':
 		if sprite != None and sprite.type == 'guard':
 			if item == 'bow':

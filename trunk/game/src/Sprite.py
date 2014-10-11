@@ -141,6 +141,7 @@ class Sprite:
 					elif self.type == 'enginewithwheel': self.renderer = sr_enginewithwheel
 					elif self.type == 'gatedown': self.renderer = sr_gatedown
 					elif self.type == 'gateup': self.renderer = sr_gateup
+					elif self.type == 'getoutofjail': self.renderer = sr_getoutofjail
 					elif self.type == 'guard': self.renderer = sr_guard
 					elif self.type == 'hippochoke': self.renderer = sr_hippochoke
 					elif self.type == 'hipposafe': self.renderer = sr_hipposafe
@@ -155,6 +156,7 @@ class Sprite:
 					elif self.type == 'passenger1sleeping': self.renderer = sr_passenger1sleeping
 					elif self.type == 'passenger1awake': self.renderer = sr_passenger1awake
 					elif self.type == 'passenger2': self.renderer = sr_passenger2
+					elif self.type == 'photo4': self.renderer = sr_photo4
 					elif self.type == 'racecar': self.renderer = sr_racecar
 					elif self.type == 'raver1': self.renderer = sr_raver1
 					elif self.type == 'raver2': self.renderer = sr_raver2
@@ -209,6 +211,7 @@ def sr_enginenowheel(sprite, screen, images, rc): draw_image_centered(screen, sp
 def sr_enginewithwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginewithwheel'])
 def sr_gatedown(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/gatedown'])
 def sr_gateup(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/gateup'])
+def sr_getoutofjail(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/getoutofjail'])
 def sr_guard(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/guard'])
 def sr_hippochoke(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/choking'])
 def sr_hipposafe(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/hippo'])
@@ -221,6 +224,7 @@ def sr_legopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, 
 def sr_passenger1sleeping(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger1sleeping'])
 def sr_passenger1awake(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger1awake'])
 def sr_passenger2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger2'])
+def sr_photo4(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/photo4'])
 def sr_raver1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/raver1'])
 def sr_raver2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/raver2'])
 def sr_racecar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/racecar'])
