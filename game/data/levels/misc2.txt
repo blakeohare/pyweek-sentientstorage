@@ -1,5 +1,7 @@
-LAYERS: bg1
+LAYERS: bg1, backfence, frontfence
 LAYER_DATA: bg1: backgrounds/misc2-1, -999999
+LAYER_DATA: backfence: backgrounds/misc2-2, 89
+LAYER_DATA: frontfence: backgrounds/misc2-3, 130
 
 SCALE: half
 
