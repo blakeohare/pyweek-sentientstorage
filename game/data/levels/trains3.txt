@@ -3,6 +3,22 @@ LAYER_DATA: bg1: backgrounds/trains3-1, -999999
 
 SCALE: half
 
+# Walls-n-stuff
+BLOCK: 0, 0, 83, 208
+BLOCK: 64, 0, 999, 95
+BLOCK: 211, 93, 34, 34, TR
+BLOCK: 239, 93, 68, 115
+BLOCK: 79, 151, 999, 999
+
+# Casettes
+BLOCK: 76, 85, 56, 45
+
+# DJ stand
+BLOCK: 144, 90, 33, 15
+
+#Head Phones
+BLOCK: 130, 93, 25, 27, TL
+
 STARTFROM: trains2: 209, 116
 
-DOOR: trains2: 217, 82, 15, 42
+DOOR: trains2: 222, 104, 23, 24

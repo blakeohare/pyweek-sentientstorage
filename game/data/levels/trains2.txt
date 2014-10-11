@@ -4,9 +4,21 @@ LAYER_DATA: bg1: backgrounds/trains2-1, -999999
 SCALE: half
 
 STARTFROM: trains1: 100, 140
-STARTFROM: trains3: 188, 103
+STARTFROM: trains3: 171, 143
 
-DOOR: trains3: 179, 66, 21, 29
+DOOR: trains3: 147, 112, 37, 26
+
+# Back wall
+BLOCK: 0, 0, 999, 97
+
+# Box
+BLOCK: 0, 97, 61, 42, TR
+BLOCK: 50, 75, 199, 44
+BLOCK: 58, 118, 192, 21, TL
+
+#Track
+BLOCK: 0, 143, 320, 54, BR
+BLOCK: 0, 197, 999, 999
 
 <HAS_SCOTTIE:0>ADD_SPRITE:scottie, 41, 146
 
