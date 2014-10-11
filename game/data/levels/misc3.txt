@@ -1,4 +1,4 @@
-MUSIC: plasticheroes : .8
+MUSIC: thunderlizards : .8
 
 LAYERS: bg1, tree
 LAYER_DATA: bg1: backgrounds/misc3-1, -999999
