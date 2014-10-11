@@ -45,6 +45,13 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 				s2.waypoints = w2
 				$list_add(area.sprites, s1)
 				$list_add(area.sprites, s2)
+	elif area_id == 'legos2':
+		if item == 'getoutofjail':
+			pos = get_mouse_position()
+			x = pos[0]
+			y = pos[1]
+			if x > 251 and y < 85 and y > 50:
+				ai_free_king(walky_surface)
 	elif area_id == 'misc2':
 		if sprite != None and sprite.type == 'guard':
 			if item == 'bow':
@@ -81,6 +88,55 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 	elif area_id == 'trains3':
 		if item == 'wizard':
 			ai_release_wizard(walky_surface, area, log)
+
+def ai_free_king(scene):
+	if scene.log.get_int("LEGO_STATE", 0) == 2:
+		return
+	scene.log.set_int('LEGO_STATE', 2)
+	scene.log.set_int('HAS_GETOUTOFJAIL', 2)
+	area = scene.area
+	sadman = area.get_sprite_by_type('sadman')
+	sadman.dead = True
+	trueking = Sprite('trueking', 300, 98)
+	$list_add(area.sprites, trueking)
+	scene.invoke_dialog(["As if by magic, the police", "car door opens."], ai_free_king2, None)
+def ai_free_king2(scene, args):
+	scene.invoke_dialog([
+		"Gasp! It's the true king of",
+		"Legoville!"], ai_free_king3, None)
+def ai_free_king3(scene, args):
+	scene.invoke_dialog([
+		"True King: And I challenge you,",
+		"false king, to an epic cinematic",
+		"duel to death!"], ai_free_king4, None)
+def ai_free_king4(scene, args):
+	scene.invoke_dialog([
+		"False King: I accept!"], ai_free_king5, None)
+def ai_free_king5(scene, args):
+	sprite = Sprite('cinematichack', 160, 208)
+	falseking = scene.area.get_sprite_by_type('king')
+	trueking = scene.area.get_sprite_by_type('trueking')
+	trueking.x = falseking.x
+	trueking.y = falseking.y
+	falseking.dead = True
+	$list_add(scene.area.sprites, sprite)
+	$list_add(scene.timeouts, [120, ai_free_king6a, []])
+def ai_free_king6a(scene, args):
+	scene.area.get_sprite_by_type('cinematichack').dead = True
+	$list_add(scene.timeouts, [10, ai_free_king6b, []])
+def ai_free_king6b(scene, args):
+	$list_add(scene.timeouts, [1, ai_free_king7, []])
+def ai_free_king7(scene, args):
+	scene.invoke_dialog([
+		"Long live the new king!"], ai_free_king8, None)
+def ai_free_king8(scene, args):
+	scene.invoke_dialog([
+		"True King: Our kingdom is in",
+		"your debt, Sir Alex. Please",
+		"take this photo scrap as a",
+		"token of our appreciation."], None, None)
+	scene.log.set_int('HAS_PHOTO5', 1)
+	
 
 def ai_vent_parachute(scene, area, log):
 	dx = area.player.x - 155
