@@ -24,16 +24,16 @@ class WalkingSurface:
 						# I don't know why this isn't working the normal way
 						pt_misc_hurl_self(self, self.area, self.log, self.area.get_sprite_by_type('rubberband2'), 0)
 						return
-		region = self.area.get_region_id(x, y)
-		if region != None:
-			perform_touchy(self, self.area, region, self.log, x, y)
+		
+		sprite = self.area.get_sprite_at(x, y)
+		if sprite != None:
+			if self.area.id == 'games2' and sprite.type != 'house' and sprite.type != 'getoutofjail' and sprite.type != 'photo4':
+				return
+			perform_touchy_sprite(self, self.area, sprite, self.log)
 		else:
-			sprite = self.area.get_sprite_at(x, y)
-			if sprite != None:
-				if self.area.id == 'games2' and sprite.type != 'house' and sprite.type != 'getoutofjail' and sprite.type != 'photo4':
-					return
-				perform_touchy_sprite(self, self.area, sprite, self.log)
-							
+			region = self.area.get_region_id(x, y)
+			if region != None:
+				perform_touchy(self, self.area, region, self.log, x, y)		
 	
 	def click_look(self, x, y):
 		sprite = self.area.get_sprite_at(x, y)
