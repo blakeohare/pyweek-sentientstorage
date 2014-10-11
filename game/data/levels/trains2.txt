@@ -3,7 +3,7 @@ LAYER_DATA: bg1: backgrounds/trains2-1, -999999
 
 SCALE: half
 
-STARTFROM: trains1: 100, 140
+STARTFROM: trains1: 140, 165
 STARTFROM: trains3: 171, 143
 
 DOOR: trains3: 147, 112, 37, 26

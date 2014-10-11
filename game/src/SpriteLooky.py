@@ -22,6 +22,21 @@ def sprite_looky_talky(scene, sprite, is_looky):
 					return slt_invoke_basic(scene, ["The tracks are a mess.", "If only I could transform into", "a giant and rearrange them", "myself"])
 			else:
 				return slt_invoke_basic(scene, ["All aboard!"])
+	elif id == 'dj':
+		if is_talky:
+			if log.get_int('HAS_WIZARD', 0) == 2:
+				if log.get_int('HAS_PHOTO3', 0) == 0:
+					log.set_int('HAS_PHOTO3', 1)
+					return slt_invoke_basic(scene, [
+						"Awesome strobe!",
+						"Here, take this.",
+						"[You receive a photo scrap]"])
+				else:
+					return slt_invoke_basic(scene, [
+						"Whoooooo!"])
+			else:
+				return slt_invoke_basic(scene, [
+					"It'd be nice if we had", "some wicked lighting effects."])
 	if id == 'guard':
 		if is_talky:
 			if log.get_int('GATE_OPEN', 0) == 1:
