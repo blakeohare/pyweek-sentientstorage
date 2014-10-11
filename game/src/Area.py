@@ -264,7 +264,7 @@ class Area:
 					top = bottom - sprite.last_height
 					if y > top and y < bottom:
 						return sprite
-			i += 1
+			i -= 1
 		return None
 	
 	def get_door(self, x, y):
@@ -345,6 +345,8 @@ class Area:
 			sprite.sorty = sprite.y
 			if sprite.type == 'tophat' and self.id == 'trains1':
 				sprite.sorty += 9999
+			if sprite.type == 'legohack':
+				sprite.sorty += 9999999
 			$list_add(new_list, sprite)
 		
 		$list_shuffle(new_list)

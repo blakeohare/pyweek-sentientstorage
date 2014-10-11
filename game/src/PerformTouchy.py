@@ -43,6 +43,7 @@ def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 	elif area_id == 'legos2':
 		if type == 'bow': pt_misc_take_bow(walking_surface, area, game_log, sprite, d)
 		elif type == 'legopog': pt_misc_take_legopog(walking_surface, area, game_log, sprite, d)
+		elif type == 'joust': pt_take_joust(walking_surface, area, game_log, sprite, d)
 	elif area_id == 'legos3':
 		if type == 'bluepin': pt_misc_take_bluepin(walking_surface, area, game_log, sprite, d)
 		elif type == 'trainwheel': pt_misc_take_trainwheel(walking_surface, area, game_log, sprite, d)
@@ -128,6 +129,16 @@ def pt_hurl_self3(scene, args):
 	scene.area.player.ghost = False
 	scene.area.player.v = v
 
+def pt_take_joust_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_BAT', 1)
+def pt_take_joust(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["Guess he won't be needing this,", "anymore."],
+			pt_take_joust_doer, [sprite])
+	
 def pt_take_trainpog_doer(walking_surface, args):
 	sprite = args[0]
 	sprite.dead = True
