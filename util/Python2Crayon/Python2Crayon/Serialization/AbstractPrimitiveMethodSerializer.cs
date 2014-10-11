@@ -91,6 +91,8 @@ namespace Python2Crayon.Serialization
 		protected abstract void X_MathAbs(List<string> output, Expression num);
 		protected abstract void X_MathSin(List<string> output, Expression theta);
 
+		protected abstract void X_MusicPlay(List<string> output, Expression song);
+
 		protected abstract void X_ParseInt(List<string> output, Expression value);
 
 		protected abstract void X_Print(List<string> output, Expression value);

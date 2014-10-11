@@ -1,3 +1,5 @@
+MUSIC: plasticheroes : .8
+
 LAYERS: bg1, fg
 LAYER_DATA: bg1: backgrounds/misc4-1, -999999
 LAYER_DATA: fg: backgrounds/misc4-2, 99999

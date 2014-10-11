@@ -52,7 +52,7 @@ namespace Python2Crayon
 			string[] imageFiles = FileCrawler.Crawl(imagesFolder, ".png", ".jpg");
 			string imageFilesString = string.Join("|", imageFiles).Replace('\\', '/');
 
-			string[] audioFiles = FileCrawler.Crawl(audioFolder, ".ogg");
+			string[] audioFiles = FileCrawler.Crawl(audioFolder, ".ogg", ".mp3");
 
 			string[] textFiles = FileCrawler.Crawl(dataFolder, ".txt", ".dat", ".json", ".xml");
 			StringBuilder textFileStoreBuilder = new StringBuilder();
