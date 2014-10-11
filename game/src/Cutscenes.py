@@ -39,9 +39,13 @@ def cs_attic_ending1(scene):
 		"of the photo! Carefully you tape",
 		"them back together, and the",
 		"smiling faces of your parents",
-		"give you a sense of peace."], cs_attic_ending2, None)
+		"give you a sense of peace."], cs_attic_ending2a, None)
 
-def cs_attic_ending2(scene, args):
+def cs_attic_ending2a(scene, args):
+	scene.render_photo = True
+	$list_add(scene.timeouts, [90, cs_attic_ending2b, []])
+	
+def cs_attic_ending2b(scene, args):
 	scene.invoke_dialog([
 		"You regret not talking with your",
 		"dad more, especially after Mom",

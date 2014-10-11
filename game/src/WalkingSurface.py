@@ -11,6 +11,7 @@ class WalkingSurface:
 		self.look_show = False
 		self.next = self
 		self.timeouts = []
+		self.render_photo = False
 		
 	
 	def click_walk(self, x, y):
@@ -116,6 +117,8 @@ class WalkingSurface:
 	
 	def render(self, screen, images, rc):
 		self.area.render(screen, images, rc, self.block_show, self.look_show)
+		if self.render_photo:
+			$image_blit(screen, images['simple/photo'], 130, 74)
 	
 	def render_cursor(self, cursor_mode, active_item, screen, images):
 		if cursor_mode == CURSOR_WALK:

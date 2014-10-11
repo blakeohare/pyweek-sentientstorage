@@ -340,7 +340,7 @@ def sr_player_full(sprite, screen, images, rc):
 
 def sr_player_half(sprite, screen, images, rc):
 	k = player_get_image_key(sprite, rc)
-	draw_image_centered(screen, sprite, images['sprites/mc_half/s0' + k])
+	draw_image_centered(screen, sprite, images['sprites/mc_half/' + k])
 
 def sr_teleporter(sprite, screen, images, rc):
 	key = 'teleporter/frame' + $str($int($int(rc / 5) % 3) + 1)
