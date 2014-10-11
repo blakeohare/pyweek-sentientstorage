@@ -34,7 +34,20 @@ BLOCK: 0, 198, 320, 10
 #Bottom
 BLOCK: 300, 0, 20, 208
 #Right
+BLOCK: 0, 0, 5, 208
+#Left
 
+REGION_ID: life_spinner: 15, 104, 177, 91
+REGION_ID: ouija: 233, 0, 87, 82
+REGION_ID: path: 93, 0, 86, 94
+REGION_ID: path: 171, 73, 41, 26
+REGION_ID: path: 156, 96, 131, 35
+REGION_ID: teleporter: 5, 158, 30, 42
+
+LOOKY: teleporter: This sparkly thing looks like it might|teleport you back to the attic!
+LOOKY: life_spinner: Critical miss: you swing your vorpal|blade and accidentally lop off your|own leg-oops, wrong game!
+LOOKY: path: But which is the road less travelled?
+LOOKY: ouija: Pretty sure you actually contacted a|spirit once through this thing, but|all it ever said was "Zuul!"
 
 <HAS_BLUEPIN:0>ADD_SPRITE:mothercar1, 49, 86
 <HAS_BLUEPIN:1>ADD_SPRITE:mothercar1, 49, 86
