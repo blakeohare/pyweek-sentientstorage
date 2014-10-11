@@ -319,12 +319,13 @@ def pt_misc_take_legopog(walking_surface, area, game_log, sprite, player_distanc
 def pt_misc_take_bluepin_doer(walking_surface, args):
 	log = walking_surface.log
 	if log.get_int('HAS_BLUEPIN', 0) == 0:
-		walking_surface.log.set_int('HAS_BLUEPIN', 1)
+		log.set_int('HAS_BLUEPIN', 1)
 def pt_misc_take_bluepin(walking_surface, area, game_log, sprite, player_distance):
-	if dist_check(walking_surface, sprite, area, 40):
-		walking_surface.invoke_dialog(
-			["This doesn't belong here."],
-			pt_misc_take_bluepin_doer, [sprite])
+	if game_log.get_int('HAS_BLUEPIN', 0) == 0:
+		if dist_check(walking_surface, sprite, area, 40):
+			walking_surface.invoke_dialog(
+				["This doesn't belong here."],
+				pt_misc_take_bluepin_doer, [sprite])
 
 def pt_misc_take_rubberband_doer(walking_surface, args):
 	sprite = args[0]
