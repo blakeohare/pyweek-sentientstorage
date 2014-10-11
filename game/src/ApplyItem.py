@@ -72,6 +72,7 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 				elif log.get_int('HAS_WRAPPEDGUM', 0) != 0:
 					if item == 'house' or item == 'volcanopog' or item == 'legopog' or item == 'trainpog':
 						ai_give_base_to_player(walky_surface, sprite, area, log, item)
+				
 	elif area_id == 'trains1':
 		if sprite != None:
 			if sprite.type == 'conductor' or sprite.type == 'enginenowheel':
@@ -222,18 +223,29 @@ def ai_give_base_to_player(walky_surface, sprite, area, log, item):
 	log.set_int('HAS_' + $string_upper(item), 2)
 	
 	sum = log.get_int('HAS_HOUSE', 0) + log.get_int('HAS_TRAINPOG', 0) + log.get_int('HAS_LEGOPOG', 0) + log.get_int('HAS_VOLCANOPOG', 0)
+	if item == 'legopog':
+		sprite = Sprite('legopog', 147, 159)
+	elif item == 'volcanopog':
+		sprite = Sprite(item, 253, 160)
+	elif item == 'trainpog':
+		sprite = Sprite(item, 239, 100)
+	else:
+		sprite = Sprite(item, 147, 96)
+	$list_add(area.sprites, sprite)
+	
 	if sum == 8:
 		walky_surface.invoke_dialog([
 			"Hey, we have all the bases now!",
 			"Take this as a token of our ",
-			"appreciation"
-			], None, None)
-	else:
-		walk_surface.invoke_dialog([
-			"Thanks! This will make seeing the",
-			"bases easier.",
+			"appreciation",
 			"",
 			"(He gives you a photo piece)"
+			], None, None)
+		log.set_int('HAS_PHOTO2', 1)
+	else:
+		walky_surface.invoke_dialog([
+			"Thanks! This will make seeing the",
+			"bases easier."
 		], None, None)
 		
 
