@@ -20,6 +20,7 @@ class TitleScene:
 					action = 'load'
 				elif x > 115 and x < 164 and y > 191 and y < 216:
 					action = 'exit'
+				action = 'new'
 		
 		if action == 'new':
 			log = GameLog()
