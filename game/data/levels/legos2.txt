@@ -1,10 +1,29 @@
-LAYERS: bg1
+LAYERS: bg1, fg
 LAYER_DATA: bg1: backgrounds/legos2-1, -999999
-
+LAYER_DATA: viewbox: backgrounds/legos2-2, 83
+LAYER_DATA: fg: backgrounds/legos2-3, 99999
 SCALE: half
 
-STARTFROM: legos1: 250, 180
-STARTFROM: legos3: 41, 81
+# spectator box
+BLOCK: 72, 0, 202, 50
+BLOCK: 80, 27, 16, 65
+BLOCK: 204, 18, 36, 74
+BLOCK: 85, 64, 134, 28
+
+# left wall
+BLOCK: 0, 0, 89, 61
+
+# Car
+BLOCK: 226, 35, 999, 55
+
+# Tree
+BLOCK: 228, 73, 24, 39
+
+# lower area
+BLOCK: 0, 176, 999, 999
+
+STARTFROM: legos1: 303, 130
+STARTFROM: legos3: 48, 75
 
 DOOR: legos1: 310, 86, 999, 999
 DOOR: legos3: 33, 23, 20, 50
