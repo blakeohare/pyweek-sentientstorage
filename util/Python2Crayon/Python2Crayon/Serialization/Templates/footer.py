@@ -35,7 +35,7 @@ def play_music(song):
 		pygame.mixer.music.stop()
 	else:
 		_current_song[0] = song
-		path = 'audio' + os.sep + 'music' + os.sep + song + '.mp3'
+		path = 'audio' + os.sep + 'music' + os.sep + song + '.ogg'
 		pygame.mixer.music.load(path)
 		pygame.mixer.music.play(-1)
 
