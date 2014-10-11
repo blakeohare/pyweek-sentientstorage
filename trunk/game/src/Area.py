@@ -187,6 +187,16 @@ class Area:
 		if counter == 3 and self.id == 'legos1':
 			if walk_scene.log.get_int('KNIGHTS_SHPIEL', 0) == 0:
 				$list_add(walk_scene.timeouts, [3, knights_shpiel_1, []])
+		
+		if counter == 1 and self.id == 'misc3':
+			if walk_scene.log.get_int('DINO_STATE', 0) == 1:
+				dinos_shpiel_1(walk_scene)
+	
+	def get_sprite_by_type(self, type):
+		for sprite in self.sprites:
+			if sprite.type == type:
+				return sprite
+		return None
 	
 	def get_sprite_at(self, x, y):
 		for sprite in self.sprites:

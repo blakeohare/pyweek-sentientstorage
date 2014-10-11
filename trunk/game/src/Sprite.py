@@ -1,3 +1,11 @@
+DIR_VECTORS = {
+	's': (0, 1),
+	'n': (0, -1),
+	'e': (1, 0),
+	'w': (-1, 0)
+}
+DIRS = ('n', 's', 'e', 'w')
+
 class Sprite:
 	def __init__(self, type, x, y):
 		self.type = type
@@ -12,7 +20,10 @@ class Sprite:
 		self.half = False
 		self.renderer = None
 		self.lifetime = 0
-		self.ghost = type == 'ball' # can pass through things
+		self.ghost = type == 'ball' or type == 'dino' or type == 'chewedgum' # can pass through things
+		self.teething = False
+		if type == 'dino':
+			self.v = 6.0
 	
 	def specific_update(self, type, area, counter):
 		if type == 'mothercar1' or type == 'mothercar2':
@@ -78,6 +89,20 @@ class Sprite:
 				return 'w'
 			else:
 				return 'e'
+		
+		closest_value = 999999999
+		closest_key = 's'
+		for d in DIRS:
+			vec = DIR_VECTORS[d]
+			tdx = vec[0] - dx
+			tdy = vec[1] - dy
+			dist = tdx * tdx + tdy * tdy
+			if dist < closest_value:
+				closest_value = dist
+				closest_key = d
+		return closest_key
+			
+			
 				
 			
 	def render(self, screen, images, rc):
@@ -98,6 +123,7 @@ class Sprite:
 					elif self.type == 'bow': self.renderer = sr_bow
 				else:
 					if self.type == 'conductor': self.renderer = sr_conductor
+					elif self.type == 'chewedgum': self.renderer = sr_chewedgum
 					elif self.type == 'dino': self.renderer = sr_dino
 					elif self.type == 'enginenowheel': self.renderer = sr_enginenowheel
 					elif self.type == 'enginewithwheel': self.renderer = sr_enginewithwheel
@@ -120,6 +146,7 @@ class Sprite:
 					elif self.type == 'rubberband': self.renderer = sr_rubberband
 					elif self.type == 'scottie': self.renderer = sr_scottie
 					elif self.type == 'teleporter': self.renderer = sr_teleporter
+					elif self.type == 'teeth': self.renderer = sr_teeth
 					elif self.type == 'thimble': self.renderer = sr_thimble
 					elif self.type == 'tophat': self.renderer = sr_tophat
 					elif self.type == 'traincar': self.renderer = sr_traincar
@@ -153,6 +180,7 @@ def sr_bballplayer3(sprite, screen, images, rc): draw_image_centered_directional
 def sr_bluepin(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/bluepin'])
 def sr_boot(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/boot'])
 def sr_bow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/bow'])
+def sr_chewedgum(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/chewedgum'])
 def sr_conductor(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/conductor'])
 def sr_dino(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/dinos/trex')
 def sr_enginenowheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginenowheel'])
@@ -179,6 +207,15 @@ def sr_traincar(sprite, screen, images, rc): draw_image_centered(screen, sprite,
 def sr_trainwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/trainwheel'])
 def sr_wheelbarrow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/wheelbarrow'])
 def sr_wizard(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/wizard')
+
+_sr_teeth_values = [0, 1, 2, 3, 2, 1, 0]
+def sr_teeth(sprite, screen, images, rc): 
+	if sprite.teething:
+		index = $int(rc / 3)
+		num = _sr_teeth_values[index % $list_length(_sr_teeth_values)]
+		draw_image_centered(screen, sprite, images['sprites/teeth/teeth' + $str(num)])
+	else:
+		draw_image_centered(screen, sprite, images['sprites/teeth/teeth0'])
 
 def sr_mothercar1(sprite, screen, images, rc):
 	key = 'sprites/mothercar/left1'

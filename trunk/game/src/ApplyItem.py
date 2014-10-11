@@ -10,6 +10,12 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 			if item == 'bow':
 				if log.get_int('GATE_OPEN', 0) == 0:
 					ai_shooting_game(walky_surface, area, log)
+	elif area_id == 'misc3':
+		if sprite != None and sprite.type == 'teeth':
+			if item == 'wrappedgum':
+				ai_teeth_chew_gum(walky_surface, area, sprite, log)
+		if item == 'chewedgum':
+			walky_surface.invoke_dialog(["Alex throws the gum at the T-Rex"], ai_throw_gum, None)
 	elif area_id == 'sports1':
 		if sprite != None:
 			if sprite.type == 'bballplayer1' or sprite.type == 'bballplayer2' or sprite.type == 'bballplayer3':
@@ -27,6 +33,35 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 	elif area_id == 'trains3':
 		if item == 'wizard':
 			ai_release_wizard(walky_surface, area, log)
+
+def ai_throw_gum2(scene, args):
+	scene.invoke_dialog([
+		"It looks like he's stuck"], None, None)
+def ai_throw_gum(scene, args):
+	area = scene.area
+	log = scene.log
+	sprite = Sprite('chewedgum', area.player.x, area.player.y)
+	sprite.v = 12.0
+	$list_add(sprite.waypoints, [142, 84])
+	dino = area.get_sprite_by_type('dino')
+	$list_add(dino.waypoints, [142, 87])
+	$list_add(scene.timeouts, [30 * 2, ai_throw_gum2, None])
+	log.set_int('HAS_CHEWEDGUM', 2)
+	log.set_int('DINO_STATE', 1)
+	$list_add(area.sprites, sprite)
+
+def ai_teeth_chew_gum2(scene, args):
+	sprite = args[0]
+	sprite.teething = False
+	scene.invoke_dialog([
+		"Alex's wrapped gum is now",
+		"chewed gum and a wrapper."], None, None)
+def ai_teeth_chew_gum(walky_surface, area, sprite, log):
+	sprite.teething = True
+	log.set_int('HAS_WRAPPEDGUM', 2)
+	log.set_int('HAS_WRAPPER', 1)
+	log.set_int('HAS_CHEWEDGUM', 1)
+	$list_add(walky_surface.timeouts, [30 * 3, ai_teeth_chew_gum2, [sprite]])
 
 
 def ai_shooting_game2(scene, args):
