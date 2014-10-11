@@ -1,6 +1,6 @@
-LAYERS: bg1
+LAYERS: bg1,wall
 LAYER_DATA: bg1: backgrounds/legos1-1, -999999
-
+LAYER_DATA: wall: backgrounds/legos1-2, 125
 SCALE: half
 
 STARTFROM: attic: 250, 180
@@ -42,11 +42,13 @@ REGION_ID: pine: 236, 81, 38, 66
 REGION_ID: gate: 158, 100, 37, 50
 REGION_ID: colored_blocks: 207, 91, 36, 44
 REGION_ID: blue_knight: 127, 49, 21, 37
-REGION_ID: yellow_knight: 196, 43, 18, 39
+REGION_ID: yellow_knight: 186, 43, 30, 39
 REGION_ID: wall: 111, 73, 132, 64
 REGION_ID: wall: 111, 73, 44, 92
 REGION_ID: flag: 247, 39, 25, 25
 REGION_ID: flag: 24, 12, 51, 50
+REGION_ID: wall: 25, 61, 86, 122
+
 
 LOOKY: teleporter: This sparkly thing looks like it might|teleport you back to the attic!
 LOOKY: palm: You feel warmer just standing by it.

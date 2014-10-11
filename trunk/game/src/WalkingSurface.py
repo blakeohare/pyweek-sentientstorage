@@ -11,6 +11,7 @@ class WalkingSurface:
 		self.look_show = False
 		self.next = self
 		self.timeouts = []
+		
 	
 	def click_walk(self, x, y):
 		self.player.set_waypoint(x, y)

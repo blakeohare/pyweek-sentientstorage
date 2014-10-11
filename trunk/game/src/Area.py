@@ -11,7 +11,8 @@ class Area:
 		
 		if name == 'trains2':
 			log.set_int('SAW_NIGHTCLUB', 1)
-	
+		
+		
 	def initialize_player(self, from_area):
 		if from_area == None:
 			coords = self.start_point
@@ -183,6 +184,9 @@ class Area:
 					walk_scene.switch_area('trains2')
 				else:
 					walk_scene.switch_area('trains1')
+		if counter == 3 and self.id == 'legos1':
+			if walk_scene.log.get_int('KNIGHTS_SHPIEL', 0) == 0:
+				$list_add(walk_scene.timeouts, [3, knights_shpiel_1, []])
 	
 	def get_sprite_at(self, x, y):
 		for sprite in self.sprites:

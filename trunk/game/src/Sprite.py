@@ -154,7 +154,7 @@ def sr_bluepin(sprite, screen, images, rc): draw_image_centered(screen, sprite, 
 def sr_boot(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/boot'])
 def sr_bow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/bow'])
 def sr_conductor(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/conductor'])
-def sr_dino(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images['sprites/misc/dino'])
+def sr_dino(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/dinos/trex')
 def sr_enginenowheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginenowheel'])
 def sr_enginewithwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginewithwheel'])
 def sr_gatedown(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/gatedown'])

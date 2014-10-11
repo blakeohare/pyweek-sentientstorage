@@ -9,4 +9,5 @@ def initialize_hacks(playscene):
 	#log.set_int('TRAIN_ARRANGE_READY', 1)
 	#log.set_int('TRAIN_RUNNING', 1)
 	#log.set_int('TRAIN_FIXED', 1)
-	#log.set_int('HAS_TRAINWHEEL', 2)
+	log.set_int('GATE_OPEN', 1)
+	log.set_int('HAS_GUM', 1)
