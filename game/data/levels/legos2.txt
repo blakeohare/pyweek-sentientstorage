@@ -27,6 +27,7 @@ STARTFROM: legos3: 48, 75
 
 DOOR: legos1: 310, 86, 999, 999
 DOOR: legos3: 33, 23, 20, 50
+DOOR: legos3: 183, 32, 21, 26
 
 <HAS_BOW:0>ADD_SPRITE: bow, 111, 95
 <HAS_LEGOPOG:0>ADD_SPRITE: legopog, 180, 95
