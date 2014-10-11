@@ -27,6 +27,7 @@ class Sprite:
 			self.v = 6.0
 		self.enforce_waypoint = False
 		self.stretched = False
+		self.is_moving = False
 	
 	def specific_update(self, type, area, counter):
 		if type == 'mothercar1' or type == 'mothercar2':
@@ -69,6 +70,7 @@ class Sprite:
 				self.dx = 1.0 * dx * self.v / dist
 				self.dy = 1.0 * dy * self.v / dist
 		if self.dx != 0 or self.dy != 0:
+			self.is_moving = True
 			dx = self.dx
 			dy = self.dy
 			self.last_direction = self.convert_vector_to_direction(dx, dy)
@@ -79,6 +81,8 @@ class Sprite:
 				self.y = newy
 			self.dx = 0
 			self.dy = 0
+		else:
+			self.is_moving = False
 	
 	def set_waypoint(self, tx, ty):
 		if $list_length(self.waypoints) > 0:
@@ -313,14 +317,30 @@ def sr_mothercar2(sprite, screen, images, rc):
 		key = 'sprites/mothercar/right2'
 	draw_image_centered(screen, sprite, images[key])
 
+def player_get_image_key(sprite, rc):
+	path = sprite.last_direction
+	num = 0
+	if sprite.is_moving:
+		c = $int($int(rc / 3) % 4)
+		if c == 2:
+			c = 0
+		elif c == 3:
+			c = 2
+		num = c
+	path += $str(num)
+	return path
+
 def sr_player_double(sprite, screen, images, rc):
-	draw_image_centered(screen, sprite, images['sprites/mc_double/s0_alt'])
+	k = player_get_image_key(sprite, rc)
+	draw_image_centered(screen, sprite, images['sprites/mc_double/'+ k])
 
 def sr_player_full(sprite, screen, images, rc):
-	draw_image_centered(screen, sprite, images['sprites/mc/s0_alt'])
+	k = player_get_image_key(sprite, rc)
+	draw_image_centered(screen, sprite, images['sprites/mc/' + k])
 
 def sr_player_half(sprite, screen, images, rc):
-	draw_image_centered(screen, sprite, images['sprites/mc_half/s0_alt'])
+	k = player_get_image_key(sprite, rc)
+	draw_image_centered(screen, sprite, images['sprites/mc_half/s0' + k])
 
 def sr_teleporter(sprite, screen, images, rc):
 	key = 'teleporter/frame' + $str($int(rc / 5) % 3 + 1)

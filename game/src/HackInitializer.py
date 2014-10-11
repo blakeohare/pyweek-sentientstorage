@@ -10,7 +10,7 @@ def initialize_hacks(playscene):
 	#log.set_int('TRAIN_RUNNING', 1)
 	#log.set_int('TRAIN_FIXED', 1)
 	#log.set_int('GATE_OPEN', 1)
-	#log.set_int('HAS_VOLCANOPOG', 2)
+	#log.set_int('HAS_GLUE', 1)
 	#log.set_int('HAS_LEGOPOG', 2)
 	#log.set_int('HAS_TRAINPOG', 2)
 	#log.set_int('HAS_HOUSE', 1)
