@@ -51,6 +51,15 @@ def perform_touchy_sprite(walking_surface, area, sprite, game_log):
 		if type == 'rubberband': pt_misc_take_rubberband(walking_surface, area, game_log, sprite, d)
 	elif area_id == 'trains1':
 		if type == 'tophat': pt_trains_take_tophat(walking_surface, area, game_log, sprite, d)
+		elif type == 'enginewithwheel' or type == 'traincar':
+			if game_log.get_int('TRAIN_RUNNING', 1) == 1:
+				pt_trains_board_train(walking_surface, area, game_log)
+	elif area_id == 'trains2':
+		if type == 'scottie':
+			pt_trains_take_scottie(walking_surface, area, game_log, sprite, d)
+		elif type == 'enginewithwheel' or type == 'traincar':
+			if game_log.get_int('TRAIN_RUNNING', 1) == 1:
+				pt_trains_board_train(walking_surface, area, game_log)
 			
 
 def dist_check(walking_surface, sprite, area, required_distance):
@@ -62,6 +71,27 @@ def dist_check(walking_surface, sprite, area, required_distance):
 		walking_surface.invoke_dialog(["You're not close enough."], None, None)
 		return False
 
+
+def pt_trains_board_train(walking_surface, area, game_log):
+	for sprite in area.sprites:
+		if sprite.type == 'enginewithwheel' or sprite.type == 'traincar':
+			pass
+		else:
+			sprite.x = 9999
+	area.train_go = True
+
+
+
+def pt_trains_take_scottie_doer(walking_surface, args):
+	sprite = args[0]
+	sprite.dead = True
+	walking_surface.log.set_int('HAS_SCOTTIE', 1)
+def pt_trains_take_scottie(walking_surface, area, game_log, sprite, player_distance):
+	if dist_check(walking_surface, sprite, area, 40):
+		walking_surface.invoke_dialog(
+			["Alex always wanted a dog.", "Therefore he shall steal this one."],
+			pt_trains_take_scottie_doer, [sprite])
+	
 def pt_misc_take_wheelbarrow_doer(walking_surface, args):
 	sprite = args[0]
 	sprite.dead = True

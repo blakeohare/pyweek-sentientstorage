@@ -5,7 +5,7 @@ LAYERS: bg1
 SCALE: half
 
 STARTFROM: attic: 100, 180
-STARTFROM: trains2: 10, 10
+STARTFROM: trains2: 92, 141
 
 DOOR: trains2: 0, 203, 5, 5
 
