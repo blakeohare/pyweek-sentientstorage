@@ -34,20 +34,20 @@ class Sprite:
 			self.dx = $math_sin(self.lifetime * 2 * 3.14159 / 100)
 		elif type == 'hippochoke':
 			rate = 30
-			c = counter % rate
+			c = $int(counter % rate)
 			if c == 0:
 				self.dx = -2
 			elif c == $int(rate / 2):
 				self.dx = 2
 		elif type == 'scottie':
 			if area.id == 'trains2':
-				c = counter % 50
+				c = $int(counter % 50)
 				if c < 25:
 					self.dx = -1
 				else:
 					self.dx = 1
 		elif type == 'raver1' or type == 'raver2':
-			c = counter % 15
+			c = $int(counter % 15)
 			if c == 2:
 				self.dy = -3
 			elif c == 7:
@@ -279,7 +279,7 @@ def sr_trueking(sprite, screen, images, rc): draw_image_centered(screen, sprite,
 def sr_joust(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/joust'])
 
 def sr_steam(sprite, screen, images, rc): 
-	c = (sprite.x + rc) % 60
+	c = $int((sprite.x + rc) % 60)
 	if c < 30 and (c > 20 or c < 10):
 		draw_image_centered(screen, sprite, images['simple/steam'])
 
@@ -293,7 +293,7 @@ _sr_teeth_values = [0, 1, 2, 3, 2, 1, 0]
 def sr_teeth(sprite, screen, images, rc): 
 	if sprite.teething:
 		index = $int(rc / 3)
-		num = _sr_teeth_values[index % $list_length(_sr_teeth_values)]
+		num = _sr_teeth_values[$int(index % $list_length(_sr_teeth_values))]
 		draw_image_centered(screen, sprite, images['sprites/teeth/teeth' + $str(num)])
 	else:
 		draw_image_centered(screen, sprite, images['sprites/teeth/teeth0'])
@@ -343,5 +343,5 @@ def sr_player_half(sprite, screen, images, rc):
 	draw_image_centered(screen, sprite, images['sprites/mc_half/s0' + k])
 
 def sr_teleporter(sprite, screen, images, rc):
-	key = 'teleporter/frame' + $str($int(rc / 5) % 3 + 1)
+	key = 'teleporter/frame' + $str($int($int(rc / 5) % 3) + 1)
 	draw_image_centered(screen, sprite, images[key])
