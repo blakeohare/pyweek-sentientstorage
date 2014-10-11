@@ -48,6 +48,13 @@ def sprite_looky_talky(scene, sprite, is_looky):
 			return slt_invoke_basic(scene, ["It looks like he's choking."])
 		else:
 			return slt_invoke_basic(scene, ["Gh....*HACK*...","...whheeez..", "kh...."])
+	if id == 'joenoarm':
+		if is_talky:
+			return slt_invoke_basic(scene, [
+				"What? This is no toybox. This", 
+				"is war! We're busy fighting the",
+				"Soviet dinosaurs to the north.",
+				"Just look what they did to my arm."])
 	if id == 'mothercar1':
 		if is_looky:
 			return slt_invoke_basic(scene, ["A red car paces back and forth,", "worriedly."])
