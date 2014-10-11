@@ -1,5 +1,6 @@
-LAYERS: bg1
+LAYERS: bg1, tree
 LAYER_DATA: bg1: backgrounds/misc3-1, -999999
+LAYER_DATA: tree: backgrounds/misc3-2, 100
 
 SCALE: half
 
@@ -20,3 +21,5 @@ STARTFROM: misc4: 198, 93
 
 DOOR: misc2: 197, 193, 76, 9999
 DOOR: misc4: 199, 51, 40, 22
+
+ADD_SPRITE: dino, 71, 88

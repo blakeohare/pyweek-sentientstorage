@@ -195,7 +195,7 @@ def pt_games_take_racecar_doer(walking_surface, args):
 def pt_games_take_racecar(walking_surface, area, game_log, sprite, player_distance):
 	if dist_check(walking_surface, sprite, area, 40):
 		walking_surface.invoke_dialog(
-			["Alex gracious takes the token."],
+			["Alex graciously takes the token."],
 			pt_games_take_racecar_doer, [sprite])
 			
 def pt_misc_take_bow_doer(walking_surface, args):

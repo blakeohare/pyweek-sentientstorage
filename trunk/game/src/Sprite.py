@@ -98,6 +98,7 @@ class Sprite:
 					elif self.type == 'bow': self.renderer = sr_bow
 				else:
 					if self.type == 'conductor': self.renderer = sr_conductor
+					elif self.type == 'dino': self.renderer = sr_dino
 					elif self.type == 'enginenowheel': self.renderer = sr_enginenowheel
 					elif self.type == 'enginewithwheel': self.renderer = sr_enginewithwheel
 					elif self.type == 'hippochoke': self.renderer = sr_hippochoke
@@ -150,6 +151,7 @@ def sr_bluepin(sprite, screen, images, rc): draw_image_centered(screen, sprite, 
 def sr_boot(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/boot'])
 def sr_bow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/bow'])
 def sr_conductor(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/conductor'])
+def sr_dino(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images['sprites/misc/dino'])
 def sr_enginenowheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginenowheel'])
 def sr_enginewithwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginewithwheel'])
 def sr_hippochoke(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/choking'])
