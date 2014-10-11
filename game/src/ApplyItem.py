@@ -19,6 +19,18 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 			if sprite.type == 'conductor' or sprite.type == 'enginenowheel':
 				if item == 'trainwheel':
 					ai_give_wheel_to_conductor(walky_surface, area, log)
+	elif area_id == 'trains3':
+		if item == 'wizard':
+			ai_release_wizard(walky_surface, area, log)
+
+def ai_release_wizard(walky_surface, area, log):
+	log.set_int('HAS_WIZARD', 2)
+	$list_add(area.sprites, Sprite('wizard', 187, 132))
+	walky_surface.invoke_dialog([
+		"Now, THIS is my sort of scene.",
+		"I bet they won't even be mad if",
+		"I use my scepter effects."], None, None)
+	
 
 def ai_train_launch2(scene, args):
 	scene.area.train_go = True
