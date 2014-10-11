@@ -82,6 +82,7 @@ _CHARS_TO_KEYS = {
 	'=': 'equals',
 	'_': 'underscore',
 	'+': 'plus',
+	'%': 'percent',
 	'*': 'asterisk',
 	'&': 'ampersand',
 	':': 'colon',
