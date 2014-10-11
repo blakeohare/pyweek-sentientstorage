@@ -16,6 +16,13 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 				ai_teeth_chew_gum(walky_surface, area, sprite, log)
 		if item == 'chewedgum':
 			walky_surface.invoke_dialog(["Alex throws the gum at the T-Rex"], ai_throw_gum, None)
+	elif area_id == 'misc4':
+		if region_id == 'band' and item == 'rubberband':
+			ai_rubberband_stretch(walky_surface, area, log)
+		if region_id == 'vents' and item == 'wrapper':
+			ai_vent_parachute(walky_surface, area, log)
+		if sprite != None and sprite.type == 'steam' and item == 'wrapper':
+			ai_vent_parachute(walky_surface, area, log)
 	elif area_id == 'sports1':
 		if sprite != None:
 			if sprite.type == 'bballplayer1' or sprite.type == 'bballplayer2' or sprite.type == 'bballplayer3':
@@ -33,6 +40,39 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 	elif area_id == 'trains3':
 		if item == 'wizard':
 			ai_release_wizard(walky_surface, area, log)
+
+def ai_vent_parachute(scene, area, log):
+	dx = area.player.x - 155
+	dy = area.player.y - 47
+	dist = (dx ** 2 + dy ** 2) ** .5
+	if dist > 40:
+		scene.invoke_dialog([
+			"You're too far away."], None, None)
+	else:
+		scene.invoke_dialog([
+			"Using the gum wrapper as a glider,",
+			"Alex parachutes down to the lower",
+			"ledge using the steam vents as a",
+			"boost."], None, None)
+		proxy = Sprite('ventalex', scene.area.player.x, scene.area.player.y)
+		scene.area.player.x = 999999
+		proxy.ghost = True
+		proxy.waypoints = [(85, 163)]
+		$list_add(area.sprites, proxy)
+		$list_add(scene.timeouts, [30 * 4, ai_vent_parachute2, [proxy]])
+def ai_vent_parachute2(scene, args):
+	proxy = args[0]
+	proxy.dead = True
+	scene.area.player.x = 85
+	scene.area.player.y = 163
+
+def ai_rubberband_stretch(scene, area, log):
+	scene.invoke_dialog([
+		"Alex stretches the rubber band",
+		"between two stalagmites."], None, None)
+	log.set_int('HAS_RUBBERBAND', 2)
+	sprite = Sprite('rubberband2', 70, 201)
+	$list_add(area.sprites, sprite)
 
 def ai_throw_gum2(scene, args):
 	scene.invoke_dialog([
