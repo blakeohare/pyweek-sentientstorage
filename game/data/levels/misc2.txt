@@ -35,6 +35,8 @@ BLOCK: 228, 0, 100, 133
 #right fence bottom
 BLOCK: 228, 133, 100, 50, TR
 
+<GATE_OPEN:0>BLOCK: 180, 68, 61, 40
+
 DOOR: misc1: 40, 195, 80, 13
 DOOR: misc3: 154, 60, 83, 29
 
@@ -46,4 +48,6 @@ LOOKY: eggs: it's nice to see all these dinos|all grown up.
 LOOKY: volcano: volcano in the distance
 LOOKY: dinos: flying dinos
 
-
+ADD_SPRITE: guard, 152, 111
+<GATE_OPEN:0>ADD_SPRITE: gatedown, 204, 126
+<GATE_OPEN:1>ADD_SPRITE: gateup, 185, 90

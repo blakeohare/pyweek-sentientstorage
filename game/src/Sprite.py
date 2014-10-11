@@ -101,6 +101,9 @@ class Sprite:
 					elif self.type == 'dino': self.renderer = sr_dino
 					elif self.type == 'enginenowheel': self.renderer = sr_enginenowheel
 					elif self.type == 'enginewithwheel': self.renderer = sr_enginewithwheel
+					elif self.type == 'gatedown': self.renderer = sr_gatedown
+					elif self.type == 'gateup': self.renderer = sr_gateup
+					elif self.type == 'guard': self.renderer = sr_guard
 					elif self.type == 'hippochoke': self.renderer = sr_hippochoke
 					elif self.type == 'hipposafe': self.renderer = sr_hipposafe
 					elif self.type == 'joearm': self.renderer = sr_joearm
@@ -154,6 +157,9 @@ def sr_conductor(sprite, screen, images, rc): draw_image_centered(screen, sprite
 def sr_dino(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images['sprites/misc/dino'])
 def sr_enginenowheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginenowheel'])
 def sr_enginewithwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginewithwheel'])
+def sr_gatedown(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/gatedown'])
+def sr_gateup(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/gateup'])
+def sr_guard(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/guard'])
 def sr_hippochoke(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/choking'])
 def sr_hipposafe(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/hippo'])
 def sr_joearm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/joe_arm'])
