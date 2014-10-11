@@ -44,9 +44,13 @@ class Sprite:
 					self.dx = -1
 				else:
 					self.dx = 1
+		elif type == 'raver1' or type == 'raver2':
+			c = counter % 15
+			if c == 2:
+				self.dy = -3
+			elif c == 7:
+				self.dy = 3
 				
-			
-	
 	def update(self, area):
 		self.specific_update(self.type, area, self.lifetime)
 		self.lifetime += 1
@@ -131,6 +135,7 @@ class Sprite:
 					if self.type == 'conductor': self.renderer = sr_conductor
 					elif self.type == 'chewedgum': self.renderer = sr_chewedgum
 					elif self.type == 'dino': self.renderer = sr_dino
+					elif self.type == 'dj': self.renderer = sr_dj
 					elif self.type == 'enginenowheel': self.renderer = sr_enginenowheel
 					elif self.type == 'enginewithwheel': self.renderer = sr_enginewithwheel
 					elif self.type == 'gatedown': self.renderer = sr_gatedown
@@ -149,6 +154,8 @@ class Sprite:
 					elif self.type == 'passenger1awake': self.renderer = sr_passenger1awake
 					elif self.type == 'passenger2': self.renderer = sr_passenger2
 					elif self.type == 'racecar': self.renderer = sr_racecar
+					elif self.type == 'raver1': self.renderer = sr_raver1
+					elif self.type == 'raver2': self.renderer = sr_raver2
 					elif self.type == 'rubberband': self.renderer = sr_rubberband
 					elif self.type == 'rubberband2': self.renderer = sr_rubberband2
 					elif self.type == 'scottie': self.renderer = sr_scottie
@@ -158,6 +165,7 @@ class Sprite:
 					elif self.type == 'thimble': self.renderer = sr_thimble
 					elif self.type == 'tophat': self.renderer = sr_tophat
 					elif self.type == 'traincar': self.renderer = sr_traincar
+					elif self.type == 'trainpog': self.renderer = sr_trainpog
 					elif self.type == 'trainwheel': self.renderer = sr_trainwheel
 					elif self.type == 'ventalex': self.renderer = sr_ventalex
 					elif self.type == 'volcanopog': self.renderer = sr_volcanopog
@@ -192,6 +200,7 @@ def sr_boot(sprite, screen, images, rc): draw_image_centered(screen, sprite, ima
 def sr_bow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/bow'])
 def sr_chewedgum(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/chewedgum'])
 def sr_conductor(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/conductor'])
+def sr_dj(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/dj'])
 def sr_dino(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/dinos/trex')
 def sr_enginenowheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginenowheel'])
 def sr_enginewithwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginewithwheel'])
@@ -208,12 +217,15 @@ def sr_legopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, 
 def sr_passenger1sleeping(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger1sleeping'])
 def sr_passenger1awake(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger1awake'])
 def sr_passenger2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger2'])
+def sr_raver1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/raver1'])
+def sr_raver2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/raver2'])
 def sr_racecar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/racecar'])
 def sr_rubberband(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/rubberband_ground'])
 def sr_scottie(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/scottie'])
 def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])
 def sr_tophat(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/tophat'])
 def sr_traincar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/traincar'])
+def sr_trainpog(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/trainpog'])
 def sr_trainwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/trainwheel'])
 def sr_volcanopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/volcanopog'])
 def sr_ventalex(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/ventalex'])
