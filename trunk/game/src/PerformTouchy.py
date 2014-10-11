@@ -74,7 +74,7 @@ def dist_check(walking_surface, sprite, area, required_distance):
 
 def pt_trains_board_train(walking_surface, area, game_log):
 	for sprite in area.sprites:
-		if sprite.type == 'enginewithwheel' or sprite.type == 'traincar':
+		if sprite.type == 'enginewithwheel' or sprite.type == 'traincar' or sprite.type == 'scottie':
 			pass
 		else:
 			sprite.x = 9999
