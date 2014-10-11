@@ -179,6 +179,8 @@ class Sprite:
 					elif self.type == 'wheelbarrow': self.renderer = sr_wheelbarrow
 					elif self.type == 'wizard': self.renderer = sr_wizard
 					
+					elif self.type == 'house': self.renderer = sr_house
+					
 					elif self.type == 'legohack': self.renderer = sr_legohack
 					elif self.type == 'horse1': self.renderer = sr_horse1
 					elif self.type == 'horse2': self.renderer = sr_horse2
@@ -198,6 +200,7 @@ def draw_image_centered(screen, sprite, img):
 	$image_blit(screen, img, x, y)
 	sprite.last_width = w
 	sprite.last_height = h
+	#$print(sprite.type)
 
 def draw_image_centered_directional(screen, sprite, images, key):
 	img = images[key + '_' + sprite.last_direction]
@@ -226,6 +229,7 @@ def sr_guard(sprite, screen, images, rc): draw_image_centered(screen, sprite, im
 def sr_hippochoke(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/choking'])
 def sr_hipposafe(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/hippo'])
 def sr_horse(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/horse'])
+def sr_house(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/house'])
 def sr_joearm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/joe_arm'])
 def sr_joenoarm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/joe_noarm'])
 def sr_king(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/king'])
