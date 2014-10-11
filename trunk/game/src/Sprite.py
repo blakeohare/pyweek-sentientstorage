@@ -102,7 +102,8 @@ class Sprite:
 					elif self.type == 'enginewithwheel': self.renderer = sr_enginewithwheel
 					elif self.type == 'hippochoke': self.renderer = sr_hippochoke
 					elif self.type == 'hipposafe': self.renderer = sr_hipposafe
-					elif self.type == 'racecar': self.renderer = sr_racecar
+					elif self.type == 'joearm': self.renderer = sr_joearm
+					elif self.type == 'joenoarm': self.renderer = sr_joenoarm
 					elif self.type == 'knight1': self.renderer = sr_knight1
 					elif self.type == 'knight2': self.renderer = sr_knight2
 					elif self.type == 'legopog': self.renderer = sr_legopog
@@ -111,6 +112,7 @@ class Sprite:
 					elif self.type == 'passenger1sleeping': self.renderer = sr_passenger1sleeping
 					elif self.type == 'passenger1awake': self.renderer = sr_passenger1awake
 					elif self.type == 'passenger2': self.renderer = sr_passenger2
+					elif self.type == 'racecar': self.renderer = sr_racecar
 					elif self.type == 'rubberband': self.renderer = sr_rubberband
 					elif self.type == 'scottie': self.renderer = sr_scottie
 					elif self.type == 'teleporter': self.renderer = sr_teleporter
@@ -152,6 +154,8 @@ def sr_enginenowheel(sprite, screen, images, rc): draw_image_centered(screen, sp
 def sr_enginewithwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginewithwheel'])
 def sr_hippochoke(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/choking'])
 def sr_hipposafe(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/hippo'])
+def sr_joearm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/joe_arm'])
+def sr_joenoarm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/joe_noarm'])
 def sr_knight1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard0'])
 def sr_knight2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard1'])
 def sr_legopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/pog'])

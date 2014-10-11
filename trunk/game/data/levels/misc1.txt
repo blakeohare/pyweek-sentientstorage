@@ -1,5 +1,7 @@
-LAYERS: bg1
+LAYERS: bg1, walls, desk
 LAYER_DATA: bg1: backgrounds/misc1-1, -999999
+LAYER_DATA: walls: backgrounds/misc1-2, 73
+LAYER_DATA: desk: backgrounds/misc1-3, 118
 
 STARTFROM: attic: 250, 180
 STARTFROM: misc2: 139, 78
@@ -28,6 +30,8 @@ BLOCK: 60, 0, 58, 35, BL
 #Tent TR
 BLOCK: 0, 0, 60, 35
 #Tent TL
+
+ADD_SPRITE: joenoarm, 213, 117
 
 <HAS_BOOT:0>ADD_SPRITE: boot, 50, 173
 <HAS_THIMBLE:0>ADD_SPRITE: thimble, 167, 112
