@@ -1,8 +1,8 @@
 MUSIC: trainland: .8
 
 LAYERS: bg1
-LAYER_DATA: bg1: backgrounds/trains1-1, -999999
-#<TRAIN_FIXED:1>LAYER_DATA: bg1: backgrounds/trains1-alternate, -999999
+<TRAIN_FIXED:0>LAYER_DATA: bg1: backgrounds/trains1-1, -999999
+<TRAIN_FIXED:1>LAYER_DATA: bg1: backgrounds/trains1-alternate, -999999
 
 SCALE: half
 
