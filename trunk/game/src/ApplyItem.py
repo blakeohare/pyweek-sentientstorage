@@ -74,7 +74,7 @@ def apply_item(walky_surface, area, area_id, item, sprite, region_id):
 		if sprite != None:
 			if sprite.type == 'bballplayer1' or sprite.type == 'bballplayer2' or sprite.type == 'bballplayer3':
 				if item == 'ball':
-					has_both = log.get_int('HAS_BAT', 0)
+					has_both = log.get_int('HAS_BAT', 0) == 2
 					ai_give_ball_to_player(walky_surface, sprite, area, log, item, has_both)
 				elif item == 'bat':
 					has_both = log.get_int('HAS_BALL', 0) == 2
