@@ -9,6 +9,7 @@ DIRS = ('n', 's', 'e', 'w')
 class Sprite:
 	def __init__(self, type, x, y):
 		self.type = type
+		self.log = None
 		self.x = x
 		self.y = y
 		self.dx = 0
@@ -52,6 +53,7 @@ class Sprite:
 				self.dy = 3
 				
 	def update(self, area):
+		self.log = area.log
 		self.specific_update(self.type, area, self.lifetime)
 		self.lifetime += 1
 		if $list_length(self.waypoints) > 0:
@@ -143,6 +145,7 @@ class Sprite:
 					elif self.type == 'gateup': self.renderer = sr_gateup
 					elif self.type == 'getoutofjail': self.renderer = sr_getoutofjail
 					elif self.type == 'guard': self.renderer = sr_guard
+					elif self.type == 'goblet': self.renderer = sr_goblet
 					elif self.type == 'hippochoke': self.renderer = sr_hippochoke
 					elif self.type == 'hipposafe': self.renderer = sr_hipposafe
 					elif self.type == 'horse': self.renderer = sr_horse
@@ -290,6 +293,13 @@ def sr_teeth(sprite, screen, images, rc):
 		draw_image_centered(screen, sprite, images['sprites/teeth/teeth' + $str(num)])
 	else:
 		draw_image_centered(screen, sprite, images['sprites/teeth/teeth0'])
+
+def sr_goblet(sprite, screen, images, rc):
+	if sprite.log != None and sprite.log.get_int('HAS_BLUEPIN', 0) == 0:
+		img = images['sprites/legos/goblet_pin']
+	else:
+		img = images['sprites/legos/goblet']
+	draw_image_centered(screen, sprite, img)
 
 def sr_mothercar1(sprite, screen, images, rc):
 	key = 'sprites/mothercar/left1'
