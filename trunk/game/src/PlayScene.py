@@ -96,7 +96,7 @@ class PlayScene:
 		$image_blit(screen, images['menus/buttons'], 0, 208)
 		$image_blit(screen, images['menus/item'], 32, 208)
 		$image_blit(screen, images['menus/inventory'], 64, 208)
-		$image_blit(screen, images['menus/options'], 288, 208)
+		#$image_blit(screen, images['menus/options'], 288, 208)
 		if self.active_item != None:
 			$image_blit(screen, images['icons/' + self.active_item], 33, 209)
 		
