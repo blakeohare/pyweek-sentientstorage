@@ -63,6 +63,10 @@ class WalkingSurface:
 	
 	def click_item(self, x, y, item):
 		if item == None: return
+		if self.area.id == 'misc1':
+			if x > 186 and x < 227 and y > 74 and y < 117:
+				if self.log.get_int('HAS_GLUE', 0) == 1:
+					pt_misc_give_glue(self, self.area, self.log)
 		region = self.area.get_region_id(x, y)
 		sprite = self.area.get_sprite_at(x, y)
 		apply_item(self, self.area, self.area.id, item, sprite, region)
