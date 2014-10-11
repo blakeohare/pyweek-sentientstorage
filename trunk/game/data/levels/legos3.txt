@@ -4,12 +4,35 @@ LAYER_DATA: bg1: backgrounds/legos3-1, -999999
 SCALE: half
 
 # main entrance
-STARTFROM: legos2: 41, 81
-DOOR: legos2: 99, 98, 18, 23
+STARTFROM: legos2: 135, 107
+DOOR: legos2: 110, 101, 18, 15
 
 #spectator box
 #TODO: hack for STARTFROM for yellow door
 DOOR: legos2: 68, 140, 24, 28
+
+#Top
+BLOCK: 0, 0, 320, 94
+
+#Left
+BLOCK: 0, 0, 72, 208
+
+#Right
+BLOCK:248, 0, 72, 208
+
+#Bottom
+BLOCK: 0, 158, 320, 50
+
+#Left Wall
+BLOCK: 72, 91, 60, 76, TL
+
+#Bar B
+BLOCK: 139, 92, 111, 31
+
+#Barstools
+BLOCK: 164, 123, 12, 12
+BLOCK: 193, 123, 12, 12
+BLOCK: 220, 123, 12, 12
 
 
 <HAS_TRAINWHEEL:0>ADD_SPRITE: trainwheel, 234, 137
