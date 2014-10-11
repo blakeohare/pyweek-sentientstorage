@@ -166,6 +166,13 @@ class Area:
 		door_value = self.get_door(self.player.x, self.player.y)
 		if door_value != None:
 			walk_scene.switch_area(door_value)
+			if self.id == 'legos3' and door_value == 'legos2' and self.player.y > 124:
+				walk_scene.area.player.x = 179
+				walk_scene.area.player.y = 53
+			elif self.id == 'legos2' and door_value == 'legos3' and self.player.x > 112:
+				walk_scene.area.player.x = 110
+				walk_scene.area.player.y = 143
+				
 			
 		if self.teleporter != None:
 			tele_dx = self.player.x - self.teleporter[0]
