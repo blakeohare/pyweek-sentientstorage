@@ -1,0 +1,1 @@
+Entry for PyWeek #19 for Team NerdParadise
