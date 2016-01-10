@@ -33,7 +33,7 @@ namespace Python2Crayon.Serialization
 
 		protected override void X_DrawEllipse(List<string> output, ParseTree.Expression screen, ParseTree.Expression left, ParseTree.Expression top, ParseTree.Expression width, ParseTree.Expression height, ParseTree.Expression red, ParseTree.Expression green, ParseTree.Expression blue)
 		{
-			output.Add("$draw_ellipse(");
+			output.Add("$gfx_draw_ellipse(");
 			SerializeExpression(output, left);
 			output.Add(", ");
 			SerializeExpression(output, top);
@@ -53,7 +53,7 @@ namespace Python2Crayon.Serialization
 
 		protected override void X_DrawRectangle(List<string> output, ParseTree.Expression screen, ParseTree.Expression left, ParseTree.Expression top, ParseTree.Expression width, ParseTree.Expression height, ParseTree.Expression red, ParseTree.Expression green, ParseTree.Expression blue)
 		{
-			output.Add("$draw_rectangle(");
+			output.Add("$gfx_draw_rectangle(");
 			SerializeExpression(output, left);
 			output.Add(", ");
 			SerializeExpression(output, top);
@@ -77,27 +77,25 @@ namespace Python2Crayon.Serialization
 
 		protected override void X_ImageBlit(List<string> output, ParseTree.Expression screen, ParseTree.Expression image, ParseTree.Expression x, ParseTree.Expression y)
 		{
-			output.Add("$blit_image(");
+			output.Add("$gfx_blit_image(");
 			SerializeExpression(output, image);
-			output.Add(", ");
+			output.Add(", $floor(");
 			SerializeExpression(output, x);
-			output.Add(", ");
+			output.Add("), $floor(");
 			SerializeExpression(output, y);
-			output.Add(")");
+			output.Add("))");
 		}
 
 		protected override void X_ImageHeight(List<string> output, ParseTree.Expression image)
 		{
-			output.Add("$get_image_height(");
 			SerializeExpression(output, image);
-			output.Add(")");
+			output.Add(".height");
 		}
 
 		protected override void X_ImageWidth(List<string> output, ParseTree.Expression image)
 		{
-			output.Add("$get_image_width(");
 			SerializeExpression(output, image);
-			output.Add(")");
+			output.Add(".width");
 		}
 
 		protected override void X_Int(List<string> output, ParseTree.Expression num)
@@ -179,7 +177,7 @@ namespace Python2Crayon.Serialization
 
 		protected override void X_ScreenFill(List<string> output, ParseTree.Expression screen, ParseTree.Expression red, ParseTree.Expression green, ParseTree.Expression blue)
 		{
-			output.Add("$fill_screen(");
+			output.Add("$gfx_fill_screen(");
 			SerializeExpression(output, red);
 			output.Add(", ");
 			SerializeExpression(output, green);

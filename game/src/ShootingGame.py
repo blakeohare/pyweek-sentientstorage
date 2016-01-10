@@ -109,7 +109,7 @@ class ShootingGame:
 				ap = 1.0 - p
 				x = start_x * p + end_x * ap
 				y = start_y * p + end_y * ap
-				$draw_rectangle(screen, x, y, 3, 3, 200, 128, 60)
+				$draw_rectangle(screen, $int(x), $int(y), 3, 3, 200, 128, 60)
 				dx = x - self.target[0]
 				dy = y - self.target[1]
 				dist = (dx ** 2 + dy ** 2) ** .5

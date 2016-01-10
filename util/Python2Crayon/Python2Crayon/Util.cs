@@ -162,7 +162,16 @@ namespace Python2Crayon
 		public static void WriteFile(string path, string contents)
 		{
 			path = System.IO.Path.Combine(Util.Root, path);
+			CreateDirectoryIfDoesntExist(System.IO.Path.GetDirectoryName(path));
 			System.IO.File.WriteAllText(path, contents);
+		}
+
+		public static void CreateDirectoryIfDoesntExist(string path)
+		{
+			if (path == null || path.Length == 0 || System.IO.Directory.Exists(path)) return;
+			string parent = System.IO.Path.GetDirectoryName(path);
+			CreateDirectoryIfDoesntExist(parent);
+			System.IO.Directory.CreateDirectory(path);
 		}
 
 		public static string ReadFileFromAssembly(string path)

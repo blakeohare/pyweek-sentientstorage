@@ -110,11 +110,15 @@ namespace Python2Crayon
 			string pythonFooter = GetTemplateFile("footer.py", replacements);
 			pythonOutput = pythonHeader + "\n" + pythonOutput + "\n" + pythonFooter;
 
-			Util.WriteFile(System.IO.Path.Combine(outputFolder, "run.py"), pythonOutput);
-			Util.WriteFile(System.IO.Path.Combine(outputFolder, "start.cry"), crayonOutput);
+			Util.WriteFile(System.IO.Path.Combine(outputFolder, "python", "run.py"), pythonOutput);
+			Util.WriteFile(System.IO.Path.Combine(outputFolder, "source", "start.cry"), crayonOutput);
+			Util.WriteFile(System.IO.Path.Combine(outputFolder, "Crayon.build"), GetTemplateFile("buildfile.xml", replacements));
+			Util.WriteFile(System.IO.Path.Combine(outputFolder, "source", "gamelib.cry"), GetTemplateFile("gamelib.cry", replacements));
 
-			Util.SyncDirectories(imagesFolder, System.IO.Path.Combine(outputFolder, settings["IMAGES_FOLDER"]), imageFiles);
-			Util.SyncDirectories(audioFolder, System.IO.Path.Combine(outputFolder, settings["AUDIO_FOLDER"]), audioFiles);
+			Util.SyncDirectories(imagesFolder, System.IO.Path.Combine(outputFolder, "python", settings["IMAGES_FOLDER"]), imageFiles);
+			Util.SyncDirectories(audioFolder, System.IO.Path.Combine(outputFolder, "python", settings["AUDIO_FOLDER"]), audioFiles);
+			Util.SyncDirectories(imagesFolder, System.IO.Path.Combine(outputFolder, "source", settings["IMAGES_FOLDER"]), imageFiles);
+			Util.SyncDirectories(audioFolder, System.IO.Path.Combine(outputFolder, "source", settings["AUDIO_FOLDER"]), audioFiles);
 		}
 
 		private static string GetTemplateFile(string path, Dictionary<string, object> replacements)

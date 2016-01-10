@@ -1,4 +1,4 @@
-﻿import Game;
+﻿import 'gamelib.cry';
 
 class Event {
 	constructor(type, key, x, y) {
@@ -33,25 +33,25 @@ class SceneProxy : SceneBase {
 			modified_events = [];
 			for (i = 0; i < events.length; ++i) {
 				ev = events[i];
-				if (ev[0] == 'mousemove') {
-					x = ev[1];
-					y = ev[2];
+				if (ev.type == 'mousemove') {
+					x = ev.x;
+					y = ev.y;
 					_current_mouse_position[0] = x;
 					_current_mouse_position[1] = y;
 					modified_events.add(new Event('mousemove', null, x, y));
-				} else if (ev[0] == 'key') {
-					key = ev[2];
-					if (ev[1]) {
+				} else if (ev.is_key) {
+					key = ev.key;
+					if (ev.down) {
 						modified_events.add(new Event('keydown', key, 0, 0));
 					} else {
 						modified_events.add(new Event('keyup', key, 0, 0));
 					}
-				} else if (ev[0] == 'mouseleftdown' || 
-					ev[0] == 'mouseleftup' || 
-					ev[0] == 'mouserightdown' ||
-					ev[0] == 'mouserightup') {
-					modified_events.add(new Event(ev[0], null, ev[1], ev[2]));
-				} else if (ev[0] == 'exit') {
+				} else if (ev.type == 'mouseleftdown' || 
+					ev.type == 'mouseleftup' || 
+					ev.type == 'mouserightdown' ||
+					ev.type == 'mouserightup') {
+					modified_events.add(new Event(ev.type, null, ev.x, ev.y));
+				} else if (ev.is_quit) {
 					modified_events.add(new Event('quit', 'js', 0, 0));
 				}
 			}
