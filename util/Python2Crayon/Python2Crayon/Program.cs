@@ -15,7 +15,7 @@ namespace Python2Crayon
 			Dictionary<string, string> output = new Dictionary<string, string>();
 			foreach (string line in lines)
 			{
-				string[] parts= line.Trim().Split(':');
+				string[] parts = line.Trim().Split(':');
 				if (parts.Length > 1)
 				{
 					string key = parts[0].Trim();
@@ -34,9 +34,11 @@ namespace Python2Crayon
 		{
 			Dictionary<string, string> settings = ParseSettingsMeow();
 
+			string projectName = settings["PROJECT_NAME"];
+
 			int fps = int.Parse(settings["FPS"]);
 			int gameWidth = int.Parse(settings["GAME_WIDTH"]);
-			int gameHeight = int.Parse(settings["GAME_HEIGHT"]) ;
+			int gameHeight = int.Parse(settings["GAME_HEIGHT"]);
 			int screenWidth = int.Parse(settings["SCREEN_WIDTH"]);
 			int screenHeight = int.Parse(settings["SCREEN_HEIGHT"]);
 
@@ -46,9 +48,10 @@ namespace Python2Crayon
 			string audioFolder = System.IO.Path.Combine(gameRoot, settings["AUDIO_FOLDER"]);
 			string dataFolder = System.IO.Path.Combine(gameRoot, settings["DATA_FOLDER"]);
 			string outputFolder = settings["OUTPUT_FOLDER"];
-			
+			string jsPrefix = settings["JS_PREFIX"];
+
 			string startSceneClassName = settings["START_SCENE"];
-			
+
 			string[] imageFiles = FileCrawler.Crawl(imagesFolder, ".png", ".jpg");
 			string imageFilesString = string.Join("|", imageFiles).Replace('\\', '/');
 
@@ -73,6 +76,7 @@ namespace Python2Crayon
 
 			Dictionary<string, object> replacements = new Dictionary<string, object>()
 			{
+				{ "PROJECT_NAME", projectName },
 				{ "FPS", fps },
 				{ "GAME_WIDTH", gameWidth },
 				{ "GAME_HEIGHT", gameHeight },
@@ -82,6 +86,7 @@ namespace Python2Crayon
 				{ "IMAGES_ROOT", "'" + settings["IMAGES_FOLDER"] + "'"},
 				{ "START_SCENE", startSceneClassName },
 				{ "TEXT_FILES", textFileStore },
+				{ "JS_PREFIX", jsPrefix },
 			};
 
 			Tokenizer tokenizer = new Tokenizer();
@@ -95,9 +100,9 @@ namespace Python2Crayon
 				TokenStream tokens = tokenizer.Tokenize(file, code);
 				parseTree.AddRange(parser.ParseCode(tokens));
 			}
-			
+
 			Executable[] resolvedParseTree = Executable.ResolveBlock(parseTree);
-			
+
 			CrayonSerializer crayonSerializer = new CrayonSerializer();
 			string crayonOutput = crayonSerializer.Serialize(resolvedParseTree);
 			string crayonHeader = GetTemplateFile("header.cry", replacements);

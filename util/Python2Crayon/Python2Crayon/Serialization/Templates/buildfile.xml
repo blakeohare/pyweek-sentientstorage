@@ -1,5 +1,5 @@
 ﻿<build>
-  <projectname>TODO</projectname>
+  <projectname>%%%PROJECT_NAME%%%</projectname>
   <source>source/</source>
   <output>output/%TARGET_NAME%</output>
 
@@ -15,7 +15,7 @@
 
   <target name="js_remote">
     <platform>js</platform>
-    <jsfileprefix>/TODO/</jsfileprefix>
+    <jsfileprefix>%%%JS_PREFIX%%%</jsfileprefix>
   </target>
 
   <target name="windows">
