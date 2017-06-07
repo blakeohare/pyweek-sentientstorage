@@ -1,0 +1,32 @@
+<build>
+  <projectname>SentientStorage</projectname>
+  <source>source</source>
+  <output>bin/%TARGET_NAME%</output>
+
+  <spritesheets>
+    <sheet id="everything">
+      <prefix>images/</prefix>
+    </sheet>
+  </spritesheets>
+
+  <target name="javascript">
+    <platform>javascript-app-gl</platform>
+  </target>
+
+  <target name="js_remote">
+    <platform>javascript-app-gl</platform>
+    <jsfileprefix>/demos/sentientstorage/</jsfileprefix>
+  </target>
+
+  <target name="csharp">
+    <platform>csharp-app</platform>
+  </target>
+
+  <target name="java">
+    <platform>java-app</platform>
+  </target>
+
+  <target name="python">
+    <platform>python-app</platform>
+  </target>
+</build>

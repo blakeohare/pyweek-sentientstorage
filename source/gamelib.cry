@@ -1,4 +1,4 @@
-﻿class SceneBase {
+class SceneBase {
 	constructor() {
 		this._core_next = null;
 		this._core_msg = ': this method needs to be overridden.';
