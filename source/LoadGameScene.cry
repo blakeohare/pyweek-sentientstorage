@@ -1,9 +1,9 @@
-class LoadGameScene:
-	def __init__(self):
-		self.next = self
+class LoadGameScene {
+	constructor() {
+		this.next = this;
+	}
 	
-	def update(self, events):
-		pass
+	function update(events) { }
 	
-	def render(self, screen, images, rc):
-		pass
+	function render(screen, images, rc) { }
+}

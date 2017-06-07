@@ -1,9 +1,7 @@
-
 import Game;
 import Graphics2D;
 import ImageResources;
 import Math;
-
 
 class SceneBase {
 
