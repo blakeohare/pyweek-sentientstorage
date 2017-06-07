@@ -1,17 +1,23 @@
+
+import Game;
+import Graphics2D;
+import ImageResources;
+import Math;
+
+
 class SceneBase {
-	constructor() {
-		this._core_next = null;
-		this._core_msg = ': this method needs to be overridden.';
-	}
+
+	field _core_next = null;
+	constructor() { }
 	
 	function update(events) {
-		$assert(false, "SceneBase.update(events)" + this._core_msg);
+		throw new NotImplementedException();
 	}
 	
 	function load_images(imageLibrary) { }
 
 	function render() {
-		$assert(false, "SceneBase.render(imgLib)" + this._core_msg);
+		throw new NotImplementedException();
 	}
 	
 	function switch_scene(nextScene) {
@@ -21,20 +27,22 @@ class SceneBase {
 
 class CoreLoadingScene : SceneBase {
 	
+	field _core_image_library;
+	field _core_renderer;
+	field _screen_width = 400;
+	field _screen_height = 300;
+	field _counter = 0;
+
 	constructor(files, renderer, next_scene) : base() {
 		this._core_image_library = new CoreImageLibrary(files);
 		this._core_next_scene = next_scene;
 		this._core_renderer = renderer;
-		this._screen_width = 400;
-		this._screen_height = 300;
-		this._counter = 0;
 	}
 	
 	function update(events) {
 		this._counter++;
 		this._core_image_library.update();
 		if (this._core_image_library.done) {
-			//this._core_image_library.finalize();
 			this.switch_scene(this._core_next_scene);
 		}
 	}
@@ -44,13 +52,13 @@ class CoreLoadingScene : SceneBase {
 		progress_ratio = total == 0 ? 1.0 : (1.0 * this._core_image_library.downloaded / total);
 		
 		if (this._core_renderer == null) {
-			fwidth = $floor(0.8 * this._core_width);
-			width = $floor(progress_ratio * fwidth);
+			fwidth = Math.floor(0.8 * this._core_width);
+			width = Math.floor(progress_ratio * fwidth);
 			left = (this._core_width - fwidth) / 2;
-			top = $floor(this._core_height * .46);
-			height = $floor(this._core_height * .08);
-			$gfx_draw_rectangle(left, top, fwidth, height, 80, 80, 80, 255);
-			$gfx_draw_rectangle(left, top, width, height, 80, 80, 80, 255);
+			top = Math.floor(this._core_height * .46);
+			height = Math.floor(this._core_height * .08);
+			Draw.rectangle(left, top, fwidth, height, 80, 80, 80);
+			Draw.rectangle(left, top, width, height, 80, 80, 80);
 		} else {
 			this._core_renderer(this._counter, progress_ratio);
 		}
@@ -58,45 +66,46 @@ class CoreLoadingScene : SceneBase {
 }
 
 class CoreImageLibrary {
+
+	field loader;
+	field sheet;
+
+	field image_keys = [];
+	field image_objects = [];
+	field paths_by_key = {};
+	field _core_images = {};
+	field downloaded = 0;
+	field size;
+	field done = false;
+	field state = 0;
+
 	constructor(files) {
-		this.image_keys = [];
-		this.image_objects = [];
-		this.paths_by_key = {};
-		this._core_images = {};
 		
-		keys = files.keys();
-		for (i = 0; i < keys.length; ++i) {
-			key = keys[i] + '';
-			filepath = files[keys[i]] + '';
+		for (key : files.keys()) {
+			filepath = files[key + ''] + '';
 			this.paths_by_key[key] = filepath;
 			this.image_keys.add(key);
 		}
 
-		this.downloaded = 0;
-		this.size = keys.length;
-		this.done = false;
-		this.state = 0;
+		this.size = files.length;
 	}
 	
 	function update() {
-		if (this.state == 0) {
-			this.state = 1;
-			$gfx_image_sheet_load('everything');
+		if (this.loader == null) {
+			this.loader = ImageResources.ImageSheet.loadFromResourcesAsync('everything');
 		}
 
-		if (this.state == 1) {
-			if ($gfx_image_sheet_loaded('everything')) {
+		if (!this.done) {
+			if (this.loader.isDone()) {
 				this.state = 2;
-				for (key : this.image_keys) {
-					$gfx_image_load_from_resource('t', this.paths_by_key[key]);
-					this._core_images[key] = $gfx_image_get('t');
+				for (filename : this.loader.getFiles()) {
+					this._core_images[filename] = this.loader.getImage(filename);
 				}
 				this.done = true;
 				this.downloaded = this.size;
 			} else {
-				this.downloaded = $floor($gfx_image_sheet_load_progress('everything') * this.size);
+				this.downloaded = Math.floor(this.loader.getProgress() * this.size);
 			}
-
 		}
 	}
 
@@ -110,15 +119,21 @@ class CoreImageLibrary {
 }
 
 class Game {
-	constructor(fps, width, height, pixel_width=null, pixel_height=null, allow_direct_quit=true) {
+	field _core_width;
+	field _core_height;
+	field _core_allow_direct_quit;
+	field _game_window;
+
+	constructor(fps, width, height, pixel_width = null, pixel_height = null, allow_direct_quit = true) {
 		this._core_width = width;
 		this._core_height = height;
-		$game_initialize(fps);
-		if (pixel_width == null || pixel_height == null) {
-			$game_initialize_screen(width, height);
-		} else {
-			$game_initialize_screen_scaled(width, height, pixel_width, pixel_height);
-		}
+		this._game_window = new GameWindow(
+			'Sentient Storage',
+			fps,
+			width,
+			height,
+			pixel_width ?? width,
+			pixel_height ?? height);
 		this._core_allow_direct_quit = allow_direct_quit;
 	}
 
@@ -128,21 +143,17 @@ class Game {
 		active_scene._core_height = this._core_height;
 		imgLib = active_scene._core_image_library;
 		while (active_scene != null) {
-			events = $game_pump_events();
-			if (this._core_allow_direct_quit) {
-				for (i = 0; i < events.length; ++i) {
-					ev = events[i];
-					if (ev.is_quit) {
-						return;
-					}
+			events = this._game_window.pumpEvents();
+			for (event : events) {
+				if (event.type == Game.EventType.QUIT) {
+					return;
 				}
 			}
 			
 			active_scene.update(events);
-			
-			$gfx_fill_screen(0, 0, 0);
+
 			active_scene.render();
-			
+
 			if (active_scene._core_next != null) {
 				next = active_scene._core_next;
 				active_scene._core_next = null;
@@ -150,7 +161,7 @@ class Game {
 				active_scene.load_images(imgLib);
 			}
 			
-			$game_clock_tick();
+			this._game_window.clockTick();
 		}
 	}
 }

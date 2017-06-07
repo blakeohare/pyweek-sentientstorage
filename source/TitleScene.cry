@@ -1,39 +1,56 @@
-class TitleScene:
-	def __init__(self):
-		self.next = self
-		self.x = 0
-		self.y = 0
+class TitleScene {
+
+	field next;
+	field x = 0;
+	field y = 0;
+
+	function constructor() {
+		this.next = this;
+	}
+
+	function update(events) {
+		this.x += 2;
+		this.y += 1;
+		action = null;
+		for (ev : events) {
+			if (ev.type == EventType.QUIT) {
+				this.next = null;
+			} else if (ev.type == EventType.MOUSE_LEFT_DOWN) {
+				x = ev.x;
+				y = ev.y;
+				if (x > 87 and x < 209 and y > 127 and y < 152) {
+					action = 'new';
+				} else if (x > 87 and x < 209 and y > 158 and y < 187) {
+					action = 'load';
+				} else if (x > 115 and x < 164 and y > 191 and y < 216) {
+					action = 'exit';
+				} else {
+					action = 'new';
+				}
+			}
+		}
+		
+		switch (action) {
+			case 'new':
+				log = new GameLog();
+				this.next = new PixelTransitionScene(this, new PlayScene('attic', log));
+				break;
+			case 'load':
+				this.next = new LoadGameScene(this);
+				break;
+			case 'exit':
+				this.next = new PixelTransitionScene(this, null);
+				break;
+			default: throw new Exception();
+		}
+	}
+		
 	
-	def update(self, events):
-		self.x += 2
-		self.y += 1
-		action = None
-		for ev in events:
-			if ev.type == 'quit':
-				self.next = None
-			elif ev.type == 'mouseleftdown':
-				x = ev.x
-				y = ev.y
-				if x > 87 and x < 209 and y > 127 and y < 152:
-					action = 'new'
-				elif x > 87 and x < 209 and y > 158 and y < 187:
-					action = 'load'
-				elif x > 115 and x < 164 and y > 191 and y < 216:
-					action = 'exit'
-				action = 'new'
-		
-		if action == 'new':
-			log = GameLog()
-			self.next = PixelTransitionScene(self, PlayScene('attic', log))
-		elif action == 'load':
-			self.next = LoadGameScene(self)
-		elif action == 'exit':
-			self.next = PixelTransitionScene(self, None)
-		
-	
-	def render(self, screen, images, rc, is_primary):
-		#$screen_fill(screen, 0, 50, 100)
-		$image_blit(screen, images['menus/title'], 0, 0)
-		if is_primary:
-			render_cursor('pointy', None, screen, images)
-		
+	function render(screen, images, rc, is_primary) {
+		Draw.fill(0, 50, 100);
+		images['menus/title'].draw(0, 0);
+		if (is_primary) {
+			render_cursor('pointy', null, screen, images);
+		}
+	}
+}	

@@ -1,4 +1,4 @@
-def apply_item(walky_surface, area, area_id, item, sprite, region_id):
+function apply_item(walky_surface, area, area_id, item, sprite, region_id) {
 	log = walky_surface.log
 	if area_id == 'games1':
 		if sprite != None:
