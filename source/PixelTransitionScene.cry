@@ -1,52 +1,68 @@
-_pixel_transition = []
-TRANSITION_DURATION = 10 # was 80
 
-class PixelTransitionScene:
-	def __init__(self, from_scene, to_scene):
-		self.from_scene = from_scene
-		self.to_scene = to_scene
-		self.next = self
-		self.counter = 0
-		self.pixels = self.initialize_pixels()
-		
+const TRANSITION_DURATION = 10; // was 80
+
+class PixelTransitionScene {
+	static field _pixel_transition = [];
+
+	field from_scene;
+	field to_scene;
+	field next;
+	field counter = 0;
+	field pixels;
+
+	constructor(from_scene, to_scene) {
+		this.from_scene = from_scene;
+		this.to_scene = to_scene;
+		this.next = this;
+		this.pixels = this.initialize_pixels();
+	}
 	
-	def initialize_pixels(self):
-		if $list_length(_pixel_transition) == 0:
-			for y in range(60):
-				for x in range(80):
-					$list_add(_pixel_transition, (x * 4, y * 4))
-			$list_shuffle(_pixel_transition)
-		return _pixel_transition
+	function initialize_pixels() {
+		if (PixelTransitionScene._pixel_transition.length == 0) {
+			for (y = 0; y < 60; ++y) {
+				for (x = 0; x < 80; ++x) {
+					_pixel_transition.add([x * 4, y * 4]);
+				}
+			}
+			PixelTransitionScene._pixel_transition.shuffle();
+		}
+		return PixelTransitionScene._pixel_transition;
+	}
 	
-	def update(self, events):
-		self.counter += 1
-		if self.counter == TRANSITION_DURATION:
-			self.next = self.to_scene
-		elif self.to_scene == None and self.counter > TRANSITION_DURATION / 2:
-			self.next = None
+	function update(events) {
+		this.counter++;
+		if (this.counter == TRANSITION_DURATION) {
+			this.next = this.to_scene;
+		} else if (this.to_scene == null && this.counter > TRANSITION_DURATION / 2) {
+			this.next = null;
+		}
+	}
+	
+	function render(screen, images, rc, is_primary) {
+		Draw.fill(0, 0, 0);
+		mid = TRANSITION_DURATION / 2;
+		if (this.counter < mid) {
+			progress = 1.0 * this.counter / mid;
+			this.from_scene.render(screen, images, rc, false);
+		} else if (this.to_scene != null) {
+			progress = 1.0 - 1.0 * (this.counter - mid) / mid;
+			this.to_scene.render(screen, images, rc, false);
+		} else {
+			return;
+		}
 			
-	
-	def render(self, screen, images, rc, is_primary):
-		$screen_fill(screen, 0, 0, 0)
-		mid = $int(TRANSITION_DURATION / 2)
-		if self.counter < mid:
-			progress = 1.0 * self.counter / mid
-			self.from_scene.render(screen, images, rc, False)
-		elif self.to_scene != None:
-			progress = 1.0 - 1.0 * (self.counter - mid) / mid
-			self.to_scene.render(screen, images, rc, False)
-		else:
-			return
-			
-		pixels = self.pixels
-		total = $list_length(pixels)
-		num = $int(progress * total)
+		pixels = this.pixels;
+		total = pixels.length;
+		num = Math.floor(progress * total);
 		
-		for i in range(num):
-			pos = pixels[i]
-			$draw_rectangle(screen, pos[0], pos[1], 4, 4, 0, 0, 0)
+		for (i = 0; i < num; ++i) {
+			pos = pixels[i];
+			Draw.rectangle(pos[0], pos[1], 4, 4, 0, 0, 0);
+		}
 		
-		render_cursor('waity', None, screen, images)
+		render_cursor('waity', null, screen, images);
+	}
+}
 		
 	
 		
