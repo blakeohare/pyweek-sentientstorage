@@ -1,350 +1,394 @@
-DIR_VECTORS = {
-	's': (0, 1),
-	'n': (0, -1),
-	'e': (1, 0),
-	'w': (-1, 0)
+
+class Sprite {
+
+	static field DIR_VECTORS = {
+		's': [0, 1],
+		'n': [0, -1],
+		'e': [1, 0],
+		'w': [-1, 0],
+	};
+	static field DIRS = ['n', 's', 'e', 'w'];
+
+	field type;
+	field log = null;
+	field x;
+	field y;
+	field dx = 0;
+	field dy = 0;
+	field waypoints = [];
+	field v = 2.0;
+	field last_direction = 's';
+	field dead = false;
+	field half = false;
+	field renderer = null;
+	field lifetime = 0;
+	field ghost = false;
+	field teething = false;
+	field enforce_waypoint = false;
+	field stretched = false;
+	field is_moving = false;
+
+	constructor(type, x, y) {
+		this.type = type
+		this.x = x;
+		this.y = y;
+		this.ghost = type == 'ball' || type == 'dino' || type == 'chewedgum'; // can pass through things
+		this.v = type == 'dino' ? 6.0 : this.v;
+	}
+	
+	function specific_update(type, area, counter) {
+		if (type == 'mothercar1' || type == 'mothercar2') {
+			this.dx = Math.sin(self.lifetime * 2 * 3.14159 / 100);
+		} else if (type == 'hippochoke') {
+			rate = 30;
+			c = Math.floor(counter % rate);
+			if (c == 0) {
+				this.dx = -2;
+			} else if (c == Math.floor(rate / 2)) {
+				this.dx = 2;
+			}
+		} else if (type == 'scottie') {
+			if (area.id == 'trains2') {
+				c = Math.floor(counter % 50);
+				this.dx = c < 25 ? -1 : 1;
+			}
+		} else if (type == 'raver1' || type == 'raver2') {
+			c = Math.floor(counter % 15);
+			if (c == 2) {
+				this.dy = -3;
+			} else if (c == 7) {
+				this.dy = 3;
+			}
+		}
+	}
+				
+	function update(area) {
+		this.log = area.log;
+		this.specific_update(this.type, area, this.lifetime);
+		this.lifetime++;
+		if (this.waypoints.length > 0) {
+			wp = this.waypoints[0];
+			dx = wp[0] - this.x;
+			dy = wp[1] - this.y;
+			dist = (dx ** 2 + dy ** 2) ** .5;
+			if (dist <= this.v) {
+				this.dx = wp[0] - this.x
+				this.dy = wp[1] - this.y
+				this.waypoints.remove(0);
+			} else {
+				this.dx = 1.0 * dx * this.v / dist;
+				this.dy = 1.0 * dy * this.v / dist;
+			}
+		}
+		if (this.dx != 0 || this.dy != 0) {
+			// this.is_moving = true;
+			dx = this.dx;
+			dy = this.dy;
+			this.last_direction = this.convert_vector_to_direction(dx, dy);
+			newx = this.x + dx;
+			newy = this.y + dy;
+			if (area.is_passable(newx, newy) || this.ghost) {
+				this.x = newx;
+				this.y = newy;
+				this.is_moving = true;
+			} else {
+				this.is_moving = false;
+			}
+			this.dx = 0;
+			this.dy = 0;
+		} else {
+			this.is_moving = false;
+		}
+	}
+	
+	function set_waypoint(tx, ty) {
+		if (this.waypoints.length > 0) {
+			if (this.enforce_waypoints) {
+				return;
+			}
+		}
+		this.enforce_waypoints = false;
+		this.waypoints = [[tx, ty]];
+	}
+	
+	function queue_waypoint(tx, ty) {
+		this.waypoints.add([tx, ty]);
+	}
+	
+	function convert_vector_to_direction(dx, dy) {
+		if (dx == 0) {
+			if (dy < 0) {
+				return 'n';
+			} else {
+				return 's';
+			}
+		} else if (dy == 0) {
+			if (dx < 0) {
+				return 'w';
+			} else {
+				return 'e';
+			}
+		}
+
+		closest_value = 999999999;
+		closest_key = 's';
+		for (d : DIRS) {
+			vec = Sprite.DIR_VECTORS[d];
+			tdx = vec[0] - dx;
+			tdy = vec[1] - dy;
+			dist = tdx * tdx + tdy * tdy;
+			if (dist < closest_value) {
+				closest_value = dist;
+				closest_key = d;
+			}
+		}
+		return closest_key;
+	}
+	
+	function get_renderer_impl() {
+		switch (this.type) {
+			case 'arm': return sr_arm;
+			case 'ball': return sr_ball;
+			case 'battleship': return sr_battleship;
+			case 'bballplayer1': return sr_bballplayer1;
+			case 'bballplayer2': return sr_bballplayer2;
+			case 'bballplayer3': return sr_bballplayer3;
+			case 'bluepin': return sr_bluepin;
+			case 'boot': return sr_boot;
+			case 'bow': return sr_bow;
+			case 'conductor': return sr_conductor;
+			case 'chewedgum': return sr_chewedgum;
+			case 'cinematichack': return sr_cinematichack;
+			case 'dino': return sr_dino;
+			case 'dj': return sr_dj;
+			case 'enginenowheel': return sr_enginenowheel;
+			case 'enginewithwheel': return sr_enginewithwheel;
+			case 'gatedown': return sr_gatedown;
+			case 'gateup': return sr_gateup;
+			case 'getoutofjail': return sr_getoutofjail;
+			case 'guard': return sr_guard;
+			case 'goblet': return sr_goblet;
+			case 'hippochoke': return sr_hippochoke;
+			case 'hipposafe': return sr_hipposafe;
+			case 'horse': return sr_horse;
+			case 'horse1': return sr_horse1;
+			case 'horse2': return sr_horse2;
+			case 'horse2collapsed': return sr_horse2collapsed;
+			case 'house': return sr_house;
+			case 'joearm': return sr_joearm;
+			case 'joenoarm': return sr_joenoarm;
+			case 'joust': return sr_joust;
+			case 'king': return sr_king;
+			case 'knight1': return sr_knight1;
+			case 'knight2': return sr_knight2;
+			case 'legohack': return sr_legohack;
+			case 'legopog': return sr_legopog;
+			case 'mothercar1': return sr_mothercar1;
+			case 'mothercar2': return sr_mothercar2;
+			case 'passenger1sleeping': return sr_passenger1sleeping;
+			case 'passenger1awake': return sr_passenger1awake;
+			case 'passenger2': return sr_passenger2;
+			case 'photo4': return sr_photo4;
+			case 'player': 
+				switch (this.scale) {
+					case 'half': return sr_player_half;
+					case 'double': return sr_player_double;
+					default: return sr_player_full;
+				}
+			case 'queen': return sr_queen;
+			case 'racecar': return sr_racecar;
+			case 'raver1': return sr_raver1;
+			case 'raver2': return sr_raver2;
+			case 'rubberband': return sr_rubberband;
+			case 'rubberband2': return sr_rubberband2;
+			case 'sadman': return sr_sadman;
+			case 'scottie': return sr_scottie;
+			case 'spectator1': return sr_spectator1;
+			case 'spectator2': return sr_spectator2;
+			case 'steam': return sr_steam;
+			case 'teleporter': return sr_teleporter;
+			case 'teeth': return sr_teeth;
+			case 'thimble': return sr_thimble;
+			case 'tophat': return sr_tophat;
+			case 'traincar': return sr_traincar;
+			case 'trainpog': return sr_trainpog;
+			case 'trainwheel': return sr_trainwheel;
+			case 'trueking': return sr_trueking;
+			case 'ventalex': return sr_ventalex;
+			case 'volcanopog': return sr_volcanopog;
+			case 'wheelbarrow': return sr_wheelbarrow;
+			case 'wizard': return sr_wizard;
+		}
+	} 
+
+	function render(screen, images, rc) {
+		if (this.renderer == null) {
+			this.renderer = this.get_renderer_impl();
+		}
+		this.renderer(screen, images, rc);
+	}
 }
-DIRS = ('n', 's', 'e', 'w')
 
-class Sprite:
-	def __init__(self, type, x, y):
-		self.type = type
-		self.log = None
-		self.x = x
-		self.y = y
-		self.dx = 0
-		self.dy = 0
-		self.waypoints = []
-		self.v = 2.0
-		self.last_direction = 's'
-		self.dead = False
-		self.half = False
-		self.renderer = None
-		self.lifetime = 0
-		self.ghost = type == 'ball' or type == 'dino' or type == 'chewedgum' # can pass through things
-		self.teething = False
-		if type == 'dino':
-			self.v = 6.0
-		self.enforce_waypoint = False
-		self.stretched = False
-		self.is_moving = False
-	
-	def specific_update(self, type, area, counter):
-		if type == 'mothercar1' or type == 'mothercar2':
-			self.dx = $math_sin(self.lifetime * 2 * 3.14159 / 100)
-		elif type == 'hippochoke':
-			rate = 30
-			c = $int(counter % rate)
-			if c == 0:
-				self.dx = -2
-			elif c == $int(rate / 2):
-				self.dx = 2
-		elif type == 'scottie':
-			if area.id == 'trains2':
-				c = $int(counter % 50)
-				if c < 25:
-					self.dx = -1
-				else:
-					self.dx = 1
-		elif type == 'raver1' or type == 'raver2':
-			c = $int(counter % 15)
-			if c == 2:
-				self.dy = -3
-			elif c == 7:
-				self.dy = 3
-				
-	def update(self, area):
-		self.log = area.log
-		self.specific_update(self.type, area, self.lifetime)
-		self.lifetime += 1
-		if $list_length(self.waypoints) > 0:
-			wp = self.waypoints[0]
-			dx = wp[0] - self.x
-			dy = wp[1] - self.y
-			dist = (dx ** 2 + dy ** 2) ** .5
-			if dist <= self.v:
-				self.dx = wp[0] - self.x
-				self.dy = wp[1] - self.y
-				$list_remove(self.waypoints, 0)
-			else:
-				self.dx = 1.0 * dx * self.v / dist
-				self.dy = 1.0 * dy * self.v / dist
-		if self.dx != 0 or self.dy != 0:
-			#self.is_moving = True
-			dx = self.dx
-			dy = self.dy
-			self.last_direction = self.convert_vector_to_direction(dx, dy)
-			newx = self.x + dx
-			newy = self.y + dy
-			if area.is_passable(newx, newy) or self.ghost:
-				self.x = newx
-				self.y = newy
-				self.is_moving = True
-			else:
-				self.is_moving = False
-			self.dx = 0
-			self.dy = 0
-		else:
-			self.is_moving = False
-	
-	def set_waypoint(self, tx, ty):
-		if $list_length(self.waypoints) > 0:
-			if self.enforce_waypoints:
-				return
-		self.enforce_waypoints = False
-		self.waypoints = [(tx, ty)]
-	
-	def queue_waypoint(self, tx, ty):
-		$list_add(self.waypoints, (tx, ty))
-	
-	def convert_vector_to_direction(self, dx, dy):
-		if dx == 0:
-			if dy < 0:
-				return 'n'
-			else:
-				return 's'
-		elif dy == 0:
-			if dx < 0:
-				return 'w'
-			else:
-				return 'e'
-		
-		closest_value = 999999999
-		closest_key = 's'
-		for d in DIRS:
-			vec = DIR_VECTORS[d]
-			tdx = vec[0] - dx
-			tdy = vec[1] - dy
-			dist = tdx * tdx + tdy * tdy
-			if dist < closest_value:
-				closest_value = dist
-				closest_key = d
-		return closest_key
-			
-			
-				
-			
-	def render(self, screen, images, rc):
-		if self.renderer == None:
-			if self.type == 'player':
-				if self.scale == 'half': self.renderer = sr_player_half
-				elif self.scale == 'double': self.renderer = sr_player_double
-				else: self.renderer = sr_player_full
-			else:
-				if self.type[0] == 'b':
-					if self.type == 'ball': self.renderer = sr_ball
-					elif self.type == 'battleship': self.renderer = sr_battleship
-					elif self.type == 'bballplayer1': self.renderer = sr_bballplayer1
-					elif self.type == 'bballplayer2': self.renderer = sr_bballplayer2
-					elif self.type == 'bballplayer3': self.renderer = sr_bballplayer3
-					elif self.type == 'bluepin': self.renderer = sr_bluepin
-					elif self.type == 'boot': self.renderer = sr_boot
-					elif self.type == 'bow': self.renderer = sr_bow
-				else:
-					if self.type == 'arm': self.renderer = sr_arm
-					elif self.type == 'conductor': self.renderer = sr_conductor
-					elif self.type == 'chewedgum': self.renderer = sr_chewedgum
-					elif self.type == 'dino': self.renderer = sr_dino
-					elif self.type == 'dj': self.renderer = sr_dj
-					elif self.type == 'enginenowheel': self.renderer = sr_enginenowheel
-					elif self.type == 'enginewithwheel': self.renderer = sr_enginewithwheel
-					elif self.type == 'gatedown': self.renderer = sr_gatedown
-					elif self.type == 'gateup': self.renderer = sr_gateup
-					elif self.type == 'getoutofjail': self.renderer = sr_getoutofjail
-					elif self.type == 'guard': self.renderer = sr_guard
-					elif self.type == 'goblet': self.renderer = sr_goblet
-					elif self.type == 'hippochoke': self.renderer = sr_hippochoke
-					elif self.type == 'hipposafe': self.renderer = sr_hipposafe
-					elif self.type == 'horse': self.renderer = sr_horse
-					elif self.type == 'joearm': self.renderer = sr_joearm
-					elif self.type == 'joenoarm': self.renderer = sr_joenoarm
-					elif self.type == 'joust': self.renderer = sr_joust
-					elif self.type == 'king': self.renderer = sr_king
-					elif self.type == 'knight1': self.renderer = sr_knight1
-					elif self.type == 'knight2': self.renderer = sr_knight2
-					elif self.type == 'legopog': self.renderer = sr_legopog
-					elif self.type == 'mothercar1': self.renderer = sr_mothercar1
-					elif self.type == 'mothercar2': self.renderer = sr_mothercar2
-					elif self.type == 'passenger1sleeping': self.renderer = sr_passenger1sleeping
-					elif self.type == 'passenger1awake': self.renderer = sr_passenger1awake
-					elif self.type == 'passenger2': self.renderer = sr_passenger2
-					elif self.type == 'photo4': self.renderer = sr_photo4
-					elif self.type == 'queen': self.renderer = sr_queen
-					elif self.type == 'racecar': self.renderer = sr_racecar
-					elif self.type == 'raver1': self.renderer = sr_raver1
-					elif self.type == 'raver2': self.renderer = sr_raver2
-					elif self.type == 'rubberband': self.renderer = sr_rubberband
-					elif self.type == 'rubberband2': self.renderer = sr_rubberband2
-					elif self.type == 'scottie': self.renderer = sr_scottie
-					elif self.type == 'steam': self.renderer = sr_steam
-					elif self.type == 'teleporter': self.renderer = sr_teleporter
-					elif self.type == 'teeth': self.renderer = sr_teeth
-					elif self.type == 'thimble': self.renderer = sr_thimble
-					elif self.type == 'tophat': self.renderer = sr_tophat
-					elif self.type == 'traincar': self.renderer = sr_traincar
-					elif self.type == 'trainpog': self.renderer = sr_trainpog
-					elif self.type == 'trainwheel': self.renderer = sr_trainwheel
-					elif self.type == 'ventalex': self.renderer = sr_ventalex
-					elif self.type == 'volcanopog': self.renderer = sr_volcanopog
-					elif self.type == 'wheelbarrow': self.renderer = sr_wheelbarrow
-					elif self.type == 'wizard': self.renderer = sr_wizard
-					
-					elif self.type == 'house': self.renderer = sr_house
-					
-					elif self.type == 'legohack': self.renderer = sr_legohack
-					elif self.type == 'horse1': self.renderer = sr_horse1
-					elif self.type == 'horse2': self.renderer = sr_horse2
-					elif self.type == 'horse2collapsed': self.renderer = sr_horse2collapsed
-					elif self.type == 'spectator1': self.renderer = sr_spectator1
-					elif self.type == 'spectator2': self.renderer = sr_spectator2
-					elif self.type == 'sadman': self.renderer = sr_sadman
-					elif self.type == 'trueking': self.renderer = sr_trueking
-					elif self.type == 'cinematichack': self.renderer = sr_cinematichack
-		
-		#if self.renderer == None:
-		#	$print(self.type)
-		self.renderer(self, screen, images, rc)
+function draw_image_centered(screen, sprite, img) {
+	w = img.width;
+	h = img.height;
+	x = sprite.x - w / 2;
+	y = sprite.y - h;
+	img.draw(x, y);
+	sprite.last_width = w;
+	sprite.last_height = h;
+}
 
-def draw_image_centered(screen, sprite, img):
-	w = $image_width(img)
-	h = $image_height(img)
-	x = sprite.x - $int(w / 2)
-	y = sprite.y - h
-	$image_blit(screen, img, x, y)
-	sprite.last_width = w
-	sprite.last_height = h
-	#$print(sprite.type)
-
-def draw_image_centered_directional(screen, sprite, images, key):
-	img = images[key + '_' + sprite.last_direction]
-	draw_image_centered(screen, sprite, img)
+function draw_image_centered_directional(screen, sprite, images, key) {
+	img = images[key + '_' + sprite.last_direction];
+	draw_image_centered(screen, sprite, img);
+}
 
 
-def sr_arm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/arm'])
-def sr_ball(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/ball'])
-def sr_battleship(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/battleship'])
-def sr_bballplayer1(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red')
-def sr_bballplayer2(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red')
-def sr_bballplayer3(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red')
-def sr_bluepin(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/bluepin'])
-def sr_boot(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/boot'])
-def sr_bow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/bow'])
-def sr_chewedgum(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/chewedgum'])
-def sr_cinematichack(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['backgrounds/cinematichack'])
-def sr_conductor(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/conductor'])
-def sr_dj(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/dj'])
-def sr_dino(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/dinos/trex')
-def sr_enginenowheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginenowheel'])
-def sr_enginewithwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/enginewithwheel'])
-def sr_gatedown(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/gatedown'])
-def sr_gateup(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/gateup'])
-def sr_getoutofjail(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/getoutofjail'])
-def sr_guard(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/guard'])
-def sr_hippochoke(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/choking'])
-def sr_hipposafe(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/hippo/hippo'])
-def sr_horse(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/horse'])
-def sr_house(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/house'])
-def sr_joearm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/joe_arm'])
-def sr_joenoarm(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/misc/joe_noarm'])
-def sr_king(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/king'])
-def sr_knight1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard0'])
-def sr_knight2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/guard1'])
-def sr_legopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/pog'])
-def sr_passenger1sleeping(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger1sleeping'])
-def sr_passenger1awake(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger1awake'])
-def sr_passenger2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/passenger2'])
-def sr_photo4(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/photo4'])
-def sr_queen(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/queen'])
-def sr_raver1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/raver1'])
-def sr_raver2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/raver2'])
-def sr_racecar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/racecar'])
-def sr_rubberband(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/rubberband_ground'])
-def sr_scottie(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/scottie'])
-def sr_thimble(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/thimble'])
-def sr_tophat(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/tophat'])
-def sr_traincar(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/traincar'])
-def sr_trainpog(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/trainpog'])
-def sr_trainwheel(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/trains/trainwheel'])
-def sr_volcanopog(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/volcanopog'])
-def sr_ventalex(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['simple/ventalex'])
-def sr_wheelbarrow(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['icons/wheelbarrow'])
-def sr_wizard(sprite, screen, images, rc): draw_image_centered_directional(screen, sprite, images, 'sprites/cards/wizard')
+function sr_arm(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/misc/arm']); }
+function sr_ball(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/ball']); }
+function sr_battleship(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/battleship']); }
+function sr_bballplayer1(sprite, screen, images, rc) { draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red'); }
+function sr_bballplayer2(sprite, screen, images, rc) { draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red'); }
+function sr_bballplayer3(sprite, screen, images, rc) { draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red'); }
+function sr_bluepin(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/bluepin']); }
+function sr_boot(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/boot']); }
+function sr_bow(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/bow']); }
+function sr_chewedgum(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/chewedgum']); }
+function sr_cinematichack(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['backgrounds/cinematichack']); }
+function sr_conductor(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/conductor']); }
+function sr_dj(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/dj']); }
+function sr_dino(sprite, screen, images, rc) { draw_image_centered_directional(screen, sprite, images, 'sprites/dinos/trex'); }
+function sr_enginenowheel(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/enginenowheel']); }
+function sr_enginewithwheel(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/enginewithwheel']); }
+function sr_gatedown(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/gatedown']); }
+function sr_gateup(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/gateup']); }
+function sr_getoutofjail(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/getoutofjail']); }
+function sr_guard(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/misc/guard']); }
+function sr_hippochoke(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/hippo/choking']); }
+function sr_hipposafe(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/hippo/hippo']); }
+function sr_horse(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/horse']); }
+function sr_horse1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/horse0'])
+function sr_horse2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/horse1'])
+function sr_horse2collapsed(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/horsecollapse'])
+function sr_house(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/house']); }
+function sr_joearm(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/misc/joe_arm']); }
+function sr_joenoarm(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/misc/joe_noarm']); }
+function sr_joust(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/joust'])
+function sr_king(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/king']); }
+function sr_knight1(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/guard0']); }
+function sr_knight2(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/guard1']); }
+function sr_legohack(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['backgrounds/legos1point5'])
+function sr_legopog(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/pog']); }
+function sr_passenger1sleeping(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/passenger1sleeping']); }
+function sr_passenger1awake(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/passenger1awake']); }
+function sr_passenger2(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/passenger2']); }
+function sr_photo4(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/photo4']); }
+function sr_queen(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/queen']); }
+function sr_raver1(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/raver1']); }
+function sr_raver2(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/raver2']); }
+function sr_racecar(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/racecar']); }
+function sr_rubberband(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/rubberband_ground']); }
+function sr_sadman(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/sadman'])
+function sr_scottie(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/scottie']); }
+function sr_spectator1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/spectator0'])
+function sr_spectator2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/spectator1'])
+function sr_thimble(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/thimble']); }
+function sr_tophat(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/tophat']); }
+function sr_traincar(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/traincar']); }
+function sr_trainpog(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/trainpog']); }
+function sr_trainwheel(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/trainwheel']); }
+function sr_trueking(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/trueking'])
+function sr_volcanopog(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/volcanopog']); }
+function sr_ventalex(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/ventalex']); }
+function sr_wheelbarrow(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/wheelbarrow']); }
+function sr_wizard(sprite, screen, images, rc) { draw_image_centered_directional(screen, sprite, images, 'sprites/cards/wizard'); }
 
-# too lazy to alphabetize
-def sr_legohack(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['backgrounds/legos1point5'])
-def sr_horse1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/horse0'])
-def sr_horse2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/horse1'])
-def sr_horse2collapsed(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/horsecollapse'])
-def sr_spectator1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/spectator0'])
-def sr_spectator2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/spectator1'])
-def sr_sadman(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/sadman'])
-def sr_trueking(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/trueking'])
-def sr_joust(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/joust'])
+function sr_steam(sprite, screen, images, rc) {
+	c = Math.floor((sprite.x + rc) % 60);
+	if (c < 30 && (c > 20 || c < 10)) {
+		draw_image_centered(screen, sprite, images['simple/steam']);
+	}
+}
 
-def sr_steam(sprite, screen, images, rc): 
-	c = $int((sprite.x + rc) % 60)
-	if c < 30 and (c > 20 or c < 10):
-		draw_image_centered(screen, sprite, images['simple/steam'])
+function sr_rubberband2(sprite, screen, images, rc) {
+	if (sprite.stretched) {
+		draw_image_centered(screen, sprite, images['sprites/misc4/rubber_stretched']);
+	} else {
+		draw_image_centered(screen, sprite, images['sprites/misc4/rubber_unstretched']);
+	}
+}
 
-def sr_rubberband2(sprite, screen, images, rc):
-	if sprite.stretched:
-		draw_image_centered(screen, sprite, images['sprites/misc4/rubber_stretched'])
-	else:
-		draw_image_centered(screen, sprite, images['sprites/misc4/rubber_unstretched'])
+class SrTeethHelper {
+	static field _sr_teeth_values = [0, 1, 2, 3, 2, 1, 0];
+}
 
-_sr_teeth_values = [0, 1, 2, 3, 2, 1, 0]
-def sr_teeth(sprite, screen, images, rc): 
-	if sprite.teething:
-		index = $int(rc / 3)
-		num = _sr_teeth_values[$int(index % $list_length(_sr_teeth_values))]
-		draw_image_centered(screen, sprite, images['sprites/teeth/teeth' + $str(num)])
-	else:
-		draw_image_centered(screen, sprite, images['sprites/teeth/teeth0'])
+function sr_teeth(sprite, screen, images, rc) {
+	if (sprite.teething) {
+		index = rc / 3;
+		num = SrTeethHelper._sr_teeth_values[index % SrTeethHelper._sr_teeth_values.length];
+		draw_image_centered(screen, sprite, images['sprites/teeth/teeth' + $str(num)]);
+	} else {
+		draw_image_centered(screen, sprite, images['sprites/teeth/teeth0']);
+	}
+}
 
-def sr_goblet(sprite, screen, images, rc):
-	if sprite.log != None and sprite.log.get_int('HAS_BLUEPIN', 0) == 0:
-		img = images['sprites/legos/goblet_pin']
-	else:
-		img = images['sprites/legos/goblet']
-	draw_image_centered(screen, sprite, img)
+function sr_goblet(sprite, screen, images, rc) {
+	if (sprite.log != null && sprite.log.get_int('HAS_BLUEPIN', 0) == 0) {
+		img = images['sprites/legos/goblet_pin'];
+	} else {
+		img = images['sprites/legos/goblet'];
+	}
+	draw_image_centered(screen, sprite, img);
+}
 
-def sr_mothercar1(sprite, screen, images, rc):
-	key = 'sprites/mothercar/left1'
-	if sprite.last_direction == 'e':
-		key = 'sprites/mothercar/right1'
-	draw_image_centered(screen, sprite, images[key])
+function sr_mothercar1(sprite, screen, images, rc) {
+	key = 'sprites/mothercar/left1';
+	if (sprite.last_direction == 'e') {
+		key = 'sprites/mothercar/right1';
+	}
+	draw_image_centered(screen, sprite, images[key]);
+}
 
-def sr_mothercar2(sprite, screen, images, rc):
-	key = 'sprites/mothercar/left2'
-	if sprite.last_direction == 'e':
-		key = 'sprites/mothercar/right2'
-	draw_image_centered(screen, sprite, images[key])
+function sr_mothercar2(sprite, screen, images, rc) {
+	key = 'sprites/mothercar/left2';
+	if (sprite.last_direction == 'e') {
+		key = 'sprites/mothercar/right2';
+	}
+	draw_image_centered(screen, sprite, images[key]);
+}
 
-def player_get_image_key(sprite, rc):
-	path = sprite.last_direction
-	num = 0
-	if sprite.is_moving:
-		c = $int($int(rc / 3) % 4)
-		if c == 2:
-			c = 0
-		elif c == 3:
-			c = 2
-		num = c
-	path += $str(num)
-	return path
+function player_get_image_key(sprite, rc) {
+	path = sprite.last_direction;
+	num = 0;
+	if (sprite.is_moving) {
+		c = (rc / 3) % 4;
+		if (c == 2) {
+			c = 0;
+		} else if (c == 3) {
+			c = 2;
+		}
+		num = c;
+	}
+	return path + num;
+}
 
-def sr_player_double(sprite, screen, images, rc):
-	k = player_get_image_key(sprite, rc)
-	draw_image_centered(screen, sprite, images['sprites/mc_double/'+ k])
+function sr_player_double(sprite, screen, images, rc) {
+	k = player_get_image_key(sprite, rc);
+	draw_image_centered(screen, sprite, images['sprites/mc_double/'+ k]);
+}
 
-def sr_player_full(sprite, screen, images, rc):
-	k = player_get_image_key(sprite, rc)
-	draw_image_centered(screen, sprite, images['sprites/mc/' + k])
+function sr_player_full(sprite, screen, images, rc) {
+	k = player_get_image_key(sprite, rc);
+	draw_image_centered(screen, sprite, images['sprites/mc/' + k]);
+}
 
-def sr_player_half(sprite, screen, images, rc):
-	k = player_get_image_key(sprite, rc)
-	draw_image_centered(screen, sprite, images['sprites/mc_half/' + k])
+function sr_player_half(sprite, screen, images, rc) {
+	k = player_get_image_key(sprite, rc);
+	draw_image_centered(screen, sprite, images['sprites/mc_half/' + k]);
+}
 
-def sr_teleporter(sprite, screen, images, rc):
-	key = 'teleporter/frame' + $str($int($int(rc / 5) % 3) + 1)
-	draw_image_centered(screen, sprite, images[key])
+function sr_teleporter(sprite, screen, images, rc) {
+	key = 'teleporter/frame' + ((rc / 5) % 3 + 1);
+	draw_image_centered(screen, sprite, images[key]);
+}
