@@ -116,7 +116,7 @@ class CoreImageLibrary {
 	}
 }
 
-class Game {
+class SentientStorage {
 	field _core_width;
 	field _core_height;
 	field _core_allow_direct_quit;
@@ -135,7 +135,7 @@ class Game {
 		this._core_allow_direct_quit = allow_direct_quit;
 	}
 
-	function run(starting_scene, files=null, loading_renderer=null) {
+	function run(starting_scene, files = null, loading_renderer = null) {
 		active_scene = new CoreLoadingScene(files, loading_renderer, starting_scene);
 		active_scene._core_width = this._core_width;
 		active_scene._core_height = this._core_height;
@@ -162,4 +162,8 @@ class Game {
 			this._game_window.clockTick();
 		}
 	}
+}
+
+function main() {
+	new SentientStorage(30, 320, 240, 1000, 750);
 }

@@ -1,5 +1,5 @@
 
-const ITEMS_PER_ROW = 5
+const ITEMS_PER_ROW = 5;
 
 class InventoryOverlay {
 

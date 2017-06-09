@@ -22,7 +22,7 @@ class DialogSurface {
 	}
 	
 	function click(x, y) {
-		if (this.ok != null)
+		if (this.ok != null) {
 			if (x > this.ok[0] && x < this.ok[2] && y > this.ok[1] && y < this.ok[3]) {
 				this.next = this.bg;
 				this.bg.next = this.bg;

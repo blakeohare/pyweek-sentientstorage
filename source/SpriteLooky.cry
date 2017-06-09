@@ -1,6 +1,6 @@
 function sprite_looky_talky(scene, sprite, is_looky) {
 	id = sprite.type;
-	is_talky = not is_looky;
+	is_talky = !is_looky;
 	log = scene.log;
 	
 	switch (id) {
@@ -14,7 +14,7 @@ function sprite_looky_talky(scene, sprite, is_looky) {
 				}
 			}
 
-			if (not train_running) {
+			if (!train_running) {
 				if (log.get_int('TRAIN_FIXED', 0) == 1) {
 					return slt_invoke_basic(scene, [
 						"Great! We have tracks!", 
@@ -27,7 +27,7 @@ function sprite_looky_talky(scene, sprite, is_looky) {
 			}
 			return slt_invoke_basic(scene, ["All aboard!"]);
 
-		case elif id == 'dj':
+		case 'dj':
 			if (!is_talky) return false; // looking at the DJ is not implemented
 
 			if (log.get_int('HAS_WIZARD', 0) == 2) {
@@ -43,7 +43,7 @@ function sprite_looky_talky(scene, sprite, is_looky) {
 			}
 		
 			return slt_invoke_basic(scene, [
-				"It'd be nice if we had", "some wicked lighting effects."])
+				"It'd be nice if we had", "some wicked lighting effects."]);
 			
 		case 'guard':
 			if (!is_talky) return false;
@@ -98,9 +98,10 @@ function sprite_looky_talky(scene, sprite, is_looky) {
 				"forces and there is a false king", 
 				"on the throne of Legoville.", 
 				"*sigh*"]);
-		}
-		return false;
+			
+		default: return false;
 	}
+	return false;
 }
 
 function slt_invoke_basic(walky_scene, text) {

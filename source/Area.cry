@@ -374,7 +374,7 @@ class Area {
 			} else if (sprites[sprite_index].sorty < this.layer_y[layer_index]) {
 				is_sprite = true;
 			} else {
-				is_sprite =f alse;
+				is_sprite = false;
 			}
 			
 			if (is_sprite) {
@@ -434,7 +434,7 @@ class Area {
 			}
 		}
 		if (this.id == 'trains3' && this.log.get_int('HAS_WIZARD', 0) == 2) {
-			c = rc % 6
+			c = rc % 6;
 			if (c < 3) {
 				img = images['backgrounds/strobe1'];
 			} else {
@@ -498,6 +498,7 @@ class Area {
 					case 'BL':
 						px = 1.0 - px;
 						if (px + py >= 1) return false;
+						break;
 					default:
 						throw new Exception();
 				}

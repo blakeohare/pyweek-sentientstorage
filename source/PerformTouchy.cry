@@ -21,7 +21,7 @@ function perform_touchy(walking_surface, area, region_id, game_log, x, y) {
 				pt_attic_sports_box(walking_surface, area, region_id, game_log);
 				break;
 			case 'misc_box':
-				pt_attic_misc_box(walking_surface, area, region_id, game_log)
+				pt_attic_misc_box(walking_surface, area, region_id, game_log);
 				break;
 		}
 	} else if (area_id == 'games2') {
@@ -148,7 +148,7 @@ function pt_hurl_self2(scene, args) {
 	old_v = scene.player.v;
 	scene.area.player.ghost = true;
 	scene.area.player.v = 8;
-	scene.area.player.waypoints = [(207, 58)];
+	scene.area.player.waypoints = [[207, 58]];
 	scene.area.player.enforce_waypoints = true;
 	scene.timeouts.add([23, pt_hurl_self3, [old_v]]);
 }
@@ -357,7 +357,7 @@ function pt_games_hippo_heimlich_post(walking_surface, args) {
 function pt_games_hippo_heimlich(walking_surface, area, game_log, sprite, d) {
 	game_log.set_int('IS_HIPPO_SAFE', 1);
 	ball = Sprite('ball', sprite.x, sprite.y - 12);
-	ball.waypoints.add((138, 74));
+	ball.waypoints.add([138, 74]);
 	ball.v = 7;
 	walking_surface.timeouts.add([20, pt_games_hippo_heimlich_post, []]);
 	area.sprites.add(ball);

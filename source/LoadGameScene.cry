@@ -3,7 +3,11 @@ class LoadGameScene {
 		this.next = this;
 	}
 	
-	function update(events) { }
+	function update(events) {
+
+	}
 	
-	function render(screen, images, rc) { }
+	function render(screen, images, rc) {
+		
+	}
 }

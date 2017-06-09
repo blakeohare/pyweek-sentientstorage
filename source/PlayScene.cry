@@ -1,8 +1,8 @@
-const CURSOR_WALK = 0
-const CURSOR_LOOK = 1
-const CURSOR_HAND = 2
-const CURSOR_TALK = 3
-const CURSOR_ITEM = 5
+const CURSOR_WALK = 0;
+const CURSOR_LOOK = 1;
+const CURSOR_HAND = 2;
+const CURSOR_TALK = 3;
+const CURSOR_ITEM = 5;
 
 class PlayScene {
 	field next;
@@ -12,9 +12,9 @@ class PlayScene {
 	field active_item = null;
 	field log;
 
-	constructor(area_id, game_log) 
+	constructor(area_id, game_log) {
 		this.next = this;
-		this.canvas = WalkingSurface(area_id, game_log)
+		this.canvas = WalkingSurface(area_id, game_log);
 		this.log = game_log;
 		
 		initialize_hacks(this);

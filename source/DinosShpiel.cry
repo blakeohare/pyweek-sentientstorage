@@ -13,7 +13,7 @@ function dinos_shpiel_2(scene, args) {
 		"colonel!"], dinos_shpiel_3, null);
 }
 
-function dinos_shpiel_3(scene, args):
+function dinos_shpiel_3(scene, args) {
 	scene.invoke_dialog([
 		"Bite your arm? Heaven's no!",
 		"I just wanted to share some",

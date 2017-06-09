@@ -29,7 +29,7 @@ class Sprite {
 	field is_moving = false;
 
 	constructor(type, x, y) {
-		this.type = type
+		this.type = type;
 		this.x = x;
 		this.y = y;
 		this.ghost = type == 'ball' || type == 'dino' || type == 'chewedgum'; // can pass through things
@@ -72,8 +72,8 @@ class Sprite {
 			dy = wp[1] - this.y;
 			dist = (dx ** 2 + dy ** 2) ** .5;
 			if (dist <= this.v) {
-				this.dx = wp[0] - this.x
-				this.dy = wp[1] - this.y
+				this.dx = wp[0] - this.x;
+				this.dy = wp[1] - this.y;
 				this.waypoints.remove(0);
 			} else {
 				this.dx = 1.0 * dx * this.v / dist;
@@ -268,17 +268,17 @@ function sr_guard(sprite, screen, images, rc) { draw_image_centered(screen, spri
 function sr_hippochoke(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/hippo/choking']); }
 function sr_hipposafe(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/hippo/hippo']); }
 function sr_horse(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/horse']); }
-function sr_horse1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/horse0'])
-function sr_horse2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/horse1'])
-function sr_horse2collapsed(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/horsecollapse'])
+function sr_horse1(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/horse0']); }
+function sr_horse2(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/horse1']); }
+function sr_horse2collapsed(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/horsecollapse']); }
 function sr_house(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/house']); }
 function sr_joearm(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/misc/joe_arm']); }
 function sr_joenoarm(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/misc/joe_noarm']); }
-function sr_joust(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/joust'])
+function sr_joust(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/joust']); }
 function sr_king(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/king']); }
 function sr_knight1(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/guard0']); }
 function sr_knight2(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/guard1']); }
-function sr_legohack(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['backgrounds/legos1point5'])
+function sr_legohack(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['backgrounds/legos1point5']); }
 function sr_legopog(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/pog']); }
 function sr_passenger1sleeping(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/passenger1sleeping']); }
 function sr_passenger1awake(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/passenger1awake']); }
@@ -289,16 +289,16 @@ function sr_raver1(sprite, screen, images, rc) { draw_image_centered(screen, spr
 function sr_raver2(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/raver2']); }
 function sr_racecar(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/racecar']); }
 function sr_rubberband(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/rubberband_ground']); }
-function sr_sadman(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/sadman'])
+function sr_sadman(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/sadman']); }
 function sr_scottie(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/scottie']); }
-function sr_spectator1(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/spectator0'])
-function sr_spectator2(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/spectator1'])
+function sr_spectator1(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/spectator0']); }
+function sr_spectator2(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/spectator1']); }
 function sr_thimble(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/thimble']); }
 function sr_tophat(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/tophat']); }
 function sr_traincar(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/traincar']); }
 function sr_trainpog(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/trainpog']); }
 function sr_trainwheel(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/trainwheel']); }
-function sr_trueking(sprite, screen, images, rc): draw_image_centered(screen, sprite, images['sprites/legos/trueking'])
+function sr_trueking(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/trueking']); }
 function sr_volcanopog(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/volcanopog']); }
 function sr_ventalex(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/ventalex']); }
 function sr_wheelbarrow(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/wheelbarrow']); }

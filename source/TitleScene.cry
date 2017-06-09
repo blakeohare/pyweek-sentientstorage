@@ -4,7 +4,7 @@ class TitleScene {
 	field x = 0;
 	field y = 0;
 
-	function constructor() {
+	constructor() {
 		this.next = this;
 	}
 
@@ -18,11 +18,11 @@ class TitleScene {
 			} else if (ev.type == EventType.MOUSE_LEFT_DOWN) {
 				x = ev.x;
 				y = ev.y;
-				if (x > 87 and x < 209 and y > 127 and y < 152) {
+				if (x > 87 && x < 209 && y > 127 && y < 152) {
 					action = 'new';
-				} else if (x > 87 and x < 209 and y > 158 and y < 187) {
+				} else if (x > 87 && x < 209 && y > 158 && y < 187) {
 					action = 'load';
-				} else if (x > 115 and x < 164 and y > 191 and y < 216) {
+				} else if (x > 115 && x < 164 && y > 191 && y < 216) {
 					action = 'exit';
 				} else {
 					action = 'new';
