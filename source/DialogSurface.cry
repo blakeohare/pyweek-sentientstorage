@@ -1,6 +1,9 @@
+import Graphics2D;
+import Math;
+
 const TEXT_BG_RED = 200;
 const TEXT_BG_GREEN = 200;
-const TEXT_BG_BUE = 230;
+const TEXT_BG_BLUE = 230;
 
 class DialogSurface {
 
@@ -61,7 +64,7 @@ class DialogSurface {
 	}
 	
 	function render_cursor(type, item, screen, images) {
-		render_cursor('pointy', None, screen, images);
+		render_cursor('pointy', null, screen, images);
 	}
 	
 	function render_real(screen, images) {

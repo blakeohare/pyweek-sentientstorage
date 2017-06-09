@@ -1,3 +1,6 @@
+import Graphics2D;
+import Math;
+
 class ShootingGame {
 	field next;
 	field bg;
@@ -73,7 +76,7 @@ class ShootingGame {
 		if (this.arrow == null) {
 			this.tries++;
 			dx = 1;
-			dy = self.slope;
+			dy = this.slope;
 			magnitude = (dy ** 2 + 1) ** .5;
 			velocity = 13;
 			dx = velocity * dx / magnitude;
@@ -118,7 +121,7 @@ class ShootingGame {
 				ap = 1.0 - p;
 				x = start_x * p + end_x * ap;
 				y = start_y * p + end_y * ap;
-				Drwa.rectangle(Math.floor(x), Math.floor(y), 3, 3, 200, 128, 60);
+				Draw.rectangle(Math.floor(x), Math.floor(y), 3, 3, 200, 128, 60);
 				dx = x - this.target[0];
 				dy = y - this.target[1];
 				dist = (dx ** 2 + dy ** 2) ** .5;
@@ -130,7 +133,7 @@ class ShootingGame {
 					digits = Math.floor(this.tries % 100);
 					if (digits == 11 || digits == 12 || digits == 13) suffix = 'th';
 					else {
-						digit = Math.floor(self.tries % 10);
+						digit = Math.floor(this.tries % 10);
 						if (digit == 1) suffix = 'st';
 						else if (digit == 2) suffix = 'nd';
 						else if (digit == 3) suffix = 'rd';

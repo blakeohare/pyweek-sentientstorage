@@ -14,7 +14,7 @@ class PlayScene {
 
 	constructor(area_id, game_log) {
 		this.next = this;
-		this.canvas = WalkingSurface(area_id, game_log);
+		this.canvas = new WalkingSurface(area_id, game_log);
 		this.log = game_log;
 		
 		initialize_hacks(this);
@@ -29,7 +29,7 @@ class PlayScene {
 		
 		// if it was removed from your inventory it should immediately disappear
 		if (this.active_item != null) {
-			if (this.log.get_int('HAS_' + $string_upper(self.active_item), 0) != 1) {
+			if (this.log.get_int('HAS_' + this.active_item.upper(), 0) != 1) {
 				this.active_item = null;
 			}
 		}
@@ -124,7 +124,7 @@ class PlayScene {
 		images['menus/item'].draw(32, 208);
 		images['menus/inventory'].draw(64, 208);
 		if (this.active_item != null) {
-			images['icons/' + self.active_item].draw(33, 209);
+			images['icons/' + this.active_item].draw(33, 209);
 		}
 		
 		if (is_primary) {

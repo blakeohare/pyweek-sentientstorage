@@ -1,3 +1,5 @@
+import Graphics2D;
+import Math;
 
 const ITEMS_PER_ROW = 5;
 
@@ -34,6 +36,12 @@ class InventoryOverlay {
 		'photo4',
 		'photo5'
 	];
+
+	field playscene;
+	field next;
+	field item_grid;
+	field rectangles;
+	field has_any;
 
 	constructor(playscene) {
 		this.playscene = playscene;
@@ -100,7 +108,7 @@ class InventoryOverlay {
 		Draw.rectangle(left, top, width, height, 200, 200, 230);
 		for (y = 0; y < rowcount; ++y) {
 			for (x = 0; x < this.item_grid[y].length; ++x) {
-				item = self.item_grid[y][x];
+				item = this.item_grid[y][x];
 				if (item != null) {
 					rleft = x * 32 + left;
 					rtop = y * 32 + top;

@@ -1,5 +1,5 @@
-
-
+import Graphics2D;
+import Resources;
 
 class Area {
 	static field MONOPOLY_INDEX = [
@@ -25,6 +25,15 @@ class Area {
 	field train_counter = 0;
 	field layer_images;
 	field layer_y;
+	field start_point;
+	field start_froms;
+	field player;
+	field scale;
+	field blocks;
+	field region_ids;
+	field look_data;
+	field doors;
+	field teleporter;
 
 	constructor(name, log) {
 		this.id = name;
@@ -64,7 +73,7 @@ class Area {
 	}
 	
 	function parse_level_file(name, log) {
-		level = Resources.readTextFile('levels/' + name + '.txt');
+		level = Resources.readText('levels/' + name + '.txt');
 		rows = level.split('\n');
 		backgrounds_by_id = {};
 		background_ids = [];
@@ -208,7 +217,8 @@ class Area {
 	}
 	
 	function remove_block_at(x, y) {
-		for (block : this.blocks) {
+		for (i = 0; i < this.blocks.length; ++i) {
+			block = this.blocks[i];
 			if (block[0] < x && block[1] < y && block[2] > x && block[3] > y) {
 				this.blocks.removeAt(i);
 				return;
@@ -381,7 +391,7 @@ class Area {
 				sprites[sprite_index].render(screen, images, rc);
 				sprite_index++;
 			} else {
-				images[self.layer_images[layer_index]].draw(0, 0);
+				images[this.layer_images[layer_index]].draw(0, 0);
 				layer_index++;
 			}
 		}
@@ -399,7 +409,7 @@ class Area {
 		
 		if (rc % 2 == 0) {
 			if (show_blocks) {
-				for (block : self.blocks) {
+				for (block : this.blocks) {
 					tri = block[4];
 					x = block[0];
 					y = block[1];
@@ -423,7 +433,7 @@ class Area {
 					}
 				}
 			} else if (show_look) {
-				for (region : self.region_ids) {
+				for (region : this.region_ids) {
 					left = region[0];
 					width = region[2] - region[0];
 					top = region[1];

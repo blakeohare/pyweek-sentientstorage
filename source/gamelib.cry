@@ -3,167 +3,111 @@ import Graphics2D;
 import ImageResources;
 import Math;
 
-class SceneBase {
+const GAME_WIDTH = 320;
+const GAME_HEIGHT = 240;
 
-	field _core_next = null;
-	constructor() { }
+class LoadingScene {
 	
-	function update(events) {
-		throw new NotImplementedException();
-	}
-	
-	function load_images(imageLibrary) { }
+	static field images;
 
-	function render() {
-		throw new NotImplementedException();
-	}
-	
-	function switch_scene(nextScene) {
-		this._core_next = nextScene;
-	}
-}
+	field next;
+	field counter = 0;
+	field loader = null;
+	field isDone = false;
+	field progress = 0.0;
 
-class CoreLoadingScene : SceneBase {
-	
-	field _core_image_library;
-	field _core_renderer;
-	field _screen_width = 400;
-	field _screen_height = 300;
-	field _counter = 0;
-
-	constructor(files, renderer, next_scene) : base() {
-		this._core_image_library = new CoreImageLibrary(files);
-		this._core_next_scene = next_scene;
-		this._core_renderer = renderer;
+	constructor() {
+		this.next = this;
 	}
 	
 	function update(events) {
-		this._counter++;
-		this._core_image_library.update();
-		if (this._core_image_library.done) {
-			this.switch_scene(this._core_next_scene);
-		}
-	}
-	
-	function render() {
-		total = this._core_image_library.size;
-		progress_ratio = total == 0 ? 1.0 : (1.0 * this._core_image_library.downloaded / total);
-		
-		if (this._core_renderer == null) {
-			fwidth = Math.floor(0.8 * this._core_width);
-			width = Math.floor(progress_ratio * fwidth);
-			left = (this._core_width - fwidth) / 2;
-			top = Math.floor(this._core_height * .46);
-			height = Math.floor(this._core_height * .08);
-			Draw.rectangle(left, top, fwidth, height, 80, 80, 80);
-			Draw.rectangle(left, top, width, height, 80, 80, 80);
-		} else {
-			this._core_renderer(this._counter, progress_ratio);
-		}
-	}
-}
-
-class CoreImageLibrary {
-
-	field loader;
-	field sheet;
-
-	field image_keys = [];
-	field image_objects = [];
-	field paths_by_key = {};
-	field _core_images = {};
-	field downloaded = 0;
-	field size;
-	field done = false;
-	field state = 0;
-
-	constructor(files) {
-		
-		for (key : files.keys()) {
-			filepath = files[key + ''] + '';
-			this.paths_by_key[key] = filepath;
-			this.image_keys.add(key);
-		}
-
-		this.size = files.length;
-	}
-	
-	function update() {
+		this.counter++;
 		if (this.loader == null) {
-			this.loader = ImageResources.ImageSheet.loadFromResourcesAsync('everything');
+			this.loader = ImageSheet.loadFromResourcesAsync('everything');
 		}
 
-		if (!this.done) {
-			if (this.loader.isDone()) {
-				this.state = 2;
-				for (filename : this.loader.getFiles()) {
-					this._core_images[filename] = this.loader.getImage(filename);
-				}
-				this.done = true;
-				this.downloaded = this.size;
-			} else {
-				this.downloaded = Math.floor(this.loader.getProgress() * this.size);
-			}
+		if (this.isDone) {
+			LoadingScene.images = this.generateLookup();
+			this.next = new TitleScene();
+		} else if (this.loader.isDone()) {
+			this.isDone = true;
+			this.progress = 1.0;
+		} else {
+			this.isDone = false;
+			this.progress = this.loader.getProgress();
 		}
 	}
-
-	function get_image(key) {
-		return this._core_images[key];
+	
+	function generateLookup() {
+		images = {};
+		for (file : this.loader.getFiles()) {
+			path = file.replace('.png', '');
+			images[path] = this.loader.getImage(file);
+		}
+		return images;
 	}
 
-	function get_raw_image_lookup() {
-		return this._core_images;
+	function render(screen, images, rc, is_primary) {
+		width = GAME_WIDTH * 4 / 5;
+		height = GAME_HEIGHT / 15;
+		left = (GAME_WIDTH - width) / 2;
+		top = (GAME_HEIGHT - height) / 2;
+		barWidth = Math.floor(width * this.progress);
+
+		Draw.rectangle(left - 4, top - 4, width + 8, height + 8, 50, 50, 50);
+		Draw.rectangle(left, top, width, height, 0, 0, 0);
+		Draw.rectangle(left, top, barWidth, height, 255, 255, 0);
+		shadowHeight = height / 3;
+		Draw.rectangle(left, top + height - shadowHeight, barWidth, shadowHeight, 180, 180, 0);
 	}
 }
 
-class SentientStorage {
-	field _core_width;
-	field _core_height;
-	field _core_allow_direct_quit;
-	field _game_window;
+class MousePosHelper {
+	static field pos = [0, 0];
+}
 
-	constructor(fps, width, height, pixel_width = null, pixel_height = null, allow_direct_quit = true) {
-		this._core_width = width;
-		this._core_height = height;
-		this._game_window = new GameWindow(
-			'Sentient Storage',
-			fps,
-			width,
-			height,
-			pixel_width ?? width,
-			pixel_height ?? height);
-		this._core_allow_direct_quit = allow_direct_quit;
-	}
-
-	function run(starting_scene, files = null, loading_renderer = null) {
-		active_scene = new CoreLoadingScene(files, loading_renderer, starting_scene);
-		active_scene._core_width = this._core_width;
-		active_scene._core_height = this._core_height;
-		imgLib = active_scene._core_image_library;
-		while (active_scene != null) {
-			events = this._game_window.pumpEvents();
-			for (event : events) {
-				if (event.type == Game.EventType.QUIT) {
-					return;
-				}
-			}
-			
-			active_scene.update(events);
-
-			active_scene.render();
-
-			if (active_scene._core_next != null) {
-				next = active_scene._core_next;
-				active_scene._core_next = null;
-				active_scene = next;
-				active_scene.load_images(imgLib);
-			}
-			
-			this._game_window.clockTick();
-		}
-	}
+function get_mouse_position() {
+	return MousePosHelper.pos.clone();
 }
 
 function main() {
-	new SentientStorage(30, 320, 240, 1000, 750);
+
+	window = new GameWindow('Sentient Storage', 30, 320, 240, 800, 600);
+	events = [];
+
+	scene = new LoadingScene();
+	renderCounter = 0;
+	images = null;
+
+	while (true) {
+		events.clear();
+		for (event : window.pumpEvents()) {
+			switch (event.type) {
+				case EventType.QUIT:
+					return;
+				case EventType.MOUSE_LEFT_DOWN:
+				case EventType.MOUSE_LEFT_UP:
+				case EventType.MOUSE_RIGHT_DOWN:
+				case EventType.MOUSE_RIGHT_UP:
+				case EventType.MOUSE_MOVE:
+					events.add(event);
+					MousePosHelper.pos[0] = event.x;
+					MousePosHelper.pos[1] = event.y;
+					break;
+				default:
+					// swallow all other events.
+					break;
+			}
+		}
+		images = images ?? LoadingScene.images;
+
+		scene.update(events);
+		scene.render(null, images, renderCounter++, true);
+		scene = scene.next;
+		if (scene == null) {
+			return;
+		}
+
+		window.clockTick();
+	}
 }

@@ -356,7 +356,7 @@ function pt_games_hippo_heimlich_post(walking_surface, args) {
 
 function pt_games_hippo_heimlich(walking_surface, area, game_log, sprite, d) {
 	game_log.set_int('IS_HIPPO_SAFE', 1);
-	ball = Sprite('ball', sprite.x, sprite.y - 12);
+	ball = new Sprite('ball', sprite.x, sprite.y - 12);
 	ball.waypoints.add([138, 74]);
 	ball.v = 7;
 	walking_surface.timeouts.add([20, pt_games_hippo_heimlich_post, []]);

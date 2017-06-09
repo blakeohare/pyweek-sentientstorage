@@ -1,3 +1,5 @@
+import Graphics2D;
+
 class TitleScene {
 
 	field next;
@@ -36,7 +38,7 @@ class TitleScene {
 				this.next = new PixelTransitionScene(this, new PlayScene('attic', log));
 				break;
 			case 'load':
-				this.next = new LoadGameScene(this);
+				//this.next = new LoadGameScene(this);
 				break;
 			case 'exit':
 				this.next = new PixelTransitionScene(this, null);

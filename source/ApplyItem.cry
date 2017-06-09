@@ -1,3 +1,5 @@
+import Math;
+
 function apply_item(walky_surface, area, area_id, item, sprite, region_id) {
 	log = walky_surface.log;
 	if (area_id == 'games1') {
@@ -11,7 +13,7 @@ function apply_item(walky_surface, area, area_id, item, sprite, region_id) {
 	} else if (area_id == 'games2') {
 		if (region_id != null && region_id != 'housepile') {
 			found = false;
-			for (token : ALL_TOKEN_KEYS) {
+			for (token : Area.ALL_TOKEN_KEYS) {
 				if (token == item) {
 					found = true;
 					break;
@@ -24,7 +26,7 @@ function apply_item(walky_surface, area, area_id, item, sprite, region_id) {
 					log.set_int('HAS_' + item.upper(), 2);
 					i = parseInt(slot_key[4]) - 1;
 					log.set_int(item.upper() + '_INDEX', i);
-					coord = MONOPOLY_INDEX[i];
+					coord = Area.MONOPOLY_INDEX[i];
 					sprite = new Sprite(item, coord[0], coord[1]);
 					area.sprites.add(sprite);
 				}
@@ -34,7 +36,7 @@ function apply_item(walky_surface, area, area_id, item, sprite, region_id) {
 		if (log.get_int('HAS_PHOTO4', 0) == 0) {
 			total = 0;
 			for (i = 1; i <= 9; ++i) {
-				if (log.get_int("SLOT" + $str(i) + "_TAKEN", 0) == 1) {
+				if (log.get_int("SLOT" + i + "_TAKEN", 0) == 1) {
 					total++;
 				}
 			}
@@ -327,7 +329,7 @@ function ai_give_wheel_to_conductor(walky_surface, area, log) {
 }
 
 function ai_give_ball_to_player(walky_surface, sprite, area, log, item, has_both) {
-	log.set_int('HAS_' + $string_upper(item), 2);
+	log.set_int('HAS_' + item.upper(), 2);
 	if (has_both) {
 		walky_surface.invoke_dialog([
 				"Oh, look, a " + item + "!",
@@ -349,7 +351,7 @@ function ai_give_ball_to_player(walky_surface, sprite, area, log, item, has_both
 }
 
 function ai_give_base_to_player(walky_surface, sprite, area, log, item) {
-	log.set_int('HAS_' + $string_upper(item), 2);
+	log.set_int('HAS_' + item.upper(), 2);
 	
 	sum = log.get_int('HAS_HOUSE', 0) + log.get_int('HAS_TRAINPOG', 0) + log.get_int('HAS_LEGOPOG', 0) + log.get_int('HAS_VOLCANOPOG', 0);
 	if (item == 'legopog') {

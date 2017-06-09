@@ -1,3 +1,5 @@
+import Graphics2D;
+import Math;
 
 const TRANSITION_DURATION = 10; // was 80
 
@@ -21,7 +23,7 @@ class PixelTransitionScene {
 		if (PixelTransitionScene._pixel_transition.length == 0) {
 			for (y = 0; y < 60; ++y) {
 				for (x = 0; x < 80; ++x) {
-					_pixel_transition.add([x * 4, y * 4]);
+					PixelTransitionScene._pixel_transition.add([x * 4, y * 4]);
 				}
 			}
 			PixelTransitionScene._pixel_transition.shuffle();

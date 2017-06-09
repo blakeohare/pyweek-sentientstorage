@@ -3,11 +3,11 @@
   <source>source</source>
   <output>bin/%TARGET_NAME%</output>
 
-  <spritesheets>
+  <imagesheets>
     <sheet id="everything">
       <prefix>images/</prefix>
     </sheet>
-  </spritesheets>
+  </imagesheets>
 
   <target name="javascript">
     <platform>javascript-app-gl</platform>

@@ -1,3 +1,4 @@
+import Math;
 
 class Sprite {
 
@@ -24,9 +25,10 @@ class Sprite {
 	field lifetime = 0;
 	field ghost = false;
 	field teething = false;
-	field enforce_waypoint = false;
+	field enforce_waypoints = false;
 	field stretched = false;
 	field is_moving = false;
+	field scale;
 
 	constructor(type, x, y) {
 		this.type = type;
@@ -38,7 +40,7 @@ class Sprite {
 	
 	function specific_update(type, area, counter) {
 		if (type == 'mothercar1' || type == 'mothercar2') {
-			this.dx = Math.sin(self.lifetime * 2 * 3.14159 / 100);
+			this.dx = Math.sin(this.lifetime * 2 * 3.14159 / 100);
 		} else if (type == 'hippochoke') {
 			rate = 30;
 			c = Math.floor(counter % rate);
@@ -132,7 +134,7 @@ class Sprite {
 
 		closest_value = 999999999;
 		closest_key = 's';
-		for (d : DIRS) {
+		for (d : Sprite.DIRS) {
 			vec = Sprite.DIR_VECTORS[d];
 			tdx = vec[0] - dx;
 			tdy = vec[1] - dy;
@@ -327,7 +329,7 @@ function sr_teeth(sprite, screen, images, rc) {
 	if (sprite.teething) {
 		index = rc / 3;
 		num = SrTeethHelper._sr_teeth_values[index % SrTeethHelper._sr_teeth_values.length];
-		draw_image_centered(screen, sprite, images['sprites/teeth/teeth' + $str(num)]);
+		draw_image_centered(screen, sprite, images['sprites/teeth/teeth' + num]);
 	} else {
 		draw_image_centered(screen, sprite, images['sprites/teeth/teeth0']);
 	}
