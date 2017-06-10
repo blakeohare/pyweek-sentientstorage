@@ -32,18 +32,20 @@ class TitleScene {
 			}
 		}
 		
-		switch (action) {
-			case 'new':
-				log = new GameLog();
-				this.next = new PixelTransitionScene(this, new PlayScene('attic', log));
-				break;
-			case 'load':
-				//this.next = new LoadGameScene(this);
-				break;
-			case 'exit':
-				this.next = new PixelTransitionScene(this, null);
-				break;
-			default: throw new Exception();
+		if (action != null) {
+			switch (action) {
+				case 'new':
+					log = new GameLog();
+					this.next = new PixelTransitionScene(this, new PlayScene('attic', log));
+					break;
+				case 'load':
+					//this.next = new LoadGameScene(this);
+					break;
+				case 'exit':
+					this.next = new PixelTransitionScene(this, null);
+					break;
+				default: throw new Exception();
+			}
 		}
 	}
 		

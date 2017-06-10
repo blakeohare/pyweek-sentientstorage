@@ -106,7 +106,7 @@ class Area {
 				key = parts[0].trim().upper();
 				switch (key) {
 					case 'LAYERS':
-						for (bg : parts[1].spilt(',')) {
+						for (bg : parts[1].split(',')) {
 							background_ids.add(bg.trim());
 						}
 						break;
@@ -172,7 +172,8 @@ class Area {
 						teleporter = [x, y];
 						break;
 					case 'SCALE':
-						switch (parts[1].trim().lower()) {
+						value = parts[1].trim().lower();
+						switch (value) {
 							case 'full':
 							case 'half':
 							case 'double':

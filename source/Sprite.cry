@@ -29,6 +29,7 @@ class Sprite {
 	field stretched = false;
 	field is_moving = false;
 	field scale;
+	field sorty = 0;
 
 	constructor(type, x, y) {
 		this.type = type;
@@ -227,7 +228,7 @@ class Sprite {
 		if (this.renderer == null) {
 			this.renderer = this.get_renderer_impl();
 		}
-		this.renderer(screen, images, rc);
+		this.renderer(this, screen, images, rc);
 	}
 }
 

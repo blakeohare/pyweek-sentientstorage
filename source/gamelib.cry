@@ -25,7 +25,6 @@ class LoadingScene {
 		if (this.loader == null) {
 			this.loader = ImageSheet.loadFromResourcesAsync('everything');
 		}
-
 		if (this.isDone) {
 			LoadingScene.images = this.generateLookup();
 			this.next = new TitleScene();
@@ -42,7 +41,8 @@ class LoadingScene {
 		images = {};
 		for (file : this.loader.getFiles()) {
 			path = file.replace('.png', '');
-			images[path] = this.loader.getImage(file);
+			images[path] = GraphicsTexture.load(this.loader.getImage(file));
+			images[path['images/'.length:]] = images[path];
 		}
 		return images;
 	}
