@@ -3,6 +3,9 @@
   <source>source</source>
   <output>bin/%TARGET_NAME%</output>
 
+  <iosbundleprefix>com.noisyprotozoa</iosbundleprefix>
+  <guidseed>com.noisyprotozoa.sentientstorage,v1.0,%TARGET_NAME%</guidseed>
+
   <imagesheets>
     <sheet id="everything">
       <prefix>images/</prefix>
@@ -28,5 +31,9 @@
 
   <target name="python">
     <platform>python-app</platform>
+  </target>
+
+  <target name="ios">
+    <platform>javascript-app-ios</platform>
   </target>
 </build>
