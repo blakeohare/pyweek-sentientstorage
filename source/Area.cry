@@ -458,11 +458,13 @@ class Area {
 	}
 
 	function sprite_sorter(sprite) {
+		v = sprite.y;
 		switch (sprite.type) {
-			case 'tophat': return this.id == 'trains1' ? 9999 : sprite.y;
-			case 'legohack': return sprite.y + 9999999;
-			default: return sprite.y;
+			case 'tophat': if (this.id == 'trains1') v += 99999; break;
+			case 'legohack': v += 999999; break;
 		}
+		sprite.sorty = v; // read back later when merging with layers.
+		return v * 100.0 + sprite.x / 100.0;
 	}
 
 	function sort_sprites() {
