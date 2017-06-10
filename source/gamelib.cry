@@ -1,3 +1,4 @@
+import Audio;
 import Game;
 import Graphics2D;
 import ImageResources;
@@ -68,6 +69,13 @@ class MousePosHelper {
 
 function get_mouse_position() {
 	return MousePosHelper.pos.clone();
+}
+
+function play_music(name) {
+	music = Music.loadFromResource('audio/music/' + name + '.ogg');
+	if (music != null) {
+		music.play();
+	}
 }
 
 function main() {

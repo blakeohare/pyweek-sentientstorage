@@ -239,7 +239,7 @@ class Area {
 		this.sprites = new_sprites;
 		
 		if (counter == 1) {
-			this.music.play();
+			play_music(this.music);
 		}
 		
 		door_value = this.get_door(this.player.x, this.player.y);
