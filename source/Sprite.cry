@@ -30,6 +30,8 @@ class Sprite {
 	field is_moving = false;
 	field scale;
 	field sorty = 0;
+	field last_width;
+	field last_height;
 
 	constructor(type, x, y) {
 		this.type = type;

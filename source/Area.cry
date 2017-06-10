@@ -192,6 +192,8 @@ class Area {
 					case 'MUSIC':
 						this.music = parts[1].trim();
 						break;
+					case 'IGNORE_ME':
+						break;
 					default:
 						throw new Exception(key);
 				}
