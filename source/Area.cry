@@ -223,7 +223,7 @@ class Area {
 		for (i = 0; i < this.blocks.length; ++i) {
 			block = this.blocks[i];
 			if (block[0] < x && block[1] < y && block[2] > x && block[3] > y) {
-				this.blocks.removeAt(i);
+				this.blocks.remove(i);
 				return;
 			}
 		}
