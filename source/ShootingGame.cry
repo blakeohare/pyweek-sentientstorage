@@ -1,0 +1,163 @@
+import Graphics2D;
+import Math;
+
+class ShootingGame {
+	field next;
+	field bg;
+	field type = 'ShootingGame';
+	field pos = [320, 0];
+	field arrow = null;
+	field tl = [24, 105];
+	field origin = [34, 143];
+	field slope = 0;
+	field sprite_version = 1;
+	field tries = 0;
+	field target = [266, 119];
+
+	constructor(bg) {
+		this.next = this;
+		this.bg = bg;
+	}
+	
+	function update() {
+		pos = get_mouse_position();
+		x = pos[0];
+		y = pos[1];
+		dx = x - this.origin[0];
+		dy = y - this.origin[1];
+		if (dx <= 0) {
+			dx = 1;
+		}
+		if (dy > 0) {
+			dy = 0;
+		}
+		
+		this.slope = -1.0 * dy / dx;
+		if (this.slope > 10) {
+			this.sprite_version = 1;
+		} else if (this.slope > 3) {
+			this.sprite_version = 2;
+		} else if (this.slope > .75) {
+			this.sprite_version = 3;
+		} else if (this.slope > .2) {
+			this.sprite_version = 4;
+		} else {
+			this.sprite_version = 5;
+		}
+		
+		if (this.arrow != null) {
+			
+			x = this.arrow[0];
+			y = this.arrow[1];
+			ox = x;
+			oy = y;
+			vx = this.arrow[2];
+			vy = this.arrow[3];
+			vy += .4;
+			x += vx;
+			y += vy;
+			this.arrow[0] = x;
+			this.arrow[1] = y;
+			this.arrow[3] = vy;
+			this.arrow[4] = [ox, oy];
+			if (this.arrow[1] > 208) {
+				this.arrow = null;
+			}
+		}
+	}
+	
+	function click_hand(x, y) { this.click(x, y); }
+	function click_walk(x, y) { this.click(x, y); }
+	function click_look(x, y) { this.click(x, y); }
+	function click_talk(x, y) { this.click(x, y); }
+	function click_item(x, y, item) { this.click(x, y); }
+	
+	function click(x, y) {
+		if (this.arrow == null) {
+			this.tries++;
+			dx = 1;
+			dy = this.slope;
+			magnitude = (dy ** 2 + 1) ** .5;
+			velocity = 13;
+			dx = velocity * dx / magnitude;
+			dy = velocity * dy / magnitude;
+			this.arrow = [this.origin[0], this.origin[1], dx, -dy, null];
+		}
+	}
+	
+	function render_cursor(cursor_mode, active_item, screen, images) {
+		render_cursor('pointy', null, screen, images);
+	}
+	
+	function render(screen, images, rc) {
+		this.bg.render(screen, images, rc);
+		Draw.rectangle(8, 8, 304, 192, 0, 0, 0);
+		images['backgrounds/shooting_bg'].draw(10, 10);
+		images['sprites/mc_shooting/shooting_base'].draw(24, 105);
+		images['sprites/mc_shooting/bow_' + this.sprite_version].draw(24, 105);
+		if (this.arrow != null) {
+			start_x = this.arrow[0];
+			start_y = this.arrow[1];
+			end_x = this.arrow[4][0];
+			end_y = this.arrow[4][1];
+
+			arrow_length = 15;
+			
+			dx = end_x - start_x;
+			dy = end_y - start_y;
+			dist = (dx ** 2 + dy ** 2) ** .5;
+			if (dist == 0) {
+				end_x = start_x - arrow_length;
+				end_y = start_y;
+			} else {
+				dx = arrow_length * dx / dist;
+				dy = arrow_length * dy / dist;
+				end_x = start_x + dx;
+				end_y = start_y + dy;
+			}
+				
+			for (i = 0; i < 10; ++i) {
+				p = i / 9.0;
+				ap = 1.0 - p;
+				x = start_x * p + end_x * ap;
+				y = start_y * p + end_y * ap;
+				Draw.rectangle(Math.floor(x), Math.floor(y), 3, 3, 200, 128, 60);
+				dx = x - this.target[0];
+				dy = y - this.target[1];
+				dist = (dx ** 2 + dy ** 2) ** .5;
+				if (dist < 3) {
+					this.next = this.bg;
+					this.next.next = this.next;
+					tries = '' + this.tries;
+					suffix = 'th';
+					digits = Math.floor(this.tries % 100);
+					if (digits == 11 || digits == 12 || digits == 13) suffix = 'th';
+					else {
+						digit = Math.floor(this.tries % 10);
+						if (digit == 1) suffix = 'st';
+						else if (digit == 2) suffix = 'nd';
+						else if (digit == 3) suffix = 'rd';
+						else suffix = 'th';
+					}
+						
+					this.next.invoke_dialog([
+						"Wow, that's some sharp shooting!",
+						"You got that on just your " + tries + suffix,
+						"try!",
+						"Sure, I can open the gate for you"], open_the_gate, []);
+				}
+			}
+		}
+	}
+}
+
+function open_the_gate(scene, args) {
+	for (sprite : scene.area.sprites) {
+		if (sprite.type == 'gatedown') {
+			sprite.dead = true;
+		}
+	}
+	scene.area.sprites.add(new Sprite('gateup', 185, 90));
+	scene.log.set_int('GATE_OPEN', 1);
+	scene.area.remove_block_at(210, 89);
+}

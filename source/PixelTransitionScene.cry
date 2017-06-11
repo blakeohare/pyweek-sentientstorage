@@ -1,0 +1,70 @@
+import Graphics2D;
+import Math;
+
+const TRANSITION_DURATION = 10; // was 80
+
+class PixelTransitionScene {
+	static field _pixel_transition = [];
+
+	field from_scene;
+	field to_scene;
+	field next;
+	field counter = 0;
+	field pixels;
+
+	constructor(from_scene, to_scene) {
+		this.from_scene = from_scene;
+		this.to_scene = to_scene;
+		this.next = this;
+		this.pixels = this.initialize_pixels();
+	}
+	
+	function initialize_pixels() {
+		if (PixelTransitionScene._pixel_transition.length == 0) {
+			for (y = 0; y < 60; ++y) {
+				for (x = 0; x < 80; ++x) {
+					PixelTransitionScene._pixel_transition.add([x * 4, y * 4]);
+				}
+			}
+			PixelTransitionScene._pixel_transition.shuffle();
+		}
+		return PixelTransitionScene._pixel_transition;
+	}
+	
+	function update(events) {
+		this.counter++;
+		if (this.counter == TRANSITION_DURATION) {
+			this.next = this.to_scene;
+		} else if (this.to_scene == null && this.counter > TRANSITION_DURATION / 2) {
+			this.next = null;
+		}
+	}
+	
+	function render(screen, images, rc, is_primary) {
+		Draw.fill(0, 0, 0);
+		mid = TRANSITION_DURATION / 2;
+		if (this.counter < mid) {
+			progress = 1.0 * this.counter / mid;
+			this.from_scene.render(screen, images, rc, false);
+		} else if (this.to_scene != null) {
+			progress = 1.0 - 1.0 * (this.counter - mid) / mid;
+			this.to_scene.render(screen, images, rc, false);
+		} else {
+			return;
+		}
+			
+		pixels = this.pixels;
+		total = pixels.length;
+		num = Math.floor(progress * total);
+		
+		for (i = 0; i < num; ++i) {
+			pos = pixels[i];
+			Draw.rectangle(pos[0], pos[1], 4, 4, 0, 0, 0);
+		}
+		
+		render_cursor('waity', null, screen, images);
+	}
+}
+		
+	
+		

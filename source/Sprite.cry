@@ -1,0 +1,399 @@
+import Math;
+
+class Sprite {
+
+	static field DIR_VECTORS = {
+		's': [0, 1],
+		'n': [0, -1],
+		'e': [1, 0],
+		'w': [-1, 0],
+	};
+	static field DIRS = ['n', 's', 'e', 'w'];
+
+	field type;
+	field log = null;
+	field x;
+	field y;
+	field dx = 0;
+	field dy = 0;
+	field waypoints = [];
+	field v = 2.0;
+	field last_direction = 's';
+	field dead = false;
+	field half = false;
+	field renderer = null;
+	field lifetime = 0;
+	field ghost = false;
+	field teething = false;
+	field enforce_waypoints = false;
+	field stretched = false;
+	field is_moving = false;
+	field scale;
+	field sorty = 0;
+	field last_width;
+	field last_height;
+
+	constructor(type, x, y) {
+		this.type = type;
+		this.x = x;
+		this.y = y;
+		this.ghost = type == 'ball' || type == 'dino' || type == 'chewedgum'; // can pass through things
+		this.v = type == 'dino' ? 6.0 : this.v;
+	}
+	
+	function specific_update(type, area, counter) {
+		if (type == 'mothercar1' || type == 'mothercar2') {
+			this.dx = Math.sin(this.lifetime * 2 * 3.14159 / 100);
+		} else if (type == 'hippochoke') {
+			rate = 30;
+			c = Math.floor(counter % rate);
+			if (c == 0) {
+				this.dx = -2;
+			} else if (c == Math.floor(rate / 2)) {
+				this.dx = 2;
+			}
+		} else if (type == 'scottie') {
+			if (area.id == 'trains2') {
+				c = Math.floor(counter % 50);
+				this.dx = c < 25 ? -1 : 1;
+			}
+		} else if (type == 'raver1' || type == 'raver2') {
+			c = Math.floor(counter % 15);
+			if (c == 2) {
+				this.dy = -3;
+			} else if (c == 7) {
+				this.dy = 3;
+			}
+		}
+	}
+				
+	function update(area) {
+		this.log = area.log;
+		this.specific_update(this.type, area, this.lifetime);
+		this.lifetime++;
+		if (this.waypoints.length > 0) {
+			wp = this.waypoints[0];
+			dx = wp[0] - this.x;
+			dy = wp[1] - this.y;
+			dist = (dx ** 2 + dy ** 2) ** .5;
+			if (dist <= this.v) {
+				this.dx = wp[0] - this.x;
+				this.dy = wp[1] - this.y;
+				this.waypoints.remove(0);
+			} else {
+				this.dx = 1.0 * dx * this.v / dist;
+				this.dy = 1.0 * dy * this.v / dist;
+			}
+		}
+		if (this.dx != 0 || this.dy != 0) {
+			// this.is_moving = true;
+			dx = this.dx;
+			dy = this.dy;
+			this.last_direction = this.convert_vector_to_direction(dx, dy);
+			newx = this.x + dx;
+			newy = this.y + dy;
+			if (area.is_passable(newx, newy) || this.ghost) {
+				this.x = newx;
+				this.y = newy;
+				this.is_moving = true;
+			} else {
+				this.is_moving = false;
+			}
+			this.dx = 0;
+			this.dy = 0;
+		} else {
+			this.is_moving = false;
+		}
+	}
+	
+	function set_waypoint(tx, ty) {
+		if (this.waypoints.length > 0) {
+			if (this.enforce_waypoints) {
+				return;
+			}
+		}
+		this.enforce_waypoints = false;
+		this.waypoints = [[tx, ty]];
+	}
+	
+	function queue_waypoint(tx, ty) {
+		this.waypoints.add([tx, ty]);
+	}
+	
+	function convert_vector_to_direction(dx, dy) {
+		if (dx == 0) {
+			if (dy < 0) {
+				return 'n';
+			} else {
+				return 's';
+			}
+		} else if (dy == 0) {
+			if (dx < 0) {
+				return 'w';
+			} else {
+				return 'e';
+			}
+		}
+
+		closest_value = 999999999;
+		closest_key = 's';
+		for (d : Sprite.DIRS) {
+			vec = Sprite.DIR_VECTORS[d];
+			tdx = vec[0] - dx;
+			tdy = vec[1] - dy;
+			dist = tdx * tdx + tdy * tdy;
+			if (dist < closest_value) {
+				closest_value = dist;
+				closest_key = d;
+			}
+		}
+		return closest_key;
+	}
+	
+	function get_renderer_impl() {
+		switch (this.type) {
+			case 'arm': return sr_arm;
+			case 'ball': return sr_ball;
+			case 'battleship': return sr_battleship;
+			case 'bballplayer1': return sr_bballplayer1;
+			case 'bballplayer2': return sr_bballplayer2;
+			case 'bballplayer3': return sr_bballplayer3;
+			case 'bluepin': return sr_bluepin;
+			case 'boot': return sr_boot;
+			case 'bow': return sr_bow;
+			case 'conductor': return sr_conductor;
+			case 'chewedgum': return sr_chewedgum;
+			case 'cinematichack': return sr_cinematichack;
+			case 'dino': return sr_dino;
+			case 'dj': return sr_dj;
+			case 'enginenowheel': return sr_enginenowheel;
+			case 'enginewithwheel': return sr_enginewithwheel;
+			case 'gatedown': return sr_gatedown;
+			case 'gateup': return sr_gateup;
+			case 'getoutofjail': return sr_getoutofjail;
+			case 'guard': return sr_guard;
+			case 'goblet': return sr_goblet;
+			case 'hippochoke': return sr_hippochoke;
+			case 'hipposafe': return sr_hipposafe;
+			case 'horse': return sr_horse;
+			case 'horse1': return sr_horse1;
+			case 'horse2': return sr_horse2;
+			case 'horse2collapsed': return sr_horse2collapsed;
+			case 'house': return sr_house;
+			case 'joearm': return sr_joearm;
+			case 'joenoarm': return sr_joenoarm;
+			case 'joust': return sr_joust;
+			case 'king': return sr_king;
+			case 'knight1': return sr_knight1;
+			case 'knight2': return sr_knight2;
+			case 'legohack': return sr_legohack;
+			case 'legopog': return sr_legopog;
+			case 'mothercar1': return sr_mothercar1;
+			case 'mothercar2': return sr_mothercar2;
+			case 'passenger1sleeping': return sr_passenger1sleeping;
+			case 'passenger1awake': return sr_passenger1awake;
+			case 'passenger2': return sr_passenger2;
+			case 'photo4': return sr_photo4;
+			case 'player': 
+				switch (this.scale) {
+					case 'half': return sr_player_half;
+					case 'double': return sr_player_double;
+					default: return sr_player_full;
+				}
+			case 'queen': return sr_queen;
+			case 'racecar': return sr_racecar;
+			case 'raver1': return sr_raver1;
+			case 'raver2': return sr_raver2;
+			case 'rubberband': return sr_rubberband;
+			case 'rubberband2': return sr_rubberband2;
+			case 'sadman': return sr_sadman;
+			case 'scottie': return sr_scottie;
+			case 'spectator1': return sr_spectator1;
+			case 'spectator2': return sr_spectator2;
+			case 'steam': return sr_steam;
+			case 'teleporter': return sr_teleporter;
+			case 'teeth': return sr_teeth;
+			case 'thimble': return sr_thimble;
+			case 'tophat': return sr_tophat;
+			case 'traincar': return sr_traincar;
+			case 'trainpog': return sr_trainpog;
+			case 'trainwheel': return sr_trainwheel;
+			case 'trueking': return sr_trueking;
+			case 'ventalex': return sr_ventalex;
+			case 'volcanopog': return sr_volcanopog;
+			case 'wheelbarrow': return sr_wheelbarrow;
+			case 'wizard': return sr_wizard;
+		}
+	} 
+
+	function render(screen, images, rc) {
+		if (this.renderer == null) {
+			this.renderer = this.get_renderer_impl();
+		}
+		this.renderer(this, screen, images, rc);
+	}
+}
+
+function draw_image_centered(screen, sprite, img) {
+	w = img.width;
+	h = img.height;
+	x = sprite.x - w / 2;
+	y = sprite.y - h;
+	img.draw(x, y);
+	sprite.last_width = w;
+	sprite.last_height = h;
+}
+
+function draw_image_centered_directional(screen, sprite, images, key) {
+	img = images[key + '_' + sprite.last_direction];
+	draw_image_centered(screen, sprite, img);
+}
+
+
+function sr_arm(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/misc/arm']); }
+function sr_ball(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/ball']); }
+function sr_battleship(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/battleship']); }
+function sr_bballplayer1(sprite, screen, images, rc) { draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red'); }
+function sr_bballplayer2(sprite, screen, images, rc) { draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red'); }
+function sr_bballplayer3(sprite, screen, images, rc) { draw_image_centered_directional(screen, sprite, images, 'sprites/cards/red'); }
+function sr_bluepin(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/bluepin']); }
+function sr_boot(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/boot']); }
+function sr_bow(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/bow']); }
+function sr_chewedgum(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/chewedgum']); }
+function sr_cinematichack(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['backgrounds/cinematichack']); }
+function sr_conductor(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/conductor']); }
+function sr_dj(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/dj']); }
+function sr_dino(sprite, screen, images, rc) { draw_image_centered_directional(screen, sprite, images, 'sprites/dinos/trex'); }
+function sr_enginenowheel(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/enginenowheel']); }
+function sr_enginewithwheel(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/enginewithwheel']); }
+function sr_gatedown(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/gatedown']); }
+function sr_gateup(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/gateup']); }
+function sr_getoutofjail(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/getoutofjail']); }
+function sr_guard(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/misc/guard']); }
+function sr_hippochoke(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/hippo/choking']); }
+function sr_hipposafe(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/hippo/hippo']); }
+function sr_horse(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/horse']); }
+function sr_horse1(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/horse0']); }
+function sr_horse2(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/horse1']); }
+function sr_horse2collapsed(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/horsecollapse']); }
+function sr_house(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/house']); }
+function sr_joearm(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/misc/joe_arm']); }
+function sr_joenoarm(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/misc/joe_noarm']); }
+function sr_joust(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/joust']); }
+function sr_king(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/king']); }
+function sr_knight1(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/guard0']); }
+function sr_knight2(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/guard1']); }
+function sr_legohack(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['backgrounds/legos1point5']); }
+function sr_legopog(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/pog']); }
+function sr_passenger1sleeping(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/passenger1sleeping']); }
+function sr_passenger1awake(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/passenger1awake']); }
+function sr_passenger2(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/passenger2']); }
+function sr_photo4(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/photo4']); }
+function sr_queen(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/queen']); }
+function sr_raver1(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/raver1']); }
+function sr_raver2(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/raver2']); }
+function sr_racecar(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/racecar']); }
+function sr_rubberband(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/rubberband_ground']); }
+function sr_sadman(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/sadman']); }
+function sr_scottie(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/scottie']); }
+function sr_spectator1(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/spectator0']); }
+function sr_spectator2(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/spectator1']); }
+function sr_thimble(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/thimble']); }
+function sr_tophat(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/tophat']); }
+function sr_traincar(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/traincar']); }
+function sr_trainpog(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/trainpog']); }
+function sr_trainwheel(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/trains/trainwheel']); }
+function sr_trueking(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['sprites/legos/trueking']); }
+function sr_volcanopog(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/volcanopog']); }
+function sr_ventalex(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['simple/ventalex']); }
+function sr_wheelbarrow(sprite, screen, images, rc) { draw_image_centered(screen, sprite, images['icons/wheelbarrow']); }
+function sr_wizard(sprite, screen, images, rc) { draw_image_centered_directional(screen, sprite, images, 'sprites/cards/wizard'); }
+
+function sr_steam(sprite, screen, images, rc) {
+	c = Math.floor((sprite.x + rc) % 60);
+	if (c < 30 && (c > 20 || c < 10)) {
+		draw_image_centered(screen, sprite, images['simple/steam']);
+	}
+}
+
+function sr_rubberband2(sprite, screen, images, rc) {
+	if (sprite.stretched) {
+		draw_image_centered(screen, sprite, images['sprites/misc4/rubber_stretched']);
+	} else {
+		draw_image_centered(screen, sprite, images['sprites/misc4/rubber_unstretched']);
+	}
+}
+
+class SrTeethHelper {
+	static field _sr_teeth_values = [0, 1, 2, 3, 2, 1, 0];
+}
+
+function sr_teeth(sprite, screen, images, rc) {
+	if (sprite.teething) {
+		index = rc / 3;
+		num = SrTeethHelper._sr_teeth_values[index % SrTeethHelper._sr_teeth_values.length];
+		draw_image_centered(screen, sprite, images['sprites/teeth/teeth' + num]);
+	} else {
+		draw_image_centered(screen, sprite, images['sprites/teeth/teeth0']);
+	}
+}
+
+function sr_goblet(sprite, screen, images, rc) {
+	if (sprite.log != null && sprite.log.get_int('HAS_BLUEPIN', 0) == 0) {
+		img = images['sprites/legos/goblet_pin'];
+	} else {
+		img = images['sprites/legos/goblet'];
+	}
+	draw_image_centered(screen, sprite, img);
+}
+
+function sr_mothercar1(sprite, screen, images, rc) {
+	key = 'sprites/mothercar/left1';
+	if (sprite.last_direction == 'e') {
+		key = 'sprites/mothercar/right1';
+	}
+	draw_image_centered(screen, sprite, images[key]);
+}
+
+function sr_mothercar2(sprite, screen, images, rc) {
+	key = 'sprites/mothercar/left2';
+	if (sprite.last_direction == 'e') {
+		key = 'sprites/mothercar/right2';
+	}
+	draw_image_centered(screen, sprite, images[key]);
+}
+
+function player_get_image_key(sprite, rc) {
+	path = sprite.last_direction;
+	num = 0;
+	if (sprite.is_moving) {
+		c = (rc / 3) % 4;
+		if (c == 2) {
+			c = 0;
+		} else if (c == 3) {
+			c = 2;
+		}
+		num = c;
+	}
+	return path + num;
+}
+
+function sr_player_double(sprite, screen, images, rc) {
+	k = player_get_image_key(sprite, rc);
+	draw_image_centered(screen, sprite, images['sprites/mc_double/'+ k]);
+}
+
+function sr_player_full(sprite, screen, images, rc) {
+	k = player_get_image_key(sprite, rc);
+	draw_image_centered(screen, sprite, images['sprites/mc/' + k]);
+}
+
+function sr_player_half(sprite, screen, images, rc) {
+	k = player_get_image_key(sprite, rc);
+	draw_image_centered(screen, sprite, images['sprites/mc_half/' + k]);
+}
+
+function sr_teleporter(sprite, screen, images, rc) {
+	key = 'teleporter/frame' + ((rc / 5) % 3 + 1);
+	draw_image_centered(screen, sprite, images[key]);
+}

@@ -1,0 +1,60 @@
+class GameLog {
+
+	field int_values = {};
+	field string_values = {};
+
+	constructor() { }
+	
+	function get_int(key, default_value) {
+		return this.int_values.get(key, default_value);
+	}
+	
+	function set_int(key, value) {
+		this.int_values[key] = value;
+	}
+	
+	function get_string(key, default_value) {
+		return this.string_values.get(key, default_value);
+	}
+	
+	function set_string(key, value) {
+		this.string_values[key] = value;
+	}
+	
+	function serialize() {
+		output = [];
+		for (key : this.int_values.keys()) {
+			output.add('i:' + key + ':' + this.int_values[key]);
+		}
+		for (key : this.string_values.keys()) {
+			value = this.string_values[key];
+			if (value == null) {
+				output.add('n:' + key + ':@');
+			} else {
+				output.add('s:' + key + ':' + this.string_values[key]);
+			}
+		}
+		
+		return output.join('\n');
+	}
+	
+	function parse_from(data) {
+		this.int_values = {};
+		this.string_values = {};
+		for (line : data.split('\n')) {
+			parts = line.split(':');
+			type = parts[0].trim();
+			key = parts[1].trim();
+			value = parts[2:].join(':').trim();
+			if (type == 'i') {
+				this.int_values[key] = parseInt(value);
+			} else if (type == 'n') {
+				this.string_values[key] = null;
+			} else {
+				this.string_values[key] = value;
+			}
+		}
+	}
+}
+
+		

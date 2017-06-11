@@ -1,0 +1,150 @@
+const CURSOR_WALK = 0;
+const CURSOR_LOOK = 1;
+const CURSOR_HAND = 2;
+const CURSOR_TALK = 3;
+const CURSOR_ITEM = 5;
+
+class PlayScene {
+	field next;
+	field canvas;
+	field cursor = CURSOR_WALK;
+	field cursor_item = null;
+	field active_item = null;
+	field log;
+
+	constructor(area_id, game_log) {
+		this.next = this;
+		this.canvas = new WalkingSurface(area_id, game_log);
+		this.log = game_log;
+		
+		initialize_hacks(this);
+	}
+	
+	function update(events) {
+		actions = [];
+		
+		if (this.log.get_int('RESET', 0) == 1) {
+			this.next = new TitleScene();
+		}
+		
+		// if it was removed from your inventory it should immediately disappear
+		if (this.active_item != null) {
+			if (this.log.get_int('HAS_' + this.active_item.upper(), 0) != 1) {
+				this.active_item = null;
+			}
+		}
+		
+		if (this.active_item != null && this.cursor == CURSOR_ITEM) {
+			this.cursor_item = this.active_item;
+		}
+		
+		if (this.active_item == null) {
+			this.cursor_item = null;
+		}
+			
+		for (ev : events) {
+			switch (ev.type) {
+				case EventType.QUIT:
+					this.next = null;
+					break;
+
+				case EventType.KEY_DOWN:
+					if (this.canvas.type == 'WalkingSurface') {
+						if (ev.key == 'c') {
+							this.canvas.toggle_block_show();
+						} else if (ev.key == 'l') {
+							this.canvas.toggle_look_show();
+						} else if (ev.key == 'w') {
+							this.cursor = CURSOR_WALK;
+						} else if (ev.key == 'h') {
+							this.cursor = CURSOR_HAND;
+						} else if (ev.key == 't') {
+							this.cursor = CURSOR_TALK;
+						} else if (ev.key == 'e') {
+							this.cursor = CURSOR_LOOK;
+						}
+					}
+					break;
+
+				case EventType.MOUSE_LEFT_DOWN:
+				case EventType.MOUSE_RIGHT_DOWN:
+					x = ev.x;
+					y = ev.y;
+					if (y < 208) {
+						if (this.cursor == CURSOR_WALK || ev.type == EventType.MOUSE_RIGHT_DOWN) {
+							this.canvas.click_walk(x, y);
+						} else if (this.cursor == CURSOR_LOOK) {
+							this.canvas.click_look(x, y);
+						} else if (this.cursor == CURSOR_HAND) {
+							this.canvas.click_hand(x, y);
+						} else if (this.cursor == CURSOR_TALK) {
+							this.canvas.click_talk(x, y);
+						} else if (this.cursor == CURSOR_ITEM) {
+							this.canvas.click_item(x, y, this.cursor_item);
+						}
+					} else if (ev.type == EventType.MOUSE_LEFT_DOWN) { // && y >= 208) {
+						y -= 208;
+						if (x < 32) {
+							if (x < 16) {
+								if (y < 16) {
+									this.cursor = CURSOR_WALK;
+								} else {
+									this.cursor = CURSOR_LOOK;
+								}
+							} else {
+								if (y < 16) {
+									this.cursor = CURSOR_HAND;
+								} else {
+									this.cursor = CURSOR_TALK;
+								}
+							}
+						} else if (x < 64) {
+							this.cursor = CURSOR_ITEM;
+							if (this.active_item == null) {
+								this.invoke_inventory();
+							} else {
+								this.cursor_item = this.active_item;
+							}
+						} else if (x < 96) {
+							this.invoke_inventory();
+						} else if (x > 320 - 32) {
+							this.invoke_options();
+						}
+					}
+					break;
+
+				case EventType.MOUSE_LEFT_UP:
+				case EventType.MOUSE_RIGHT_UP:
+					if (this.canvas.type == 'TracksArrange') {
+						this.canvas.mouse_up();
+					}
+					break;
+			}
+		}
+							
+		this.canvas.update();
+	}
+	
+	function invoke_inventory() {
+		this.next = new InventoryOverlay(this);
+	}
+	
+	function invoke_options() { }
+	
+	function render(screen, images, rc, is_primary) {
+		this.canvas.render(screen, images, rc);
+		images['menus/wood_texture'].draw(0, 208);
+		images['menus/buttons'].draw(0, 208);
+		images['menus/item'].draw(32, 208);
+		images['menus/inventory'].draw(64, 208);
+		if (this.active_item != null) {
+			images['icons/' + this.active_item].draw(33, 209);
+		}
+		
+		if (is_primary) {
+			this.canvas.render_cursor(this.cursor, this.cursor_item, screen, images);
+		}
+		
+		this.canvas = this.canvas.next;
+	}
+}

@@ -1,0 +1,530 @@
+import Graphics2D;
+import Resources;
+
+class Area {
+	static field MONOPOLY_INDEX = [
+		[87, 141],
+		[87, 121],
+		[109, 106],
+		[142, 97],
+		[177, 97],
+		[210, 106],
+		[231, 121],
+		[231, 141],
+	];
+	static field ALL_TOKEN_KEYS = ['tophat', 'scottie', 'wheelbarrow', 'racecar', 'horse', 'battleship', 'boot', 'thimble'];
+
+	field id;
+	field sprites = [];
+	field sorted_sprites;
+	field sprites_by_layers;
+	field music = null;
+	field volume = 1;
+	field log;
+	field train_go = false;
+	field train_counter = 0;
+	field layer_images;
+	field layer_y;
+	field start_point;
+	field start_froms;
+	field player;
+	field scale;
+	field blocks;
+	field region_ids;
+	field look_data;
+	field doors;
+	field teleporter;
+
+	constructor(name, log) {
+		this.id = name;
+		this.log = log;
+		this.parse_level_file(name, log);
+		
+		tokens = [];
+		if (name == 'games2') {
+			for (token : Area.ALL_TOKEN_KEYS) {
+				if (log.get_int('HAS_' + token.upper(), 0) == 2) {
+					index = log.get_int(token.upper() + '_INDEX', 0);
+					coords = Area.MONOPOLY_INDEX[index];
+					x = coords[0];
+					y = coords[1];
+					this.sprites.add(new Sprite(token, x, y));
+				}
+			}
+		}
+					
+		if (name == 'trains2') {
+			log.set_int('SAW_NIGHTCLUB', 1);
+		}
+	}
+		
+	function initialize_player(from_area) {
+		if (from_area == null) {
+			coords = this.start_point;
+		} else {
+			coords = this.start_froms[from_area];
+		}
+		
+		player = new Sprite('player', coords[0], coords[1]);
+		player.scale = this.scale;
+		this.sprites.add(player);
+		this.player = player;
+		return player;
+	}
+	
+	function parse_level_file(name, log) {
+		level = Resources.readText('levels/' + name + '.txt');
+		rows = level.split('\n');
+		backgrounds_by_id = {};
+		background_ids = [];
+		blocks = [];
+		region_ids = [];
+		look_data = {};
+		this.layer_images = [];
+		this.layer_y = [];
+		start_froms = {};
+		start = [0, 0];
+		doors = [];
+		scale = 'full';
+		teleporter = null;
+		for (row : rows) {
+			trow = row.trim();
+			if (trow.length > 0 && trow[0] != '#') {
+				while (trow.length > 0 && trow[0] == '<') {
+					orig_parts = trow.split('>');
+					expr_parts = orig_parts[0].split('<')[1].split(':');
+					expr = expr_parts[0];
+					value = parseInt(expr_parts[1]);
+					current_value = log.get_int(expr, 0);
+					if (current_value == value) {
+						trow = orig_parts[1:].join('>');
+					} else {
+						trow = 'IGNORE_ME';
+					}
+				}
+				parts = trow.split(':');
+				key = parts[0].trim().upper();
+				switch (key) {
+					case 'LAYERS':
+						for (bg : parts[1].split(',')) {
+							background_ids.add(bg.trim());
+						}
+						break;
+					case 'LAYER_DATA':
+						bg = parts[1].trim();
+						data = parts[2].split(',');
+						image = data[0].trim();
+						yboundary = parseInt(data[1]);
+						backgrounds_by_id[bg] = [image, yboundary];
+						break;
+					case 'START':
+						data = parts[1].split(',');
+						x = parseInt(data[0].trim());
+						y = parseInt(data[1].trim());
+						start = [x, y];
+						break;
+					case 'STARTFROM':
+						from_area = parts[1].trim();
+						coords = parts[2].split(',');
+						x = parseInt(coords[0].trim());
+						y = parseInt(coords[1].trim());
+						start_froms[from_area] = [x, y];
+						break;
+					case 'BLOCK':
+						data = parts[1].split(',');
+						x = parseInt(data[0]);
+						y = parseInt(data[1]);
+						width = parseInt(data[2]);
+						height = parseInt(data[3]);
+						triangle_direction = null;
+						if (data.length > 4) {
+							triangle_direction = data[4].trim().upper();
+						}
+						blocks.add([x, y, x + width, y + height, triangle_direction]);
+						break;
+					case 'REGION_ID':
+						region_id = parts[1].trim();
+						coords = parts[2].split(',');
+						x = parseInt(coords[0].trim());
+						y = parseInt(coords[1].trim());
+						width = parseInt(coords[2]);
+						height = parseInt(coords[3]);
+						region_ids.add([x, y, width + x, height + y, region_id]);
+						break;
+					case 'LOOKY':
+						region_id = parts[1].trim();
+						sentence = parts[2:].join(':').trim().split('|');
+						look_data[region_id] = [sentence, null];
+						break;
+					case 'DOOR':
+						goes_to = parts[1].trim();
+						coords = parts[2].split(',');
+						x = parseInt(coords[0]);
+						y = parseInt(coords[1]);
+						width = parseInt(coords[2]);
+						height = parseInt(coords[3]);
+						doors.add([x, y, width + x, height + y, goes_to]);
+						break;
+					case 'TELEPORTER':
+						coords = parts[1].split(',');
+						x = parseInt(coords[0]);
+						y = parseInt(coords[1]);
+						teleporter = [x, y];
+						break;
+					case 'SCALE':
+						value = parts[1].trim().lower();
+						switch (value) {
+							case 'full':
+							case 'half':
+							case 'double':
+								scale = value;
+								break;
+							default: break;
+						}
+						break;
+					case 'ADD_SPRITE':
+						data = parts[1].split(',');
+						type = data[0].trim();
+						x = parseInt(data[1]);
+						y = parseInt(data[2]);
+						this.sprites.add(new Sprite(type, x, y));
+						break;
+					case 'MUSIC':
+						this.music = parts[1].trim();
+						break;
+					case 'IGNORE_ME':
+						break;
+					default:
+						throw new Exception(key);
+				}
+			}
+		}		
+		
+		for (bgid : background_ids) {
+			bg_data = backgrounds_by_id[bgid];
+			this.layer_images.add(bg_data[0]);
+			this.layer_y.add(bg_data[1]);
+		}
+		
+		this.start_point = start;
+		this.start_froms = start_froms;
+		this.blocks = blocks;
+		this.region_ids = region_ids;
+		this.look_data = look_data;
+		this.doors = doors;
+		this.teleporter = teleporter;
+		this.scale = scale;
+		if (teleporter != null) {
+			this.sprites.add(new Sprite('teleporter', teleporter[0], teleporter[1]));
+		}
+	}
+	
+	function remove_block_at(x, y) {
+		for (i = 0; i < this.blocks.length; ++i) {
+			block = this.blocks[i];
+			if (block[0] < x && block[1] < y && block[2] > x && block[3] > y) {
+				this.blocks.remove(i);
+				return;
+			}
+		}
+	}
+	
+	function update(counter, walk_scene) {
+		
+		new_sprites = [];
+		for (sprite : this.sprites) {
+			sprite.update(this);
+			if (!sprite.dead) {
+				new_sprites.add(sprite);
+			}
+		}
+		this.sprites = new_sprites;
+		
+		if (counter == 1) {
+			play_music(this.music);
+		}
+		
+		door_value = this.get_door(this.player.x, this.player.y);
+		if (door_value != null) {
+			walk_scene.switch_area(door_value);
+			if (this.id == 'legos3' && door_value == 'legos2' && this.player.y > 124) {
+				walk_scene.area.player.x = 179;
+				walk_scene.area.player.y = 53;
+			} else if (this.id == 'legos2' && door_value == 'legos3' && this.player.x > 112) {
+				walk_scene.area.player.x = 110;
+				walk_scene.area.player.y = 143;
+			}
+		}
+			
+		if (this.teleporter != null) {
+			tele_dx = this.player.x - this.teleporter[0];
+			tele_dy = this.player.y - this.teleporter[1];
+			if (tele_dx ** 2 + tele_dy ** 2 < 16 ** 2) {
+				walk_scene.switch_area('attic');
+			}
+		}
+		
+		if (this.train_go) {
+			this.train_counter++;
+			for (sprite : this.sprites) {
+				if (sprite.type == 'enginewithwheel' || sprite.type == 'traincar') {
+					sprite.x -= 4;
+					sprite.y += 1;
+				}
+			}
+			if (this.train_counter >= 50) {
+				if (this.id == 'trains1') {
+					walk_scene.switch_area('trains2');
+				} else {
+					walk_scene.switch_area('trains1');
+				}
+			}
+		}
+
+		if (counter == 3 && this.id == 'legos1') {
+			if (walk_scene.log.get_int('KNIGHTS_SHPIEL', 0) == 0) {
+				walk_scene.timeouts.add([3, knights_shpiel_1, []]);
+			}
+		}
+		
+		if (this.id == 'attic') {
+			if (this.log.get_int('INTRO_SHOWN', 0) == 0) {
+				this.log.set_int('INTRO_SHOWN', 1);
+				cs_attic_intro1(walk_scene);
+			} else if (this.log.get_int('ENDING_SHOWN', 0) == 0) {
+				total = 0;
+				for (i = 1; i < 6; ++i) {
+					total += this.log.get_int('HAS_PHOTO' + i, 0);
+				}
+				
+				if (total == 5) {
+					this.log.set_int('ENDING_SHOWN', 1);
+					cs_attic_ending1(walk_scene);
+				}
+			}
+		} else if (this.id == 'misc3') {
+			dino_state = walk_scene.log.get_int('DINO_STATE', 0);
+			if (dino_state == 0) {
+				// T-Rex chases you
+				x = this.player.x;
+				y = this.player.y;
+				if (x > 129 && x < 260 && y > 69 && y <= 115) {
+					this.player.waypoints = [[253, 177]];
+					dino = this.get_sprite_by_type('dino');
+					dino.waypoints = [[162, 87]];
+					this.player.enforce_waypoint = true;
+					walk_scene.timeouts.add([30, dino_retreats, []]);
+					if (walk_scene.log.get_int('DINO_SCARE', 0) == 0) {
+						walk_scene.log.set_int('DINO_SCARE', 1);
+						walk_scene.invoke_dialog([
+							"Out of seemingly nowhere, a plastic",
+							"T-Rex jumps out of hiding and",
+							"chases you away from the cave."], null, null);
+					}
+				}
+			} else if (dino_state == 1) {
+				if (counter == 1) {
+					dinos_shpiel_1(walk_scene);
+				}
+			}
+		}
+	}
+			
+	function get_sprite_by_type(type) {
+		for (sprite : this.sprites) {
+			if (sprite.type == type) {
+				return sprite;
+			}
+		}
+		return null;
+	}
+	
+	function get_sprite_at(x, y) {
+		sprites = this.sorted_sprites;
+		if (sprites == null) {
+			sprites = this.sprites;
+		}
+		for (i = sprites.length - 1; i >= 0; --i) {
+			sprite = sprites[i];
+			if (sprite.last_width != null) {
+				width = sprite.last_width;
+				left = sprite.x - width / 2;
+				right = left + width;
+				if (left < x && right > x) {
+					bottom = sprite.y;
+					top = bottom - sprite.last_height;
+					if (y > top && y < bottom) {
+						return sprite;
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+	function get_door(x, y) {
+		for (door : this.doors) {
+			if (x >= door[0] && x <= door[2] && y >= door[1] && y <= door[3]) {
+				return door[4];
+			}
+		}
+		return null;
+	}
+	
+	function render(screen, images, rc, show_blocks, show_look) {
+		sprites = this.sort_sprites();
+		layer_index = 0;
+		sprite_index = 0;
+		layer_count = this.layer_y.length;
+		sprite_count = sprites.length;
+		while (layer_index < layer_count || sprite_index < sprite_count) {
+			
+			if (layer_index == layer_count) {
+				is_sprite = true;
+			} else if (sprite_index == sprite_count) {
+				is_sprite = false;
+			} else if (sprites[sprite_index].sorty < this.layer_y[layer_index]) {
+				is_sprite = true;
+			} else {
+				is_sprite = false;
+			}
+			
+			if (is_sprite) {
+				sprites[sprite_index].render(screen, images, rc);
+				sprite_index++;
+			} else {
+				images[this.layer_images[layer_index]].draw(0, 0);
+				layer_index++;
+			}
+		}
+		
+		if (this.id == 'trains2') {
+			c = (rc / 6) % 4;
+			if (c == 0) {
+				images['backgrounds/trains2-2'].draw(0, 0);
+			} else if (c == 1 || c == 3) {
+				images['backgrounds/trains2-3'].draw(0, 0);
+			} else {
+				images['backgrounds/trains2-4'].draw(0, 0);
+			}
+		}
+		
+		if (rc % 2 == 0) {
+			if (show_blocks) {
+				for (block : this.blocks) {
+					tri = block[4];
+					x = block[0];
+					y = block[1];
+					top = y;
+					left = x;
+					width = block[2] - block[0];
+					height = block[3] - block[1];
+					right = x + width;
+					bottom = y + height;
+					
+					if (tri == null) {
+						Draw.rectangle(x, y, width, height, 0, 0, 255);
+					} else if (tri == 'TL') {
+						Draw.triangle(x, y, x, bottom, right, y, 0, 0, 255);
+					} else if (tri == 'TR') {
+						Draw.triangle(left, top, right, top, right, bottom, 0, 0, 255);
+					} else if (tri == 'BL') {
+						Draw.triangle(left, top, left, bottom, right, bottom, 0, 0, 255);
+					} else if (tri == 'BR') {
+						Draw.triangle(left, bottom, right, bottom, right, top, 0, 0, 255);
+					}
+				}
+			} else if (show_look) {
+				for (region : this.region_ids) {
+					left = region[0];
+					width = region[2] - region[0];
+					top = region[1];
+					height = region[3] - region[1];
+					Draw.rectangle(left, top, width, height, 0, 128, 0);
+					Draw.rectangle(left + 1, top + 1, width - 2, height - 2, 0, 255, 0);
+				}
+			}
+		}
+		if (this.id == 'trains3' && this.log.get_int('HAS_WIZARD', 0) == 2) {
+			c = rc % 6;
+			if (c < 3) {
+				img = images['backgrounds/strobe1'];
+			} else {
+				img = images['backgrounds/strobe2'];
+			}
+			img.draw(0, 0);
+		}
+	}
+
+	function sprite_sorter(sprite) {
+		v = sprite.y;
+		switch (sprite.type) {
+			case 'tophat': if (this.id == 'trains1') v += 99999; break;
+			case 'legohack': v += 999999; break;
+		}
+		sprite.sorty = v; // read back later when merging with layers.
+		return v * 100.0 + sprite.x / 100.0;
+	}
+
+	function sort_sprites() {
+		new_list = this.sprites.clone();
+		new_list.shuffle();
+		new_list.sort(this.sprite_sorter);
+		return new_list;
+	}
+	
+	function get_region_id(x, y) {
+		for (region : this.region_ids) {
+			if (x < region[2] && x > region[0] && y > region[1] && y < region[3]) {
+				return region[4];
+			}
+		}
+		return null;
+	}
+		
+	function get_look_data(region_id) {
+		// TODO: this function can be removed and flattened inline
+		return this.look_data.get(region_id);
+	}
+	
+	function is_passable(x, y) {
+		for (block : this.blocks) {
+			if (y <= block[3] && y >= block[1] && x >= block[0] && x <= block[2]) {
+				tri = block[4];
+				if (tri == null) return false;
+				// check triangles
+				w = block[2] - block[0];
+				h = block[3] - block[1];
+				px = 1.0 * (x - block[0]) / w;
+				py = 1.0 * (y - block[1]) / h;
+				
+				switch (tri) {
+					case 'TL':
+						if (px + py <= 1) return false;
+						break;
+					case 'TR':
+						px = 1.0 - px;
+						if (px + py <= 1) return false;
+						break;
+					case 'BR':
+						if (px + py >= 1) return false;
+						break;
+					case 'BL':
+						px = 1.0 - px;
+						if (px + py >= 1) return false;
+						break;
+					default:
+						throw new Exception();
+				}
+			}
+		}
+		
+		return true;
+	}
+}
+
+function dino_retreats(scene, args) {
+	dino = scene.area.get_sprite_by_type('dino');
+	dino.waypoints = [[71, 88]];
+}

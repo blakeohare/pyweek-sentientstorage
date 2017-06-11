@@ -1,0 +1,190 @@
+class WalkingSurface {
+
+	field type = 'WalkingSurface';
+	field log;
+	field area;
+	field player;
+	field counter = 0;
+	field block_show = false;
+	field look_show = false;
+	field next;
+	field timeouts = [];
+	field render_photo = false;
+
+	constructor(area_id, game_log) {
+		this.log = game_log;
+		this.next = this;
+		this.area = new Area(area_id, game_log);
+		from_area = game_log.get_string('current_area', null);
+		game_log.set_string('current_area', area_id);
+		this.player = this.area.initialize_player(from_area);
+	}
+		
+	
+	function click_walk(x, y) {
+		this.player.set_waypoint(x, y);
+	}
+	
+	function click_hand(x, y) {
+		if (this.area.id == 'misc4') {
+			if (x > 31 && x < 120 && y > 77 && y < 194) {
+				if (this.area.player.y > 118) {
+					if (this.log.get_int('HAS_RUBBERBAND', 0) == 2) {
+						// I don't know why this isn't working the normal way
+						pt_misc_hurl_self(this, this.area, this.log, this.area.get_sprite_by_type('rubberband2'), 0);
+						return;
+					}
+				}
+			}
+		}
+		
+		sprite = this.area.get_sprite_at(x, y);
+		if (sprite != null) {
+			if (this.area.id == 'games2' && sprite.type != 'house' && sprite.type != 'getoutofjail' && sprite.type != 'photo4') {
+				return;
+			}
+			perform_touchy_sprite(this, this.area, sprite, this.log);
+		} else {
+			region = this.area.get_region_id(x, y);
+			if (region != null) {
+				perform_touchy(this, this.area, region, this.log, x, y);
+			}
+		}
+	}
+	
+	function click_look(x, y) {
+		sprite = this.area.get_sprite_at(x, y);
+		hit = false;
+		if (sprite != null) {
+			hit = sprite_looky_talky(this, sprite, true);
+		}
+		
+		if (!hit) {
+			// hack
+			region = this.area.get_region_id(x, y);
+			if (this.area.id == 'attic' && region == 'train_box') {
+				if (this.log.get_int('TRAIN_ARRANGE_READY', 0) == 1) {
+					if (this.log.get_int('TRAIN_FIXED', 0) == 0) {
+						this.invoke_dialog([
+							"Alex attempts to fix the train",
+							"tracks while carefully avoiding",
+							"the sides of the box so he doesn't",
+							"get sucked in."], track_arrange_init, []);
+						return;
+					}
+				}
+			}
+			if (region != null) {
+				look_data = this.area.get_look_data(region);
+				if (look_data != null) {
+					this.invoke_dialog(look_data[0], null, null);
+				}
+			}
+		}
+	}
+	
+	function click_talk(x, y) {
+		sprite = this.area.get_sprite_at(x, y);
+		if (sprite != null) {
+			sprite_looky_talky(this, sprite, false);
+		}
+	}
+	
+	function click_item(x, y, item) {
+		if (item == null) return;
+		if (this.area.id == 'misc1') {
+			if (x > 186 && x < 227 && y > 74 && y < 117) {
+				if (this.log.get_int('HAS_GLUE', 0) == 1) {
+					pt_misc_give_glue(this, this.area, this.log);
+				}
+			}
+		}
+		region = this.area.get_region_id(x, y);
+		sprite = this.area.get_sprite_at(x, y);
+		apply_item(this, this.area, this.area.id, item, sprite, region);
+	}
+	
+	function update() {
+		this.area.update(this.counter, this);
+		
+		if (this.area.id == 'legos2' && this.log.get_int('LEGO_STATE', 0) == 0) {
+			if (this.counter == 0) {
+				this.invoke_dialog([
+					"WHAT? How did you get past our",
+					"wall!?",
+					"This is a breach in our security.",
+					"And of course we can't blame ",
+					"ourselves. So we blame you. You",
+					"are hereby sentenced to death."], joust1b, null);
+			} else if (this.counter == 4) {
+				this.area.get_sprite_by_type('legohack').dead = true;
+				this.area.player.y = -500;
+			} else if (this.counter == 5) {
+				this.invoke_dialog([
+					"King: Death by joust!",
+					"Should you survive, then I shall",
+					"let you live."], joust2b, null);
+			}
+		}
+			
+		new_timeouts = [];
+		for (timeout : this.timeouts) {
+			t = timeout[0] - 1;
+			if (t <= 0) {
+				fun = timeout[1];
+				args = timeout[2];
+				fun(this, args);
+			} else {
+				timeout[0] = t;
+				new_timeouts.add(timeout);
+			}
+		}
+		this.timeouts = new_timeouts;
+		
+		this.counter++;
+	}
+	
+	function toggle_block_show() {
+		this.block_show = !this.block_show;
+	}
+	
+	function toggle_look_show() {
+		this.look_show = !this.look_show;
+	}
+	
+	function render(screen, images, rc) {
+		this.area.render(screen, images, rc, this.block_show, this.look_show);
+		if (this.render_photo) {
+			images['simple/photo'].draw(130, 74);
+		}
+	}
+	
+	function render_cursor(cursor_mode, active_item, screen, images) {
+		if (cursor_mode == CURSOR_WALK) {
+			render_cursor('walky', null, screen, images);
+		} else if (cursor_mode == CURSOR_LOOK) {
+			render_cursor('looky', null, screen, images);
+		} else if (cursor_mode == CURSOR_HAND) {
+			render_cursor('touchy', null, screen, images);
+		} else if (cursor_mode == CURSOR_TALK) {
+			render_cursor('talky', null, screen, images);
+		} else if (cursor_mode == CURSOR_ITEM) {
+			// TODO: show the item
+			render_cursor('pointy', active_item, screen, images);
+		} else {
+			render_cursor('pointy', null, screen, images);
+		}
+	}
+	
+	function switch_area(target_area) {
+		new_area = new Area(target_area, this.log);
+		this.log.set_string('current_area', target_area);
+		this.player = new_area.initialize_player(this.area.id);
+		this.counter = 0;
+		this.area = new_area;
+	}
+	
+	function invoke_dialog(text, post_dialog_handler, args) {
+		this.next = new DialogSurface(text, this, post_dialog_handler, args);
+	}
+}

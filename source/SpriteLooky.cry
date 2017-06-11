@@ -1,0 +1,117 @@
+function sprite_looky_talky(scene, sprite, is_looky) {
+	id = sprite.type;
+	is_talky = !is_looky;
+	log = scene.log;
+	
+	switch (id) {
+		case 'conductor':
+			train_running = log.get_int('TRAIN_RUNNING', 0) == 1;
+			if (is_looky) {
+				if (train_running) {
+					return slt_invoke_basic(scene, ["A happy conductor drives the train."]);
+				} else {
+					return slt_invoke_basic(scene, ["The conductor looks really bored."]);
+				}
+			}
+
+			if (!train_running) {
+				if (log.get_int('TRAIN_FIXED', 0) == 1) {
+					return slt_invoke_basic(scene, [
+						"Great! We have tracks!", 
+						"But now we seem to be missing", 
+						"a wheel."]);
+				} else {
+					log.set_int('TRAIN_ARRANGE_READY', 1);
+					return slt_invoke_basic(scene, ["The tracks are a mess.", "If only I could transform into", "a giant and rearrange them", "myself"]);
+				}
+			}
+			return slt_invoke_basic(scene, ["All aboard!"]);
+
+		case 'dj':
+			if (!is_talky) return false; // looking at the DJ is not implemented
+
+			if (log.get_int('HAS_WIZARD', 0) == 2) {
+				if (log.get_int('HAS_PHOTO3', 0) == 0) {
+					log.set_int('HAS_PHOTO3', 1);
+					return slt_invoke_basic(scene, [
+						"Awesome strobe!",
+						"Here, take this.",
+						"[You receive a photo scrap]"]);
+				}
+				return slt_invoke_basic(scene, [
+					"Whoooooo!"]);
+			}
+		
+			return slt_invoke_basic(scene, [
+				"It'd be nice if we had", "some wicked lighting effects."]);
+			
+		case 'guard':
+			if (!is_talky) return false;
+
+			if (log.get_int('GATE_OPEN', 0) == 1) {
+				return slt_invoke_basic(scene, ["Be careful."]);
+			}
+			return slt_invoke_basic(scene, ["Only armed soldiers are allowed", "beyond this point."]);
+
+		case 'hippochoke':
+			if (is_looky)
+				return slt_invoke_basic(scene, ["It looks like he's choking."]);
+			return slt_invoke_basic(scene, ["Gh....*HACK*...","...whheeez..", "kh...."]);
+
+		case 'joenoarm':
+			if (!is_talky) return false;
+			return slt_invoke_basic(scene, [
+				"What? This is no toybox. This", 
+				"is war! We're busy fighting the",
+				"Soviet dinosaurs to the north.",
+				"Just look what they did to my arm."]);
+		
+		case 'mothercar1':
+			if (is_looky)
+				return slt_invoke_basic(scene, ["A red car paces back and forth,", "worriedly."]);
+			return slt_invoke_basic(scene, ["Oh, my baby, my baby.", "I've lost my baby!"]);
+
+		case 'mothercar2':
+			if (is_looky) 
+				return slt_invoke_basic(scene, ["A red car paces back and forth,", "happily."]);
+			return slt_invoke_basic(scene, ["Oh, thank you!", "Thank you!", "Thank you!"]);
+
+		case 'wizard':
+			if (is_looky) {
+				return slt_invoke_basic(scene, [
+					"A wizard awkwardly wanders",
+					"amongst the baseball players,",
+					"mumbling to himself."]);
+			}
+
+			if (scene.log.get_int('SAW_NIGHTCLUB', 0) == 1) {
+				scene.invoke_dialog([
+					"I think I'm done with this place...", 
+					"What? There's a nightclub in Train", 
+					"Town? Take me with you!"], wizard_joins_party, [sprite]);
+				return false;
+			}
+			return slt_invoke_basic(scene, [
+				"Everything here is sports sports", 
+				"sports. No one seems to care that", 
+				"the realm is under threat of dark", 
+				"forces and there is a false king", 
+				"on the throne of Legoville.", 
+				"*sigh*"]);
+			
+		default: return false;
+	}
+	return false;
+}
+
+function slt_invoke_basic(walky_scene, text) {
+	walky_scene.invoke_dialog(text, null, null);
+	return true;
+}
+
+function wizard_joins_party(scene, args) {
+	sprite = args[0];
+	sprite.dead = true;
+	scene.log.set_int('HAS_WIZARD', 1);
+	scene.invoke_dialog(["A wizard has joined your party."], null, null);
+}

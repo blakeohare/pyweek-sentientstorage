@@ -1,0 +1,149 @@
+import Graphics2D;
+
+class TextRendererHelper {
+
+	static field _TEXT_LOOKUP = [null, null];
+	static field _CHARS_TO_KEYS = {
+		'A': 'ua',
+		'B': 'ub',
+		'C': 'uc',
+		'D': 'ud',
+		'E': 'ue',
+		'F': 'uf',
+		'G': 'ug',
+		'H': 'uh',
+		'I': 'ui',
+		'J': 'uj',
+		'K': 'uk',
+		'L': 'ul',
+		'M': 'um',
+		'N': 'un',
+		'O': 'uo',
+		'P': 'up',
+		'Q': 'uq',
+		'R': 'ur',
+		'S': 'us',
+		'T': 'ut',
+		'U': 'uu',
+		'V': 'uv',
+		'W': 'uw',
+		'X': 'ux',
+		'Y': 'uy',
+		'Z': 'uz',
+		'a': 'la',
+		'b': 'lb',
+		'c': 'lc',
+		'd': 'ld',
+		'e': 'le',
+		'f': 'lf',
+		'g': 'lg',
+		'h': 'lh',
+		'i': 'li',
+		'j': 'lj',
+		'k': 'lk',
+		'l': 'll',
+		'm': 'lm',
+		'n': 'ln',
+		'o': 'lo',
+		'p': 'lp',
+		'q': 'lq',
+		'r': 'lr',
+		's': 'ls',
+		't': 'lt',
+		'u': 'lu',
+		'v': 'lv',
+		'w': 'lw',
+		'x': 'lx',
+		'y': 'ly',
+		'z': 'lz',
+		'0': 'n0',
+		'1': 'n1',
+		'2': 'n2',
+		'3': 'n3',
+		'4': 'n4',
+		'5': 'n5',
+		'6': 'n6',
+		'7': 'n7',
+		'8': 'n8',
+		'9': 'n9',
+		'.': 'period',
+		',': 'comma',
+		'/': 'slash',
+		'\\': 'backslash',
+		'?': 'ques',
+		'!': 'bang',
+		'@': 'at',
+		'|': 'pipe',
+		'<': 'less',
+		'>': 'greater',
+		'[': 'openbrack',
+		']': 'closebrack',
+		'{': 'openbrace',
+		'}': 'closebrace',
+		'(': 'openparen',
+		')': 'closeparen',
+		'-': 'hyphen',
+		'=': 'equals',
+		'_': 'underscore',
+		'+': 'plus',
+		'%': 'percent',
+		'*': 'asterisk',
+		'&': 'ampersand',
+		':': 'colon',
+		';': 'semicolon',
+		"'": 'apos',
+		'"': 'quote'
+	};
+}
+
+function draw_text(screen, images, x, y, text) {
+	if (TextRendererHelper._TEXT_LOOKUP[0] == null) {
+		initialize_text_lookup(images);
+	}
+	lookup = TextRendererHelper._TEXT_LOOKUP[0];
+	widths = TextRendererHelper._TEXT_LOOKUP[1];
+	original_x = x;
+	length = text.length;
+	images = [];
+	xs = [];
+	for (c : text) {
+		if (c == ' ') {
+			x += 6;
+		} else {
+			img = lookup.get(c);
+			if (img == null) {
+				img = lookup['?'];
+				width = widths['?'];
+			} else {
+				width = widths[c];
+			}
+			images.add(img);
+			xs.add(x);
+
+			x += width + 1;
+		}
+	}
+		
+	if (images.length > 0) {
+		Draw.rectangle(original_x, y, x - original_x, images[0].height, 200, 200, 230);
+	}
+	
+	xsLength = xs.length;
+	for (i = 0; i < xsLength; ++i) {
+		x = xs[i];
+		img = images[i];
+		img.draw(x, y);
+	}
+}
+
+function initialize_text_lookup(images) {
+	lookup = {};
+	widths = {};
+	for (key : TextRendererHelper._CHARS_TO_KEYS.keys()) {
+		img  = images['font/' + TextRendererHelper._CHARS_TO_KEYS[key]];
+		lookup[key] = img;
+		widths[key] = img.width;
+	}
+	TextRendererHelper._TEXT_LOOKUP[0] = lookup;
+	TextRendererHelper._TEXT_LOOKUP[1] = widths;
+}

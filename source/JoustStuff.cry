@@ -1,0 +1,58 @@
+function joust1b(scene, args) {
+	scene.invoke_dialog([
+		"Death by what? Are you going to",
+		"force me to step on you without",
+		"any shoes or socks on?"], null, null);
+}
+
+function joust2b(scene, args) {
+	scene.invoke_dialog([
+		"Isn't that redundant?"], joust2c, null);
+}
+
+function joust2c(scene, args) {
+	scene.invoke_dialog([
+		"Alex is nervous as the horses",
+		"begin to move."], null, null);
+	horse1 = scene.area.get_sprite_by_type('horse1');
+	horse2 = scene.area.get_sprite_by_type('horse2');
+	horse1.v = 1;
+	horse2.v = 1;
+	horse1.waypoints = [[91, 130]];
+	horse2.waypoints = [[204, 130]];
+	
+	scene.timeouts.add([30, joust2d, []]);
+}
+
+function joust2d(scene, args) {
+	horse1 = scene.area.get_sprite_by_type('horse1');
+	horse2 = scene.area.get_sprite_by_type('horse2');
+	horse2.dead = true;
+	horse2collapsed = new Sprite('horse2collapsed', horse2.x, horse2.y + 10);
+	bat = new Sprite('joust', horse2.x - 20, horse2.y);
+	scene.area.sprites.add(horse2collapsed);
+	scene.area.sprites.add(bat);
+	horse1.waypoints = [];
+	scene.timeouts.add([20, joust2e, []]);
+}
+
+function joust2e(scene, args) {
+	scene.invoke_dialog([
+		"King: I declare Sir Alex the victor!",
+		"",
+		"[You receive a horse shaped trophy]"], joust2f, null);
+	scene.log.set_int('HAS_HORSE', 1);
+}
+
+function joust2f(scene, args) {
+	scene.invoke_dialog([
+		"Alex thinks to himself how low the",
+		"standards of jousting have fallen",
+		"ever since the Edna incident."], null, null);
+	scene.log.set_int("LEGO_STATE", 1);
+	horse = scene.area.get_sprite_by_type('horse1');
+	horse.dead = true;
+	player = scene.area.player;
+	player.x = horse.x;
+	player.y = horse.y;
+}

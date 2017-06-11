@@ -1,0 +1,121 @@
+import Audio;
+import Game;
+import Graphics2D;
+import ImageResources;
+import Math;
+
+const GAME_WIDTH = 320;
+const GAME_HEIGHT = 240;
+
+class LoadingScene {
+	
+	static field images;
+
+	field next;
+	field counter = 0;
+	field loader = null;
+	field isDone = false;
+	field progress = 0.0;
+
+	constructor() {
+		this.next = this;
+	}
+	
+	function update(events) {
+		this.counter++;
+		if (this.loader == null) {
+			this.loader = ImageSheet.loadFromResourcesAsync('everything');
+		}
+		if (this.isDone) {
+			LoadingScene.images = this.generateLookup();
+			this.next = new TitleScene();
+		} else if (this.loader.isDone()) {
+			this.isDone = true;
+			this.progress = 1.0;
+		} else {
+			this.isDone = false;
+			this.progress = this.loader.getProgress();
+		}
+	}
+	
+	function generateLookup() {
+		images = {};
+		for (file : this.loader.getFiles()) {
+			path = file.replace('.png', '');
+			images[path] = GraphicsTexture.load(this.loader.getImage(file));
+			images[path['images/'.length:]] = images[path];
+		}
+		return images;
+	}
+
+	function render(screen, images, rc, is_primary) {
+		width = GAME_WIDTH * 4 / 5;
+		height = GAME_HEIGHT / 15;
+		left = (GAME_WIDTH - width) / 2;
+		top = (GAME_HEIGHT - height) / 2;
+		barWidth = Math.floor(width * this.progress);
+
+		Draw.rectangle(left - 4, top - 4, width + 8, height + 8, 50, 50, 50);
+		Draw.rectangle(left, top, width, height, 0, 0, 0);
+		Draw.rectangle(left, top, barWidth, height, 255, 255, 0);
+		shadowHeight = height / 3;
+		Draw.rectangle(left, top + height - shadowHeight, barWidth, shadowHeight, 180, 180, 0);
+	}
+}
+
+class MousePosHelper {
+	static field pos = [0, 0];
+}
+
+function get_mouse_position() {
+	return MousePosHelper.pos.clone();
+}
+
+function play_music(name) {
+	music = Music.loadFromResource('audio/music/' + name + '.ogg');
+	if (music != null) {
+		music.play();
+	}
+}
+
+function main() {
+
+	window = new GameWindow('Sentient Storage', 30, 320, 240, 800, 600);
+	events = [];
+
+	scene = new LoadingScene();
+	renderCounter = 0;
+	images = null;
+
+	while (true) {
+		events.clear();
+		for (event : window.pumpEvents()) {
+			switch (event.type) {
+				case EventType.QUIT:
+					return;
+				case EventType.MOUSE_LEFT_DOWN:
+				case EventType.MOUSE_LEFT_UP:
+				case EventType.MOUSE_RIGHT_DOWN:
+				case EventType.MOUSE_RIGHT_UP:
+				case EventType.MOUSE_MOVE:
+					events.add(event);
+					MousePosHelper.pos[0] = event.x;
+					MousePosHelper.pos[1] = event.y;
+					break;
+				default:
+					// swallow all other events.
+					break;
+			}
+		}
+		images = images ?? LoadingScene.images;
+
+		scene.update(events);
+		scene.render(null, images, renderCounter++, true);
+		scene = scene.next;
+		if (scene == null) {
+			return;
+		}
+
+		window.clockTick();
+	}
+}

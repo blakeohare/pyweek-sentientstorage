@@ -1,0 +1,185 @@
+import Graphics2D;
+
+function track_arrange_init(scene, args) {
+	scene.next = new TracksArrange(scene);
+}
+
+class TracksArrange {
+	field next;
+	field type = 'TracksArrange';
+	field bg;
+	field pos = [0, 0];
+	field order = [
+		'track5', 'track6', 'track4', 'track3', 'track2', 'track7', 'track1'
+	];
+	field solution = {
+		'track1': [89, 148],
+		'track2': [41, 123], 
+		'track3': [95, 83],
+		'track4': [134, 55],
+		'track5': [88, 35],
+		'track6': [41, 54],
+		'track7': [143, 126],
+	};
+	field pieces = {
+		'track1': [194, 166, 0, 0, 0, 0],
+		'track2': [240, 110, 0, 0, 0, 0], 
+		'track3': [153, 66, 0, 0, 0, 0],
+		'track4': [232, 48, 0, 0, 0, 0],
+		'track5': [114, 112, 0, 0, 0, 0],
+		'track6': [98, 161, 0, 0, 0, 0],
+		'track7': [88, 59, 0, 0, 0, 0]
+	};
+	field neighbors = {
+		'track1': ['track2', 'track7'],
+		'track2': ['track1', 'track3'],
+		'track3': ['track2', 'track7', 'track4', 'track6'],
+		'track4': ['track3', 'track5'],
+		'track5': ['track4', 'track6'],
+		'track6': ['track5', 'track3'],
+		'track7': ['track3', 'track1']
+	};
+	field holding = null;
+	field regions = {};
+
+	constructor(bg) {
+		this.next = this;
+		this.bg = bg;
+		this.bg.next = bg;
+	}
+		
+	function update() {
+		xy = get_mouse_position();
+		x = xy[0];
+		y = xy[1];
+		dx = x - this.pos[0];
+		dy = y - this.pos[1];
+		this.pos[0] = x;
+		this.pos[1] = y;
+		if (this.holding != null && (dx != 0 || dy != 0)) {
+			this.pieces[this.holding][0] += dx;
+			this.pieces[this.holding][1] += dy;
+		}
+	}
+	
+	function click_hand(x, y) { this.click(x, y); }
+	function click_walk(x, y) { this.click(x, y); }
+	function click_look(x, y) { this.click(x, y); }
+	function click_talk(x, y) { this.click(x, y); }
+	function click_item(x, y, item) { this.click(x, y); }
+	
+	function mouse_up() {
+		this.drop_track();
+	}
+
+	function drop_track() {
+		if (this.holding == null) return;
+
+		dropped = this.holding;
+		this.holding = null;
+		for (neighbor : this.neighbors[dropped]) {
+			dropped_real_coords = this.pieces[dropped];
+			n_real_coords = this.pieces[neighbor];
+			rdx = dropped_real_coords[0] - n_real_coords[0];
+			rdy = dropped_real_coords[1] - n_real_coords[1];
+			
+			dropped_final_coords = this.solution[dropped];
+			n_final_coords = this.solution[neighbor];
+			fdx = dropped_final_coords[0] - n_final_coords[0];
+			fdy = dropped_final_coords[1] - n_final_coords[1];
+			
+			dx = rdx - fdx;
+			dy = rdy - fdy;
+			
+			if (dx ** 2 + dy ** 2 < 16) {
+				for (i = 0; i <= 1; ++i) {
+					this.pieces[dropped][i] = this.solution[dropped][i] - this.solution[neighbor][i] + this.pieces[neighbor][i];
+				}
+				break;
+			}
+		}
+
+		if (this.is_solved()) {
+			this.next = this.bg;
+			this.next.next = this.next;
+			this.next.log.set_int('TRAIN_FIXED', 1);
+			this.next.invoke_dialog(["Alex successfully arranges the", "tracks."], null, null);
+		}
+	}
+
+	function is_bounds_escaping_click(x, y) {
+		return x < 10 || x > 310 || y < 10 || y > 198;
+	}
+
+	function is_solved() {
+
+		for (key : this.pieces.keys()) {
+			for (neighbor : this.neighbors[key]) {
+				fdx = this.solution[neighbor][0] - this.solution[key][0];
+				fdy = this.solution[neighbor][1] - this.solution[key][1];
+				
+				rdx = this.pieces[neighbor][0] - this.pieces[key][0];
+				rdy = this.pieces[neighbor][1] - this.pieces[key][1];
+				
+				if (fdx != rdx || fdy != rdy) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	function click(x, y) {
+		if (this.is_bounds_escaping_click(x, y)) {
+			this.next = this.bg;
+			this.next.next = this.next;
+		}
+		
+		if (this.holding != null) {
+			this.drop_track();
+		} else {
+			this.try_pick_up(x, y);
+		}
+	}
+
+	function try_pick_up(x, y) {
+		trackId = this.find_track_at_coords(x, y);
+		if (trackId != null) {
+			this.holding = trackId;
+			this.pos = [x, y];
+		}
+	}
+
+	function find_track_at_coords(x, y) {
+		for (key : this.pieces.keys()) {
+			piece = this.pieces[key];
+			if (x > piece[2] && x < piece[4] && y > piece[3] && y < piece[5]) {
+				return key;
+			}
+		}
+		return null;
+	}
+	
+	function render(screen, images, rc) {
+		Draw.rectangle(0, 0, 320, 208, 60, 30, 0);
+		Draw.rectangle(10, 10, 300, 188, 0, 128, 50);
+		for (key : this.order) {
+			x = this.pieces[key][0];
+			y = this.pieces[key][1];
+			img = images['tracks/' + key];
+			width = img.width;
+			height = img.height;
+			left = x - width / 2;
+			top = y - height / 2;
+			img.draw(left, top);
+			this.pieces[key][2] = left;
+			this.pieces[key][3] = top;
+			this.pieces[key][4] = left + width;
+			this.pieces[key][5] = top + height;
+		}
+	}
+	
+	function render_cursor(cursor_mode, active_item, screen, images) {
+		render_cursor('pointy', null, screen, images);
+	}
+}

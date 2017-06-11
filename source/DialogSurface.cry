@@ -1,0 +1,95 @@
+import Graphics2D;
+import Math;
+
+const TEXT_BG_RED = 200;
+const TEXT_BG_GREEN = 200;
+const TEXT_BG_BLUE = 230;
+
+class DialogSurface {
+
+	field type = 'DialogSurface';
+	field bg;
+	field data;
+	field next;
+	field ok = null;
+	field pdh;
+	field pdh_args;
+
+	constructor(data, previous_surface, post_dialog_handler, post_dialog_handler_args) {
+		this.bg = previous_surface;
+		this.data = data;
+		this.next = this;
+		this.ok = null;
+		this.pdh = post_dialog_handler;
+		this.pdh_args = post_dialog_handler_args;
+	}
+	
+	function click(x, y) {
+		if (this.ok != null) {
+			if (x > this.ok[0] && x < this.ok[2] && y > this.ok[1] && y < this.ok[3]) {
+				this.next = this.bg;
+				this.bg.next = this.bg;
+				if (this.pdh != null) {
+					this.pdh(this.bg, this.pdh_args);
+				}
+			}
+		}
+	}
+	
+	function click_walk(x, y) {
+		this.click(x, y);
+	}
+
+	function click_hand(x, y) {
+		this.click(x, y);
+	}
+
+	function click_look(x, y) {
+		this.click(x, y);
+	}
+
+	function click_talk(x, y) {
+		this.click(x, y);
+	}
+
+	function click_item(x, y, item) {
+		this.click(x, y);
+	}
+	
+	function update() { }
+	
+	function render(screen, images, rc) {
+		this.bg.render(screen, images, rc);
+		this.render_real(screen, images);
+	}
+	
+	function render_cursor(type, item, screen, images) {
+		render_cursor('pointy', null, screen, images);
+	}
+	
+	function render_real(screen, images) {
+		text = this.data;
+		height = text.length * 15 + 35;
+		left = 60;
+		y = 120 - Math.floor(height / 2);
+		width = 200;
+		bottom = y + height;
+		
+		Draw.rectangle(left, y, width, height, TEXT_BG_RED, TEXT_BG_GREEN, TEXT_BG_BLUE);
+		Draw.rectangle(left + 1, y + 1, width - 2, height - 2, TEXT_BG_RED / 2, TEXT_BG_GREEN / 2, TEXT_BG_BLUE / 2);
+		Draw.rectangle(left + 2, y + 2, width - 4, height - 4, TEXT_BG_RED, TEXT_BG_GREEN, TEXT_BG_BLUE);
+		x = left + 5;
+		y = y + 5;
+		for (line : text) {
+			draw_text(screen, images, x, y, line);
+			y += 15;
+		}
+		
+		bwidth = 60;
+		bleft = left + width / 2 - bwidth / 2;
+		btop = bottom - 20;
+		okbutton = images['menus/ok'];
+		okbutton.draw(bleft, btop);
+		this.ok = [bleft, btop, bleft + okbutton.width, btop + okbutton.height];
+	}
+}
