@@ -49,12 +49,14 @@ class TracksArrange {
 	}
 		
 	function update() {
-		tnew_pos = get_mouse_position();
-		new_pos = [tnew_pos[0], tnew_pos[1]];
-		dx = new_pos[0] - this.pos[0];
-		dy = new_pos[1] - this.pos[1];
-		this.pos = new_pos;
-		if (this.holding != null) {
+		xy = get_mouse_position();
+		x = xy[0];
+		y = xy[1];
+		dx = x - this.pos[0];
+		dy = y - this.pos[1];
+		this.pos[0] = x;
+		this.pos[1] = y;
+		if (this.holding != null && (dx != 0 || dy != 0)) {
 			this.pieces[this.holding][0] += dx;
 			this.pieces[this.holding][1] += dy;
 		}
@@ -66,64 +68,96 @@ class TracksArrange {
 	function click_talk(x, y) { this.click(x, y); }
 	function click_item(x, y, item) { this.click(x, y); }
 	
+	function mouse_up() {
+		this.drop_track();
+	}
+
+	function drop_track() {
+		if (this.holding == null) return;
+
+		dropped = this.holding;
+		this.holding = null;
+		for (neighbor : this.neighbors[dropped]) {
+			dropped_real_coords = this.pieces[dropped];
+			n_real_coords = this.pieces[neighbor];
+			rdx = dropped_real_coords[0] - n_real_coords[0];
+			rdy = dropped_real_coords[1] - n_real_coords[1];
+			
+			dropped_final_coords = this.solution[dropped];
+			n_final_coords = this.solution[neighbor];
+			fdx = dropped_final_coords[0] - n_final_coords[0];
+			fdy = dropped_final_coords[1] - n_final_coords[1];
+			
+			dx = rdx - fdx;
+			dy = rdy - fdy;
+			
+			if (dx ** 2 + dy ** 2 < 16) {
+				for (i = 0; i <= 1; ++i) {
+					this.pieces[dropped][i] = this.solution[dropped][i] - this.solution[neighbor][i] + this.pieces[neighbor][i];
+				}
+				break;
+			}
+		}
+
+		if (this.is_solved()) {
+			this.next = this.bg;
+			this.next.next = this.next;
+			this.next.log.set_int('TRAIN_FIXED', 1);
+			this.next.invoke_dialog(["Alex successfully arranges the", "tracks."], null, null);
+		}
+	}
+
+	function is_bounds_escaping_click(x, y) {
+		return x < 10 || x > 310 || y < 10 || y > 198;
+	}
+
+	function is_solved() {
+
+		for (key : this.pieces.keys()) {
+			for (neighbor : this.neighbors[key]) {
+				fdx = this.solution[neighbor][0] - this.solution[key][0];
+				fdy = this.solution[neighbor][1] - this.solution[key][1];
+				
+				rdx = this.pieces[neighbor][0] - this.pieces[key][0];
+				rdy = this.pieces[neighbor][1] - this.pieces[key][1];
+				
+				if (fdx != rdx || fdy != rdy) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	function click(x, y) {
-		if (x < 10 || x > 310 || y < 10 || y > 198) {
+		if (this.is_bounds_escaping_click(x, y)) {
 			this.next = this.bg;
 			this.next.next = this.next;
 		}
 		
 		if (this.holding != null) {
-			dropped = this.holding;
-			this.holding = null;
-			for (neighbor : this.neighbors[dropped]) {
-				dropped_real_coords = this.pieces[dropped];
-				n_real_coords = this.pieces[neighbor];
-				rdx = dropped_real_coords[0] - n_real_coords[0];
-				rdy = dropped_real_coords[1] - n_real_coords[1];
-				
-				dropped_final_coords = this.solution[dropped];
-				n_final_coords = this.solution[neighbor];
-				fdx = dropped_final_coords[0] - n_final_coords[0];
-				fdy = dropped_final_coords[1] - n_final_coords[1];
-				
-				dx = rdx - fdx;
-				dy = rdy - fdy;
-				
-				if (dx ** 2 + dy ** 2 < 16) {
-					for (i = 0; i <= 1; ++i) {
-						this.pieces[dropped][i] = this.solution[dropped][i] - this.solution[neighbor][i] + this.pieces[neighbor][i];
-					}
-					break;
-				}
-			}
-			
-			for (key : this.pieces.keys()) {
-				for (neighbor : this.neighbors[key]) {
-					fdx = this.solution[neighbor][0] - this.solution[key][0];
-					fdy = this.solution[neighbor][1] - this.solution[key][1];
-					
-					rdx = this.pieces[neighbor][0] - this.pieces[key][0];
-					rdy = this.pieces[neighbor][1] - this.pieces[key][1];
-					
-					if (fdx != rdx || fdy != rdy) {
-						return;
-					}
-				}
-			}
-			
-			this.next = this.bg;
-			this.next.next = this.next;
-			this.next.log.set_int('TRAIN_FIXED', 1);
-			this.next.invoke_dialog(["Alex successfully arranges the", "tracks."], null, null);
+			this.drop_track();
 		} else {
-			for (key : this.pieces.keys()) {
-				piece = this.pieces[key];
-				if (x > piece[2] && x < piece[4] && y > piece[3] && y < piece[5]) {
-					this.holding = key;
-					return;
-				}
+			this.try_pick_up(x, y);
+		}
+	}
+
+	function try_pick_up(x, y) {
+		trackId = this.find_track_at_coords(x, y);
+		if (trackId != null) {
+			this.holding = trackId;
+			this.pos = [x, y];
+		}
+	}
+
+	function find_track_at_coords(x, y) {
+		for (key : this.pieces.keys()) {
+			piece = this.pieces[key];
+			if (x > piece[2] && x < piece[4] && y > piece[3] && y < piece[5]) {
+				return key;
 			}
 		}
+		return null;
 	}
 	
 	function render(screen, images, rc) {

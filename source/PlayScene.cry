@@ -43,68 +43,82 @@ class PlayScene {
 		}
 			
 		for (ev : events) {
-			if (ev.type == EventType.KEY_DOWN) {
-				if (this.canvas.type == 'WalkingSurface') {
-					if (ev.key == 'c') {
-						this.canvas.toggle_block_show();
-					} else if (ev.key == 'l') {
-						this.canvas.toggle_look_show();
-					} else if (ev.key == 'w') {
-						this.cursor = CURSOR_WALK;
-					} else if (ev.key == 'h') {
-						this.cursor = CURSOR_HAND;
-					} else if (ev.key == 't') {
-						this.cursor = CURSOR_TALK;
-					} else if (ev.key == 'e') {
-						this.cursor = CURSOR_LOOK;
-					}
-				}
-			} else if (ev.type == EventType.QUIT) {
-				this.next = null;
-			} else if (ev.type == EventType.MOUSE_LEFT_DOWN || ev.type == EventType.MOUSE_RIGHT_DOWN) {
-				x = ev.x;
-				y = ev.y;
-				if (y < 208) {
-					if (this.cursor == CURSOR_WALK || ev.type == EventType.MOUSE_RIGHT_DOWN) {
-						this.canvas.click_walk(x, y);
-					} else if (this.cursor == CURSOR_LOOK) {
-						this.canvas.click_look(x, y);
-					} else if (this.cursor == CURSOR_HAND) {
-						this.canvas.click_hand(x, y);
-					} else if (this.cursor == CURSOR_TALK) {
-						this.canvas.click_talk(x, y);
-					} else if (this.cursor == CURSOR_ITEM) {
-						this.canvas.click_item(x, y, this.cursor_item);
-					}
-				} else if (ev.type == EventType.MOUSE_LEFT_DOWN) { // && y >= 208) {
-					y -= 208;
-					if (x < 32) {
-						if (x < 16) {
-							if (y < 16) {
-								this.cursor = CURSOR_WALK;
-							} else {
-								this.cursor = CURSOR_LOOK;
-							}
-						} else {
-							if (y < 16) {
-								this.cursor = CURSOR_HAND;
-							} else {
-								this.cursor = CURSOR_TALK;
-							}
+			switch (ev.type) {
+				case EventType.QUIT:
+					this.next = null;
+					break;
+
+				case EventType.KEY_DOWN:
+					if (this.canvas.type == 'WalkingSurface') {
+						if (ev.key == 'c') {
+							this.canvas.toggle_block_show();
+						} else if (ev.key == 'l') {
+							this.canvas.toggle_look_show();
+						} else if (ev.key == 'w') {
+							this.cursor = CURSOR_WALK;
+						} else if (ev.key == 'h') {
+							this.cursor = CURSOR_HAND;
+						} else if (ev.key == 't') {
+							this.cursor = CURSOR_TALK;
+						} else if (ev.key == 'e') {
+							this.cursor = CURSOR_LOOK;
 						}
-					} else if (x < 64) {
-						this.cursor = CURSOR_ITEM;
-						if (this.active_item == null) {
+					}
+					break;
+
+				case EventType.MOUSE_LEFT_DOWN:
+				case EventType.MOUSE_RIGHT_DOWN:
+					x = ev.x;
+					y = ev.y;
+					if (y < 208) {
+						if (this.cursor == CURSOR_WALK || ev.type == EventType.MOUSE_RIGHT_DOWN) {
+							this.canvas.click_walk(x, y);
+						} else if (this.cursor == CURSOR_LOOK) {
+							this.canvas.click_look(x, y);
+						} else if (this.cursor == CURSOR_HAND) {
+							this.canvas.click_hand(x, y);
+						} else if (this.cursor == CURSOR_TALK) {
+							this.canvas.click_talk(x, y);
+						} else if (this.cursor == CURSOR_ITEM) {
+							this.canvas.click_item(x, y, this.cursor_item);
+						}
+					} else if (ev.type == EventType.MOUSE_LEFT_DOWN) { // && y >= 208) {
+						y -= 208;
+						if (x < 32) {
+							if (x < 16) {
+								if (y < 16) {
+									this.cursor = CURSOR_WALK;
+								} else {
+									this.cursor = CURSOR_LOOK;
+								}
+							} else {
+								if (y < 16) {
+									this.cursor = CURSOR_HAND;
+								} else {
+									this.cursor = CURSOR_TALK;
+								}
+							}
+						} else if (x < 64) {
+							this.cursor = CURSOR_ITEM;
+							if (this.active_item == null) {
+								this.invoke_inventory();
+							} else {
+								this.cursor_item = this.active_item;
+							}
+						} else if (x < 96) {
 							this.invoke_inventory();
-						} else {
-							this.cursor_item = this.active_item;
+						} else if (x > 320 - 32) {
+							this.invoke_options();
 						}
-					} else if (x < 96) {
-						this.invoke_inventory();
-					} else if (x > 320 - 32) {
-						this.invoke_options();
 					}
-				}
+					break;
+
+				case EventType.MOUSE_LEFT_UP:
+				case EventType.MOUSE_RIGHT_UP:
+					if (this.canvas.type == 'TracksArrange') {
+						this.canvas.mouse_up();
+					}
+					break;
 			}
 		}
 							
