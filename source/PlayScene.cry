@@ -1,3 +1,5 @@
+import Game;
+
 const CURSOR_WALK = 0;
 const CURSOR_LOOK = 1;
 const CURSOR_HAND = 2;
