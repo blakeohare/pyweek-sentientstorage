@@ -5,7 +5,8 @@
 
 	"iosbundleprefix": "com.noisyprotozoa",
 	"guidseed": "com.noisyprotozoa.sentientstorage,v1.0,%TARGET_NAME%",
-
+	"orientation": "landscape",
+	
 	"image-sheets": [
 		{
 			"id": "everything",
@@ -37,11 +38,11 @@
 		},
 		{
 			"name": "ios",
-			"platform": "javascript-ios"
+			"platform": "javascript-app-ios"
 		},
 		{
 			"name": "android",
-			"platform": "javascript-android"
+			"platform": "javascript-app-android"
 		}
 	]
 }
