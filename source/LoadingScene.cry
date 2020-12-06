@@ -1,0 +1,66 @@
+import Game;
+import Graphics2D;
+import Images;
+import Math;
+
+class LoadingScene {
+	
+	static field images;
+
+	field next;
+	field counter = 0;
+	field loader = null;
+	field isDone = false;
+	field progress = 0.0;
+
+	constructor() {
+		this.next = this;
+        this.loader = new GameImageLoader();
+        this.loader.setRenderContext(Draw.g2d);
+	}
+	
+	function update(events) {
+        this.loader.update();
+        if (!this.isDone) {
+            this.progress = this.loader.getProgress();
+            this.isDone = this.loader.isDone();
+        } else {
+                print("This code ran A");
+            if (LoadingScene.images == null) {
+                LoadingScene.images = this.generateLookup();
+                this.next = new TitleScene();
+                print("This code ran B");
+            }
+        }
+
+        print(this.isDone + " -- " + this.progress);
+        //print(this.progress + " --> " + this.loader._imagesRemaining);
+	}
+	
+	function generateLookup() {
+		files = this.loader.getImagesByPath();
+        images = {};
+		for (file : files.keys()) {
+			path = file.replace('.png', '');
+            pathNoPrefix = path['images/'.length:];
+            img = new CompatibilityImage(files[file]);
+			images[path] = img;
+			images[pathNoPrefix] = img;
+		}
+		return images;
+	}
+
+	function render(screen, images, rc, is_primary) {
+		width = GAME_WIDTH * 4 / 5;
+		height = GAME_HEIGHT / 15;
+		left = (GAME_WIDTH - width) / 2;
+		top = (GAME_HEIGHT - height) / 2;
+		barWidth = Math.floor(width * this.progress);
+
+		Draw.rectangle(left - 4, top - 4, width + 8, height + 8, 50, 50, 50);
+		Draw.rectangle(left, top, width, height, 0, 0, 0);
+		Draw.rectangle(left, top, barWidth, height, 255, 255, 0);
+		shadowHeight = height / 3;
+		Draw.rectangle(left, top + height - shadowHeight, barWidth, shadowHeight, 180, 180, 0);
+	}
+}

@@ -1,0 +1,29 @@
+static class Draw {
+    static field g2d;
+    static function rectangle(x, y, w, h, r, g, b, a = 255) {
+        Draw.g2d.rectangle(x, y, w, h, r, g, b, a);
+    }
+
+    static function fill(r, g, b) {
+        Draw.g2d.fill(r, g, b);
+    }
+
+    static function triangle(x1, y1, x2, y2, x3, y3, r, g, b, a = 255) {
+        Draw.g2d.triangle(x1, y1, x2, y2, x3, y3, r, g, b, a);
+    }
+}
+
+class CompatibilityImage {
+    field bitmap;
+    field width;
+    field height;
+    constructor(bitmap) {
+        this.bitmap = bitmap;
+        this.width = bitmap.width;
+        this.height = bitmap.height;
+    }
+
+    function draw(x, y) {
+        Draw.g2d.drawImage(this.bitmap, x, y);
+    }
+}
